@@ -11,6 +11,13 @@
       <h2>{{episode.episode}}{% if episode.part_no %}
       <span>del {{episode.part_no}}{% if episode.part_name %}: {{episode.part_name}}{% endif %}</span>{% endif %}</h2>
       <p>{{episode.teaser}}</p>
+      {% if episode.ref_keys.all %}
+	<p>Referenser:
+	  {% for r in episode.ref_keys.all %}
+	  <a href="/what/{{r.slug}}">{{r}}</a>{% if not forloop.last %}, {% endif %}
+	  {% endfor %}
+	</p>
+      {% endif %}
       <p>Publicerad i
 	{% for i in episode.publication_set.all %}
 	  <a href="/{{i.issue.year}}#i{{i.issue.number}}">{{i.issue}}</a>

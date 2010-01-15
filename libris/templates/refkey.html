@@ -13,9 +13,9 @@
 	<p>{{x.teaser}}</p>
 	{% endif %}
 	{% if x.ref_keys.all %}
-	<p>Ref:
+	<p>Referenser:
 	  {% for r in x.ref_keys.all %}
-	  <a href="/what/{{r.slug}}">{{r}}</a>
+	  <a href="/what/{{r.slug}}">{{r}}</a>{% if not forloop.last %}, {% endif %}
 	  {% endfor %}
 	</p>
 	{% endif %}

@@ -16,12 +16,12 @@
 	<p>{{x.episode.teaser}}</p>
 	{% endif %}
 	{% if x.episode.ref_keys.all %}
-	<p>Ref:
+	<p>Referenser:
 	  {% for r in x.episode.ref_keys.all %}
-	  <a href="/what/{{r.slug}}">{{r}}</a>
+	  <a href="/what/{{r.slug}}">{{r}}</a>{% if not forloop.last %}, {% endif %}
 	  {% endfor %}
 	</p>
-	{% endif %}
+      {% endif %}
       </div>
       {% endfor %}
     </div>
