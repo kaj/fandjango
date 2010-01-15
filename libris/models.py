@@ -1,4 +1,19 @@
+# -*- coding: utf-8 -*-
 from django.db import models
+
+def makeslug(string):
+    from re import sub
+    t = string.lower()
+    for p, r in ((u'[åäáàâã]', 'a'),
+                 (u'[éèëêẽ]', 'e'),
+                 (u'[íìïîĩ]', 'i'),
+                 (u'[úùüûũ]', 'u'),
+                 (u'[ńǹñ]', 'n'),
+                 (u'[óòöôõ]', 'o'),
+                 (r'[^a-z0-9 ]', ''), 
+                 (r'\s+', '_')):
+        t = sub(p, r, t)
+    return t
 
 class Issue(models.Model):
     '''A single issue'''
@@ -15,6 +30,12 @@ class Issue(models.Model):
 class Title(models.Model):
     '''A (reocurring) title'''
     title = models.CharField(max_length=200, unique=True)
+    slug = models.SlugField(unique=True)
+
+    def save(self, **kwargs):
+        if not self.slug:
+            self.slug = makeslug(self.title)
+        models.Model.save(self, kwargs)
 
     def __unicode__(self):
         return u'%s' % (self.title)
