@@ -1,0 +1,52 @@
+#!/usr/bin/env python
+from django.core.management import setup_environ
+import settings # Assumed to be in the same directory.
+setup_environ(settings)
+
+from libris.models import *
+from xml.dom.minidom import parse
+from minixpath import *
+
+def read_data_files(filename):
+    dom = parse(filename)
+    year = getText(evaluate(dom, "/libris/info/year"));
+    for issueElement in dom.getElementsByTagName("issue"):
+        if issueElement.parentNode.tagName != 'libris':
+            print "Found non-relevant issue in", issueElement.parentNode.tagName
+            continue
+        pages = issueElement.getAttribute("pages")
+        if pages == '': pages = None
+        issue = Issue(year=year, 
+                      number=issueElement.getAttribute("nr"),
+                      pages = pages)
+        issue.save()
+        ordno = 0;
+        print "Found issue:", issue
+        for item in issueElement.childNodes:
+            ++ordno
+            if item.nodeType != 1:
+                continue
+            if item.tagName == 'serie':
+                #titleText = getText(item.getElementsByTagName("title")[0]);
+                titleText = getText(evaluate(item, "/title"));
+                title = Title.objects.get_or_create(title=titleText)[0]
+                episode = Episode(title=title)
+                epElem = evaluate(item, "/episode")
+                if epElem:
+                    episode.episode=getText(epElem);
+                partElem = evaluate(item, "/part")
+                if partElem:
+                    episode.part_no = partElem.getAttribute("no");
+                    episode.part_name = getText(partElem);
+                teaserElem = evaluate(item, "/teaser")
+                if teaserElem:
+                    episode.teaser = getText(teaserElem)
+                episode.save();
+                Publication(issue=issue, episode=episode, ordno=ordno).save()
+                print "Serie", episode
+            else:
+                print 'Element', item.tagName
+    dom.unlink()
+
+if __name__ == "__main__":
+    read_data_files("../fantomen/2005.data")

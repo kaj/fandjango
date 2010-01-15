@@ -1,0 +1,21 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>{{year}}</title>
+  </head>
+  
+  <body>
+    <h1>Fantomen {{year}}</h1>
+    
+    {% for issue in issues %}
+    <div>
+      <h2>Nummer {{issue.number}}</h2>
+      {% for x in issue.publication_set.all %}
+      <div>
+	<h3>{{x.episode}}</h3>
+	<p>{{x.episode.teaser}}</p>
+      </div>
+      {% endfor %}
+    </div>
+    {% endfor %}
+  </body>
+</html>
