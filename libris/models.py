@@ -17,9 +17,9 @@ def makeslug(string):
 
 class Issue(models.Model):
     '''A single issue'''
-    year = models.IntegerField()
-    number = models.IntegerField()
-    pages = models.IntegerField(null=True, blank=True)
+    year = models.PositiveSmallIntegerField()
+    number = models.PositiveSmallIntegerField()
+    pages = models.PositiveSmallIntegerField(null=True, blank=True)
 
     class Meta:
         unique_together = ("year", "number")
@@ -40,15 +40,30 @@ class Title(models.Model):
     def __unicode__(self):
         return u'%s' % (self.title)
 
+class RefKey(models.Model):
+    '''Something that exists in the Phantom universe.
+    May be a place, a person, a thing or even a concept.'''
+    title = models.CharField(max_length=200, unique=True)
+    slug = models.SlugField(unique=True)
+
+    def save(self, **kwargs):
+        if not self.slug:
+            self.slug = makeslug(self.title)
+        models.Model.save(self, kwargs)
+
+    def __unicode__(self):
+        return u'%s' % (self.title)
+    
 class Episode(models.Model):
     '''An episode such as it occurs in an Issue.  This might mean an
     episode of a reoccuring title, a part of such an episode, a
     one-shot or a part of a one-shot.'''
     title = models.ForeignKey(Title)
     episode = models.CharField(max_length=200)
-    part_no = models.IntegerField(blank=True, null=True)
+    part_no = models.PositiveSmallIntegerField(blank=True, null=True)
     part_name = models.CharField(max_length=200, blank=True)
     teaser = models.TextField(blank=True)
+    ref_keys = models.ManyToManyField(RefKey)
 
     def __unicode__(self):
         if self.part_no:
@@ -60,4 +75,4 @@ class Episode(models.Model):
 class Publication(models.Model):
     issue = models.ForeignKey(Issue)
     episode = models.ForeignKey(Episode)
-    ordno = models.IntegerField()
+    ordno = models.PositiveSmallIntegerField()

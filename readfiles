@@ -10,7 +10,7 @@ from minixpath import *
 
 def read_data_files(filename):
     dom = parse(filename)
-    year = getText(evaluate(dom, "/libris/info/year"));
+    year = getText(evaluate(dom, "/libris/info/year")[0]);
     for issueElement in dom.getElementsByTagName("issue"):
         if issueElement.parentNode.tagName != 'libris':
             print "Found non-relevant issue in", issueElement.parentNode.tagName
@@ -29,19 +29,26 @@ def read_data_files(filename):
                 continue
             if item.tagName == 'serie':
                 #titleText = getText(item.getElementsByTagName("title")[0]);
-                titleText = getText(evaluate(item, "/title"));
+                titleText = getText(evaluate(item, "/title")[0]);
                 title = Title.objects.get_or_create(title=titleText)[0]
                 episode = Episode(title=title)
                 epElem = evaluate(item, "/episode")
                 if epElem:
-                    episode.episode=getText(epElem);
+                    episode.episode=getText(epElem[0]);
                 partElem = evaluate(item, "/part")
                 if partElem:
-                    episode.part_no = partElem.getAttribute("no");
-                    episode.part_name = getText(partElem);
+                    episode.part_no = partElem[0].getAttribute("no");
+                    episode.part_name = getText(partElem[0]);
                 teaserElem = evaluate(item, "/teaser")
                 if teaserElem:
-                    episode.teaser = getText(teaserElem)
+                    episode.teaser = getText(teaserElem[0])
+                    
+                keyElem = evaluate(item, "/ref/key")
+                if keyElem:
+                    episode.save() # get an id
+                    keys = [RefKey.objects.get_or_create(title=getText(k))[0] for k in keyElem]
+                    print "Ref keys:", keys
+                    episode.ref_keys = keys
                 episode.save();
                 Publication(issue=issue, episode=episode, ordno=ordno).save()
                 print "Serie", episode

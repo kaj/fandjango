@@ -1,0 +1,22 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>{{title}} i Fantomen</title>
+  </head>
+  
+  <body>
+    <h1>{{title}} i Fantomen</h1>
+    
+    {% for episode in title.episode_set.all %}
+    <div>
+      <h2>{{episode.episode}}{% if episode.part_no %}
+      <span>del {{episode.part_no}}{% if episode.part_name %}: {{episode.part_name}}{% endif %}</span>{% endif %}</h2>
+      <p>{{episode.teaser}}</p>
+      <p>Publicerad i
+	{% for i in episode.publication_set.all %}
+	  <a href="/{{i.issue.year}}#i{{i.issue.number}}">{{i.issue}}</a>
+	{% endfor %}
+      </p>
+    </div>
+    {% endfor %}
+  </body>
+</html>

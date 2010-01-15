@@ -79,11 +79,12 @@ def findnode(node, pgm) :
     """
 
     searchCtx = pgm[0]
+    result = []
 
     if searchCtx[0] == ".." :
-        return node.parentNode
+        result.append(node.parentNode)
 
-    if searchCtx[0][0] == '@' :
+    elif searchCtx[0][0] == '@' :
         attrib = searchCtx[0][1:]
         value = node.getAttribute(attrib)
         if searchCtx[1] == "=" :
@@ -98,28 +99,31 @@ def findnode(node, pgm) :
         if len(pgm) > 1 :
             found = findnode(node, pgm[1:])
             if found != None :
-                return found
-        return i
+                result = result + found
+        # result.append(i)
 
-    for i in node.getElementsByTagName(searchCtx[0]) :
-        if len(searchCtx) > 1 :
-            value = getText(i)
-            if searchCtx[1] == "=" :
-                if searchCtx[2] == value :
-                    i = i.parentNode
-            elif searchCtx[1] == "!=" :
-                if searchCtx[2] != value :
-                    i = i.parentNode
+    else :
+        for i in node.getElementsByTagName(searchCtx[0]) :
+            if len(searchCtx) > 1 :
+                value = getText(i)
+                if searchCtx[1] == "=" :
+                    if searchCtx[2] == value :
+                        i = i.parentNode
+                elif searchCtx[1] == "!=" :
+                    if searchCtx[2] != value :
+                        i = i.parentNode
+                else :
+                    return None
+
+            if len(pgm) > 1 :
+                found = findnode(i, pgm[1:])
+                if found != None :
+                    result = result + found
             else :
-                return None
+                result.append(i)
 
-        if len(pgm) > 1 :
-            found = findnode(i, pgm[1:])
-            if found != None :
-                return found
-        else :
-            return i
-
+    if result:
+        return result
     return None
 
 def evaluate(node, expr) :
@@ -148,16 +152,16 @@ if __name__ == "__main__" :
 
     node = evaluate(root, "/list/item/id")
     assert node
-    print getText(node)
+    print [getText(n) for n in node]
 
     node = evaluate(root, '/list/item[name="courge"]/id')
     assert node
-    print getText(node)
+    print [getText(n) for n in node]
 
     node = evaluate(root, '/list/item[id!=1040]/name')
     assert node
-    print getText(node)
+    print [getText(n) for n in node]
 
     node = evaluate(root, '/list/item[@active ="true"]/name')
     assert node
-    print getText(node)
+    print [getText(n) for n in node]

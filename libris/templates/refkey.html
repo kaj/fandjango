@@ -1,0 +1,30 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>{{refkey}} i Fantomen</title>
+  </head>
+  
+  <body>
+    <h1>{{refkey}} i Fantomen</h1>
+    
+    {% for x in refkey.episode_set.all %}
+    <div>
+	<h3>{{x}}</h3>
+	{% if x.teaser %}
+	<p>{{x.teaser}}</p>
+	{% endif %}
+	{% if x.ref_keys.all %}
+	<p>Ref:
+	  {% for r in x.ref_keys.all %}
+	  <a href="/what/{{r.slug}}">{{r}}</a>
+	  {% endfor %}
+	</p>
+	{% endif %}
+	<p>Publicerad i
+	  {% for i in x.publication_set.all %}
+	  <a href="/{{i.issue.year}}#i{{i.issue.number}}">{{i.issue}}</a>
+	  {% endfor %}
+	</p>
+    </div>
+    {% endfor %}
+  </body>
+</html>

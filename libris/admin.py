@@ -4,4 +4,5 @@ from django.contrib import admin
 admin.site.register(Issue)
 admin.site.register(Title)
 admin.site.register(Episode)
+admin.site.register(RefKey)
 

@@ -7,12 +7,21 @@
     <h1>Fantomen {{year}}</h1>
     
     {% for issue in issues %}
-    <div>
+    <div id="i{{issue.number}}">
       <h2>Nummer {{issue.number}}</h2>
       {% for x in issue.publication_set.all %}
       <div>
-	<h3>{{x.episode}}</h3>
+	<h3><a href="/{{x.episode.title.slug}}">{{x.episode}}</a></h3>
+	{% if x.episode.teaser %}
 	<p>{{x.episode.teaser}}</p>
+	{% endif %}
+	{% if x.episode.ref_keys.all %}
+	<p>Ref:
+	  {% for r in x.episode.ref_keys.all %}
+	  <a href="/what/{{r.slug}}">{{r}}</a>
+	  {% endfor %}
+	</p>
+	{% endif %}
       </div>
       {% endfor %}
     </div>
