@@ -1,27 +1,30 @@
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <title>{{year}}</title>
-  </head>
-  
-  <body>
-    <h1>Fantomen {{year}}</h1>
-    
+{% extends "base.html" %}
+
+{% block extranav %}
+ ...
+ {% for y in navyears %}
+     <a href="{{y}}">{{y}}</a>
+     ...
+ {% endfor %}
+{% endblock %}
+
+{% block maincontent %}
     {% for issue in issues %}
-    <div id="i{{issue.number}}">
+    <div class="issue" id="i{{issue.number}}">
       <h2>Nummer {{issue.number}}</h2>
       {% for x in issue.publication_set.all %}
-      <div>
+      <div class="episode">
 	<h3><a href="/{{x.episode.title.slug}}">{{x.episode.title}}</a>{% if x.episode.episode or x.episode.part_no %}:
 	  {{x.episode.episode}}{% if x.episode.part_no %}
-	  <span>del {{x.episode.part_no}}{% if x.episode.part_name %}:
+	  <span class="part">del {{x.episode.part_no}}{% if x.episode.part_name %}:
 	  {{x.episode.part_name}}{% endif %}</span>{% endif %}
 	  {% endif %}
 	</h3>
 	{% if x.episode.teaser %}
-	<p>{{x.episode.teaser}}</p>
+	<p class="teaser">{{x.episode.teaser}}</p>
 	{% endif %}
 	{% if x.episode.ref_keys.all %}
-	<p>Referenser:
+	<p class="i">Referenser:
 	  {% for r in x.episode.ref_keys.all %}
 	  <a href="/what/{{r.slug}}">{{r}}</a>{% if not forloop.last %}, {% endif %}
 	  {% endfor %}
@@ -31,5 +34,4 @@
       {% endfor %}
     </div>
     {% endfor %}
-  </body>
-</html>
+{% endblock %}

@@ -1,30 +1,25 @@
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <title>{{refkey}} i Fantomen</title>
-  </head>
-  
-  <body>
-    <h1>{{refkey}} i Fantomen</h1>
+{% extends "base.html" %}
+
+{% block maincontent %}
+  <div class="refMain">
+    <h2>Relaterade episoder</h2>
     
-    {% for x in titles %}
-    <div>
-	<h3>{{x}}</h3>
+  {% for x in episodes %}
+    <div class="episode">
+      <h3>{{x.episode}}{% if x.part_no %}
+      <span class="part">del {{x.part_no}}{% if x.part_name %}: {{x.part_name}}{% endif %}</span>{% endif %}</h3>
 	{% if x.teaser %}
-	<p>{{x.teaser}}</p>
+	<p class="teaser">{{x.teaser}}</p>
 	{% endif %}
 	{% if x.ref_keys.all %}
-	<p>Referenser:
+	  <p class="i">Referenser:
 	  {% for r in x.ref_keys.all %}
-	  <a href="/what/{{r.slug}}">{{r}}</a>{% if not forloop.last %}, {% endif %}
-	  {% endfor %}
-	</p>
+	  <a href="/what/{{r.slug}}">{{r}}</a>{% if not forloop.last %}, {% endif %}{% endfor %}.</p>
 	{% endif %}
-	<p>Publicerad i
-	  {% for i in x.publication_set.all %}
-	  <a href="/{{i.issue.year}}#i{{i.issue.number}}">{{i.issue}}</a>
-	  {% endfor %}
-	</p>
+	<p class="i">Publicerad i
+	{% for i in x.publication_set.all %}
+	<a href="/{{i.issue.year}}#i{{i.issue.number}}">{{i.issue}}</a>{% endfor %}.</p>
     </div>
-    {% endfor %}
-  </body>
-</html>
+  {% endfor %}
+  </div>
+{% endblock %}
