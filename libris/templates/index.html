@@ -1,0 +1,27 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Fandjango</title>
+  </head>
+  
+  <body>
+    <h1>Fandjango</h1>
+    
+    <p>
+    {% for year in years %}
+    <a href="{{year}}">{{year}}</a>,
+    {% endfor %}
+    </p>
+
+    <p>
+      {% for title in titles %}
+      <a href="{{title.slug}}">{{title}}</a>,
+      {% endfor %}
+    </p>
+
+    <p>
+      {% for ref in refs %}
+      <a href="what/{{ref.slug}}">{{ref}}</a> ({{ref.episode__count}}),
+      {% endfor %}
+    </p>
+  </body>
+</html>

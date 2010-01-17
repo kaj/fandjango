@@ -14,4 +14,5 @@ urlpatterns = patterns('',
     (r'^what/(?P<slug>[a-z0-9_]+)', 'fandjango.libris.views.refKey'),
     (r'^(?P<year>[0-9]{4})', 'fandjango.libris.views.year'),
     (r'^(?P<slug>[a-z0-9_]+)', 'fandjango.libris.views.title'),
+    (r'^$', 'fandjango.libris.views.index'),
 )

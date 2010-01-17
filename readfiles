@@ -8,6 +8,12 @@ from libris.models import *
 from xml.dom.minidom import parse
 from minixpath import *
 
+def faRefKey(elem):
+    n = elem.getAttribute('no')
+    return RefKey.objects.get_or_create(title='Den %s:e Fantomen' % (n),
+                                        slug='fa%s' % (n))[0]
+
+
 def read_data_files(filename):
     dom = parse(filename)
     year = getText(evaluate(dom, "/libris/info/year")[0]);
@@ -42,19 +48,37 @@ def read_data_files(filename):
                 teaserElem = evaluate(item, "/teaser")
                 if teaserElem:
                     episode.teaser = getText(teaserElem[0])
+                episode.save() # get an id
                     
-                keyElem = evaluate(item, "/ref/key")
+                keyElem = evaluate(item, "/ref/fa")
                 if keyElem:
-                    episode.save() # get an id
-                    keys = [RefKey.objects.get_or_create(title=getText(k))[0] for k in keyElem]
+                    keys = [faRefKey(k) for k in keyElem]
                     print "Ref keys:", keys
                     episode.ref_keys = keys
+                keyElem = evaluate(item, "/ref/key")
+                if keyElem:
+                    keys = [RefKey.objects.get_or_create(title=getText(k))[0] for k in keyElem]
+                    print "Ref keys:", keys
+                    episode.ref_keys.add(*keys)
                 episode.save();
                 Publication(issue=issue, episode=episode, ordno=ordno).save()
+                prevFaElem = evaluate(item, "/prevpub[fa!='']")
+                for e in prevFaElem:
+                    fa = getText(evaluate(e, "/fa")[0])
+                    y = getText(evaluate(e, "/year")[0])
+                    i = Issue.objects.get_or_create(year=y, 
+                                                    number=fa)[0]
+                    Publication(episode=episode, issue=i).save()
+                
                 print "Serie", episode
             else:
                 print 'Element', item.tagName
     dom.unlink()
 
 if __name__ == "__main__":
+    read_data_files("../fantomen/2000.data")
+    read_data_files("../fantomen/2001.data")
+    read_data_files("../fantomen/2002.data")
+    read_data_files("../fantomen/2003.data")
+    read_data_files("../fantomen/2004.data")
     read_data_files("../fantomen/2005.data")

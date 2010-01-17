@@ -22,7 +22,8 @@ class Issue(models.Model):
     pages = models.PositiveSmallIntegerField(null=True, blank=True)
 
     class Meta:
-        unique_together = ("year", "number")
+        ordering = ('year', 'number')
+        unique_together = ('year', 'number')
     
     def __unicode__(self):
         return u'Fa %s %s' % (self.number, self.year)
@@ -75,4 +76,7 @@ class Episode(models.Model):
 class Publication(models.Model):
     issue = models.ForeignKey(Issue)
     episode = models.ForeignKey(Episode)
-    ordno = models.PositiveSmallIntegerField()
+    ordno = models.PositiveSmallIntegerField(default=4711)
+
+    class Meta:
+        ordering = ('issue', 'ordno')

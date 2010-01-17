@@ -11,7 +11,12 @@
       <h2>Nummer {{issue.number}}</h2>
       {% for x in issue.publication_set.all %}
       <div>
-	<h3><a href="/{{x.episode.title.slug}}">{{x.episode}}</a></h3>
+	<h3><a href="/{{x.episode.title.slug}}">{{x.episode.title}}</a>{% if x.episode.episode or x.episode.part_no %}:
+	  {{x.episode.episode}}{% if x.episode.part_no %}
+	  <span>del {{x.episode.part_no}}{% if x.episode.part_name %}:
+	  {{x.episode.part_name}}{% endif %}</span>{% endif %}
+	  {% endif %}
+	</h3>
 	{% if x.episode.teaser %}
 	<p>{{x.episode.teaser}}</p>
 	{% endif %}

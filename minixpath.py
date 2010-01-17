@@ -122,9 +122,7 @@ def findnode(node, pgm) :
             else :
                 result.append(i)
 
-    if result:
-        return result
-    return None
+    return result
 
 def evaluate(node, expr) :
     """ main entry point for minixpath. 
