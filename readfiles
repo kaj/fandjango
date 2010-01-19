@@ -14,7 +14,7 @@ def faRefKey(elem):
                                         slug='fa%s' % (n))[0]
 
 
-def read_data_files(filename):
+def read_data_file(filename):
     dom = parse(filename)
     year = getText(evaluate(dom, "/libris/info/year")[0]);
     for issueElement in dom.getElementsByTagName("issue"):
@@ -76,9 +76,7 @@ def read_data_files(filename):
     dom.unlink()
 
 if __name__ == "__main__":
-    read_data_files("../fantomen/2000.data")
-    read_data_files("../fantomen/2001.data")
-    read_data_files("../fantomen/2002.data")
-    read_data_files("../fantomen/2003.data")
-    read_data_files("../fantomen/2004.data")
-    read_data_files("../fantomen/2005.data")
+    from sys import argv
+    for f in argv[1:]:
+        print 'Read data from', f
+        read_data_file(f)
