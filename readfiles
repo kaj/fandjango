@@ -13,7 +13,6 @@ def faRefKey(elem):
     return RefKey.objects.get_or_create(title='Den %s:e Fantomen' % (n),
                                         slug='fa%s' % (n))[0]
 
-
 def read_data_file(filename):
     dom = parse(filename)
     year = getText(evaluate(dom, "/libris/info/year")[0]);
@@ -49,17 +48,9 @@ def read_data_file(filename):
                 if teaserElem:
                     episode.teaser = getText(teaserElem[0])
                 episode.save() # get an id
-                    
-                keyElem = evaluate(item, "/ref/fa")
-                if keyElem:
-                    keys = [faRefKey(k) for k in keyElem]
-                    print "Ref keys:", keys
-                    episode.ref_keys = keys
-                keyElem = evaluate(item, "/ref/key")
-                if keyElem:
-                    keys = [RefKey.objects.get_or_create(title=getText(k))[0] for k in keyElem]
-                    print "Ref keys:", keys
-                    episode.ref_keys.add(*keys)
+                
+                episode.ref_keys = getRefKeys(item)
+
                 episode.save();
                 Publication(issue=issue, episode=episode, ordno=ordno).save()
                 prevFaElem = evaluate(item, "/prevpub[fa!='']")
@@ -71,9 +62,26 @@ def read_data_file(filename):
                     Publication(episode=episode, issue=i).save()
                 
                 print "Serie", episode
+            elif item.tagName == 'text':
+                article = Article(title=getText(*evaluate(item, '/title')),
+                                  subtitle=getText(*evaluate(item, '/subtitle')))
+                article.save()
+                article.ref_keys = getRefKeys(item)
+                article.save()
+                Publication(issue=issue, article=article, ordno=ordno).save()
+                
             else:
                 print 'Element', item.tagName
     dom.unlink()
+
+def getRefKeys(item):
+    ref = evaluate(item, "/ref")
+    if ref:
+        keys = [faRefKey(k) for k in evaluate(ref[0], "/fa")] + [RefKey.objects.get_or_create(title=getText(k))[0] for k in evaluate(ref[0], "/key")]
+        print "  keys:", keys
+        return keys
+    else:
+        return []
 
 if __name__ == "__main__":
     from sys import argv

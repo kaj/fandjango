@@ -72,11 +72,25 @@ class Episode(models.Model):
                                            self.part_no, self.part_name)
         else:
             return u'%s: %s' % (self.title, self.episode)
-        
+
+class Article(models.Model):
+    '''Something published that is not an episode of a comic.'''
+    title = models.CharField(max_length=200)
+    subtitle = models.CharField(max_length=200)
+    ref_keys = models.ManyToManyField(RefKey)
+    
+    def __unicode__(self):
+        if self.subtitle:
+            return u'%s: %s' % (self.title, self.subtitle)
+        else:
+            return unicode(self.title)
+    
 class Publication(models.Model):
     issue = models.ForeignKey(Issue)
-    episode = models.ForeignKey(Episode)
+    episode = models.ForeignKey(Episode, null=True)
+    article = models.ForeignKey(Article, null=True)
     ordno = models.PositiveSmallIntegerField(default=4711)
 
     class Meta:
         ordering = ('issue', 'ordno')
+        unique_together = ('issue', 'episode', 'article')

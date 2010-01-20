@@ -1,6 +1,20 @@
 {% extends "base.html" %}
 
 {% block maincontent %}
+  {% if articles %}
+  <div class="refMain">
+    <h2>Läs mer</h2>
+    {% for article in articles %}
+    <div class="article">
+      <h3>{{article}}</h3>
+	<p class="i">Publicerad i
+	{% for i in article.publication_set.all %}
+	<a href="/{{i.issue.year}}#i{{i.issue.number}}">{{i.issue}}</a>{% endfor %}.</p>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
   <div class="refMain">
     <h2>Relaterade episoder</h2>
     

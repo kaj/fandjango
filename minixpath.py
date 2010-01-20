@@ -130,11 +130,12 @@ def evaluate(node, expr) :
     pgm = compileExpr(expr)
     return findnode(node, pgm)
 
-def getText(parent):
+def getText(*nodes):
     rc = ""
-    for node in parent.childNodes:
-        if node.nodeType == node.TEXT_NODE:
-            rc = rc + node.data
+    for parent in nodes:
+        for node in parent.childNodes:
+            if node.nodeType == node.TEXT_NODE:
+                rc = rc + node.data
     return rc
 
 if __name__ == "__main__" :
@@ -150,16 +151,22 @@ if __name__ == "__main__" :
 
     node = evaluate(root, "/list/item/id")
     assert node
-    print [getText(n) for n in node]
+    assert [u'1023', u'1030', u'1040', u'1050>'] == [getText(n) for n in node]
 
     node = evaluate(root, '/list/item[name="courge"]/id')
     assert node
-    print [getText(n) for n in node]
+    assert [u'1030'] == [getText(n) for n in node]
+    assert u'1030' == getText(*node)
 
     node = evaluate(root, '/list/item[id!=1040]/name')
     assert node
-    print [getText(n) for n in node]
-
+    assert [u'patate', u'courge', u'gum'] == [getText(n) for n in node]
+    assert u'patatecourgegum' == getText(*node)
+    
     node = evaluate(root, '/list/item[@active ="true"]/name')
     assert node
-    print [getText(n) for n in node]
+    assert [u'gum'] == [getText(n) for n in node]
+    assert u'gum' == getText(*node)
+
+    node = evaluate(root, '/nonesuch')
+    assert not getText(*node)

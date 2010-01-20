@@ -13,6 +13,7 @@
     <div class="issue" id="i{{issue.number}}">
       <h2>Nummer {{issue.number}}</h2>
       {% for x in issue.publication_set.all %}
+      {% if x.episode %}
       <div class="episode">
 	<h3><a href="/{{x.episode.title.slug}}">{{x.episode.title}}</a>{% if x.episode.episode or x.episode.part_no %}:
 	  {{x.episode.episode}}{% if x.episode.part_no %}
@@ -36,6 +37,18 @@
 	</p>
 	{% endif %}
       </div>
+      {% endif %}
+      {% if x.article %}
+      <div class="article">
+	<h3>{{x.article.title}}{% if x.article.subtitle %}: {{x.article.subtitle}}{% endif %}</h3>
+	{% if x.article.ref_keys.all %}
+	<p class="i">Referenser:
+	  {% for r in x.article.ref_keys.all %}
+	  <a href="/what/{{r.slug}}">{{r}}</a>{% if not forloop.last %}, {% endif %}{% endfor %}.
+	</p>
+	{% endif %}
+      </div>
+      {% endif %}
       {% endfor %}
     </div>
     {% endfor %}

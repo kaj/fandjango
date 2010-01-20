@@ -42,6 +42,8 @@ def title(request, slug):
 def refKey(request, slug):
     refkey = get_object_or_404(RefKey, slug=slug)
     episodes = orderEpisodeQuery(refkey.episode_set).all()
+    articles = refkey.article_set.all()
     return render_to_response('refkey.html', ctx(refkey=refkey, 
                                                  episodes=episodes,
+                                                 articles=articles,
                                                  pagetitle=unicode(refkey)))
