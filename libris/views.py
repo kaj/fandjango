@@ -21,14 +21,16 @@ def index(request):
     refs = RefKey.objects.order_by('title').annotate(Count('episode')).all()
     return render_to_response('index.html', {'years': years, 'titles': titles,
                                              'refs': refs})
-def year(request, year):
-    issues = Issue.objects.filter(year=year)
+
+def getNavYears(year, n=2):
     years = list(Issue.objects.order_by('year').distinct().values_list('year', flat=True))
     i = years.index(int(year))
-    n = 2
-    navyears = years[max(i-n,0):i+n+1]
+    return years[max(i-n,0):i+n+1]
+
+def year(request, year):
+    issues = Issue.objects.filter(year=year)
     return render_to_response('year.html', ctx(year=year, issues=issues,
-                                               navyears=navyears,
+                                               navyears=getNavYears(year),
                                                pagetitle='Fantomen %s' %(year)))
 
 def title(request, slug):
