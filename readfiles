@@ -17,7 +17,7 @@ def faRefKey(elem):
 def read_data_file(filename):
     dom = parse(filename)
     year = getText(evaluate(dom, "/libris/info/year")[0]);
-    for issueElement in dom.getElementsByTagName("issue"):
+    for issueElement in evaluate(dom, "/libris/issue"):
         if issueElement.parentNode.tagName != 'libris':
             print "Found non-relevant issue in", issueElement.parentNode.tagName
             continue
