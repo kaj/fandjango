@@ -42,4 +42,4 @@ def refKey(request, slug):
     episodes = orderEpisodeQuery(refkey.episode_set).all()
     return render_to_response('refkey.html', ctx(refkey=refkey, 
                                                  episodes=episodes,
-                                                 pagetitle=str(refkey)))
+                                                 pagetitle=unicode(refkey)))
