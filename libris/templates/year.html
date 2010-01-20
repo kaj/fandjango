@@ -26,10 +26,15 @@
 	{% if x.episode.ref_keys.all %}
 	<p class="i">Referenser:
 	  {% for r in x.episode.ref_keys.all %}
-	  <a href="/what/{{r.slug}}">{{r}}</a>{% if not forloop.last %}, {% endif %}
-	  {% endfor %}
+	  <a href="/what/{{r.slug}}">{{r}}</a>{% if not forloop.last %}, {% endif %}{% endfor %}.
 	</p>
-      {% endif %}
+	{% endif %}
+	{% if x.episode.publication_set.all %}
+	<p class="i">Publicerad i
+	  {% for i in x.episode.publication_set.all %}
+	  <a href="/{{i.issue.year}}#i{{i.issue.number}}">{{i.issue}}</a>{% if not forloop.last %}, {% endif %}{% endfor %}.
+	</p>
+	{% endif %}
       </div>
       {% endfor %}
     </div>
