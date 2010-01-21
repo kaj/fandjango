@@ -29,6 +29,11 @@ def getNavYears(year, n=2):
 
 def year(request, year):
     issues = Issue.objects.filter(year=year)
+    for issue in issues:
+        issue.contents = issue.publication_set.all()
+        for p in issue.contents:
+            if p.episode:
+                p.episode.otherpub = p.episode.publication_set.exclude(issue=issue)
     return render_to_response('year.html', ctx(year=year, issues=issues,
                                                navyears=getNavYears(year),
                                                pagetitle='Fantomen %s' %(year)))

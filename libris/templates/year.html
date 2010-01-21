@@ -12,7 +12,7 @@
     {% for issue in issues %}
     <div class="issue" id="i{{issue.number}}">
       <h2>Nummer {{issue.number}}</h2>
-      {% for x in issue.publication_set.all %}
+      {% for x in issue.contents %}
       {% if x.episode %}
       <div class="episode">
 	<h3><a href="/{{x.episode.title.slug}}">{{x.episode.title}}</a>{% if x.episode.episode or x.episode.part_no %}:
@@ -30,9 +30,9 @@
 	  <a href="/what/{{r.slug}}">{{r}}</a>{% if not forloop.last %}, {% endif %}{% endfor %}.
 	</p>
 	{% endif %}
-	{% if x.episode.publication_set.all %}
-	<p class="i">Publicerad i
-	  {% for i in x.episode.publication_set.all %}
+	{% if x.episode.otherpub %}
+	<p class="i">Även publicerad i
+	  {% for i in x.episode.otherpub %}
 	  <a href="/{{i.issue.year}}#i{{i.issue.number}}">{{i.issue}}</a>{% if not forloop.last %}, {% endif %}{% endfor %}.
 	</p>
 	{% endif %}
