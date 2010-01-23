@@ -30,6 +30,13 @@
 	  <a href="/what/{{r.slug}}">{{r}}</a>{% if not forloop.last %}, {% endif %}{% endfor %}.
 	</p>
 	{% endif %}
+	
+	{% if x.episode.creativepart_set.all %}
+	<p class="i">Av:
+	  {% for c in x.episode.creativepart_set.all %}
+	  <a href="/who/{{c.creator.slug}}">{{c.name}}</a>{% if not forloop.last %}, {% endif %}{% endfor %}.</p>
+	{% endif %}
+
 	{% if x.episode.otherpub %}
 	<p class="i">Även publicerad i
 	  {% for i in x.episode.otherpub %}

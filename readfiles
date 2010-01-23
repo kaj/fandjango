@@ -29,7 +29,7 @@ def read_data_file(filename):
         ordno = 0;
         print "Found issue:", issue
         for item in issueElement.childNodes:
-            ++ordno
+            ordno = ordno + 1
             if item.nodeType != 1:
                 continue
             if item.tagName == 'serie':
@@ -51,6 +51,15 @@ def read_data_file(filename):
                 
                 episode.ref_keys = getRefKeys(item)
 
+                for byElem in evaluate(item, "/by"):
+                    # FIXME What role in the creative process?
+                    whoElem = evaluate(byElem, "/who")
+                    if whoElem:
+                        for w in whoElem:
+                            CreativePart_create(episode, getText(w)).save()
+                    else:
+                        CreativePart_create(episode, getText(byElem)).save()
+                
                 episode.save();
                 Publication(issue=issue, episode=episode, ordno=ordno).save()
                 prevFaElem = evaluate(item, "/prevpub[fa!='']")

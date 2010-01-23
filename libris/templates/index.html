@@ -23,5 +23,10 @@
       <a href="what/{{ref.slug}}">{{ref}}</a> ({{ref.episode__count}}),
       {% endfor %}
     </p>
+    <p>
+      {% for p in people %}
+      <a href="who/{{p.slug}}">{{p}}</a> ({{p.creativepart__count}}),
+      {% endfor %}
+    </p>
   </body>
 </html>

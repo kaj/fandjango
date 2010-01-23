@@ -12,6 +12,7 @@ urlpatterns = patterns('',
     (r'^admin/', include(admin.site.urls)),
 
     (r'^what/(?P<slug>[a-z0-9_]+)', 'fandjango.libris.views.refKey'),
+    (r'^who/(?P<slug>[a-z0-9_]+)', 'fandjango.libris.views.creator'),
     (r'^(?P<year>[0-9]{4})', 'fandjango.libris.views.year'),
     (r'^(?P<slug>[a-z0-9_]+)', 'fandjango.libris.views.title'),
     (r'^$', 'fandjango.libris.views.index'),

@@ -19,8 +19,9 @@ def index(request):
     years = Issue.objects.order_by('year').distinct().values_list('year', flat=True)
     titles = Title.objects.order_by('title').all()
     refs = RefKey.objects.order_by('title').annotate(Count('episode')).all()
+    people = Creator.objects.order_by('name').annotate(Count('creativepart')).all()
     return render_to_response('index.html', {'years': years, 'titles': titles,
-                                             'refs': refs})
+                                             'refs': refs, 'people': people})
 
 def getNavYears(year, n=2):
     years = list(Issue.objects.order_by('year').distinct().values_list('year', flat=True))
@@ -52,3 +53,13 @@ def refKey(request, slug):
                                                  episodes=episodes,
                                                  articles=articles,
                                                  pagetitle=unicode(refkey)))
+
+def creator(request, slug):
+    creator = get_object_or_404(Creator, slug=slug)
+    q=CreativePart.objects.filter(creator=creator)
+    episodes = orderEpisodeQuery(Episode.objects.filter(creativepart__in=q)).all()
+    articles = () # refkey.article_set.all()
+    return render_to_response('creator.html', ctx(creator=creator,
+                                                  episodes=episodes,
+                                                  articles=articles,
+                                                  pagetitle=unicode(creator)))

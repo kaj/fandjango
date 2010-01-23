@@ -12,15 +12,16 @@
       {% if episode.ref_keys.all %}
 	<p class="i">Referenser:
 	  {% for r in episode.ref_keys.all %}
-	  <a href="/what/{{r.slug}}">{{r}}</a>{% if not forloop.last %}, {% endif %}
-	  {% endfor %}
-	</p>
+	  <a href="/what/{{r.slug}}">{{r}}</a>{% if not forloop.last %}, {% endif %}{% endfor %}.</p>
+      {% endif %}
+      {% if episode.creativepart_set.all %}
+	<p class="i">Av:
+	  {% for c in episode.creativepart_set.all %}
+	  <a href="/who/{{c.creator.slug}}">{{c.name}}</a>{% if not forloop.last %}, {% endif %}{% endfor %}.</p>
       {% endif %}
       <p class="i">Publicerad i
 	{% for i in episode.publication_set.all %}
-	  <a href="/{{i.issue.year}}#i{{i.issue.number}}">{{i.issue}}</a>
-	{% endfor %}
-      </p>
+	  <a href="/{{i.issue.year}}#i{{i.issue.number}}">{{i.issue}}</a>{% if not forloop.last %}, {% endif %}{% endfor %}.</p>
     </div>
     {% endfor %}
   </div>
