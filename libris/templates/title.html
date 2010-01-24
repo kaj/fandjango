@@ -1,27 +1,24 @@
 {% extends "base.html" %}
+{% load libris_extras %}
 
 {% block maincontent %}
   <div class="titleMain">
     <h2>Publicerade episoder</h2>
     
-    {% for episode in episodes.all %}
+    {% for ep in episodes.all %}
     <div class="episode">
-      <h3>{{episode.episode}}{% if episode.part_no %}
-      <span class="part">del {{episode.part_no}}{% if episode.part_name %}: {{episode.part_name}}{% endif %}</span>{% endif %}</h3>
-      <p class="teaser">{{episode.teaser}}</p>
-      {% if episode.ref_keys.all %}
-	<p class="i">Referenser:
-	  {% for r in episode.ref_keys.all %}
-	  <a href="/what/{{r.slug}}">{{r}}</a>{% if not forloop.last %}, {% endif %}{% endfor %}.</p>
-      {% endif %}
-      {% if episode.creativepart_set.all %}
-	<p class="i">Av:
-	  {% for c in episode.creativepart_set.all %}
-	  <a href="/who/{{c.creator.slug}}">{{c.name}}</a>{% if not forloop.last %}, {% endif %}{% endfor %}.</p>
-      {% endif %}
-      <p class="i">Publicerad i
-	{% for i in episode.publication_set.all %}
-	  <a href="/{{i.issue.year}}#i{{i.issue.number}}">{{i.issue}}</a>{% if not forloop.last %}, {% endif %}{% endfor %}.</p>
+      <h3>{{ep.episode}}{% if ep.part_no %}
+      <span class="part">del {{ep.part_no}}{% if ep.part_name %}: {{ep.part_name}}{% endif %}</span>{% endif %}</h3>
+      <p class="teaser">{{ep.teaser}}</p>
+      {% with ep.ref_keys.all as refs %}
+	{% if refs %}<p class="i">Referenser: {{refs|linklist:"/what/"}}.</p>{% endif %}
+      {% endwith %}
+      {% with ep.creativepart_set.all as creators%}
+	{% if creators %}<p class="i">Av: {{creators|linklist:"/who/"}}.</p>{% endif %}
+      {% endwith %}
+      {% with ep.publication_set.all as pub %}
+	{% if pub %}<p class="i">Publicerad i {{pub|linklist}}.</p>{% endif %}
+      {% endwith %}
     </div>
     {% endfor %}
   </div>

@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load libris_extras %}
 
 {% block extranav %}
  ...
@@ -13,38 +14,26 @@
     <div class="issue" id="i{{issue.number}}">
       <h2>Nummer {{issue.number}}</h2>
       {% for x in issue.contents %}
-      {% if x.episode %}
+      {% with x.episode as ep %}{% if ep %}
       <div class="episode">
-	<h3><a href="/{{x.episode.title.slug}}">{{x.episode.title}}</a>{% if x.episode.episode or x.episode.part_no %}:
-	  {{x.episode.episode}}{% if x.episode.part_no %}
-	  <span class="part">del {{x.episode.part_no}}{% if x.episode.part_name %}:
-	  {{x.episode.part_name}}{% endif %}</span>{% endif %}
+	<h3><a href="/{{ep.title.slug}}">{{ep.title}}</a>{% if ep.episode or ep.part_no %}:
+	  {{ep.episode}}{% if ep.part_no %}
+	  <span class="part">del {{ep.part_no}}{% if ep.part_name %}:
+	  {{ep.part_name}}{% endif %}</span>{% endif %}
 	  {% endif %}
 	</h3>
-	{% if x.episode.teaser %}
-	<p class="teaser">{{x.episode.teaser}}</p>
-	{% endif %}
-	{% if x.episode.ref_keys.all %}
-	<p class="i">Referenser:
-	  {% for r in x.episode.ref_keys.all %}
-	  <a href="/what/{{r.slug}}">{{r}}</a>{% if not forloop.last %}, {% endif %}{% endfor %}.
-	</p>
-	{% endif %}
-	
-	{% if x.episode.creativepart_set.all %}
-	<p class="i">Av:
-	  {% for c in x.episode.creativepart_set.all %}
-	  <a href="/who/{{c.creator.slug}}">{{c.name}}</a>{% if not forloop.last %}, {% endif %}{% endfor %}.</p>
-	{% endif %}
-
-	{% if x.episode.otherpub %}
-	<p class="i">Även publicerad i
-	  {% for i in x.episode.otherpub %}
-	  <a href="/{{i.issue.year}}#i{{i.issue.number}}">{{i.issue}}</a>{% if not forloop.last %}, {% endif %}{% endfor %}.
-	</p>
-	{% endif %}
+	{% if ep.teaser %}<p class="teaser">{{ep.teaser}}</p>{% endif %}
+	{% with ep.ref_keys.all as refs %}
+	  {% if refs %}<p class="i">Referenser: {{refs|linklist}}.</p>{% endif %}
+	{% endwith %}
+	{% with ep.creativepart_set.all as creators%}
+	  {% if creators %}<p class="i">Av: {{creators|linklist:"/who/"}}.</p>{% endif %}
+	{% endwith %}
+	{% with ep.otherpub as pub %}
+	  {% if pub %}<p class="i">Även publicerad i {{pub|linklist}}.</p>{% endif %}
+	{% endwith %}
       </div>
-      {% endif %}
+      {% endif %}{% endwith %}
       {% if x.article %}
       <div class="article">
 	<h3>{{x.article.title}}{% if x.article.subtitle %}: {{x.article.subtitle}}{% endif %}</h3>

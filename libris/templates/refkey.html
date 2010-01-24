@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load libris_extras %}
 
 {% block maincontent %}
   {% if articles %}
@@ -7,9 +8,7 @@
     {% for article in articles %}
     <div class="article">
       <h3>{{article}}</h3>
-	<p class="i">Publicerad i
-	{% for i in article.publication_set.all %}
-	<a href="/{{i.issue.year}}#i{{i.issue.number}}">{{i.issue}}</a>{% endfor %}.</p>
+      <p class="i">Publicerad i {{article.publication_set.all|linklist}}.</p>
     </div>
     {% endfor %}
   </div>
@@ -18,21 +17,23 @@
   <div class="refMain">
     <h2>Relaterade episoder</h2>
     
-  {% for x in episodes %}
+  {% for ep in episodes %}
     <div class="episode">
-      <h3>{{x.episode}}{% if x.part_no %}
-      <span class="part">del {{x.part_no}}{% if x.part_name %}: {{x.part_name}}{% endif %}</span>{% endif %}</h3>
-	{% if x.teaser %}
-	<p class="teaser">{{x.teaser}}</p>
-	{% endif %}
-	{% if x.ref_keys.all %}
-	  <p class="i">Referenser:
-	  {% for r in x.ref_keys.all %}
-	  <a href="/what/{{r.slug}}">{{r}}</a>{% if not forloop.last %}, {% endif %}{% endfor %}.</p>
-	{% endif %}
-	<p class="i">Publicerad i
-	{% for i in x.publication_set.all %}
-	<a href="/{{i.issue.year}}#i{{i.issue.number}}">{{i.issue}}</a>{% endfor %}.</p>
+      <h3><a href="/{{ep.title.slug}}">{{ep.title}}</a>{% if ep.episode %}:
+	  {{ep.episode}}{% endif %}{% if ep.part_no %}
+	  <span class="part">del {{ep.part_no}}{% if ep.part_name %}:
+	  {{ep.part_name}}{% endif %}</span>{% endif %}
+      </h3>
+      {% if ep.teaser %}<p class="teaser">{{ep.teaser}}</p>{% endif %}
+      {% with ep.ref_keys.all as keys %}
+	{% if keys %}<p class="i">Referenser: {{keys|linklist:"/what/"}}.</p>{% endif %}
+      {% endwith %}
+      {% with ep.creativepart_set.all as creators%}
+	{% if creators %}<p class="i">Av: {{creators|linklist:"/who/"}}.</p>{% endif %}
+      {% endwith %}
+      {% with ep.publication_set.all as pub %}
+	{% if pub %}<p class="i">Publicerad i {{pub|linklist}}.</p>{% endif %}
+      {% endwith %}
     </div>
   {% endfor %}
   </div>

@@ -38,6 +38,10 @@ class Creator(models.Model):
             self.slug = makeslug(self.name)
         models.Model.save(self, kwargs)
 
+    def get_absolute_url(self):
+        '''Get a hyperlink to page for this creator.'''
+        return u'/who/%s' % (self.slug)
+
     def __unicode__(self):
         return u'%s' % (self.name)
     
@@ -65,6 +69,10 @@ class RefKey(models.Model):
             self.slug = makeslug(self.title)
         models.Model.save(self, kwargs)
 
+    def get_absolute_url(self):
+        '''Get a hyperlink to page for this reference.'''
+        return u'/what/%s' % (self.slug)
+    
     def __unicode__(self):
         return u'%s' % (self.title)
 
@@ -183,6 +191,14 @@ class CreativePart(models.Model):
             return self.alias
         else:
             return self.creator.name
+    
+    def __unicode__(self):
+        return self.name()
+    
+    def _get_slug(self):
+        return self.creator.slug
+    
+    slug = property(_get_slug)
 
 def CreativePart_create(episode, name):
     if name in ALIASES:
@@ -209,6 +225,13 @@ class Publication(models.Model):
     episode = models.ForeignKey(Episode, null=True)
     article = models.ForeignKey(Article, null=True)
     ordno = models.PositiveSmallIntegerField(default=4711)
+
+    def get_absolute_url(self):
+        '''Get a hyperlink to the issue containing this publication, anchor on year page.'''
+        return u'/%d#i%d' % (self.issue.year, self.issue.number)
+    
+    def __unicode__(self):
+        return unicode(self.issue)
 
     class Meta:
         ordering = ('issue', 'ordno')
