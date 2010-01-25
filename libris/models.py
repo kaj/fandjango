@@ -187,10 +187,7 @@ class CreativePart(models.Model):
     alias = models.CharField(max_length=200, blank=True)
 
     def name(self):
-        if self.alias:
-            return self.alias
-        else:
-            return self.creator.name
+        return self.alias or self.creator.name
     
     def __unicode__(self):
         return self.name()
