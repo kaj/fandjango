@@ -16,12 +16,7 @@
       {% for x in issue.contents %}
       {% with x.episode as ep %}{% if ep %}
       <div class="episode">
-	<h3><a href="/{{ep.title.slug}}">{{ep.title}}</a>{% if ep.episode or ep.part_no %}:
-	  {{ep.episode}}{% if ep.part_no %}
-	  <span class="part">del {{ep.part_no}}{% if ep.part_name %}:
-	  {{ep.part_name}}{% endif %}</span>{% endif %}
-	  {% endif %}
-	</h3>
+	<h3><strong><a href="/{{ep.title.slug}}">{{ep.title}}</a>{%if ep.episode%}: {{ep.episode}}{%endif%}</strong>{%if ep.part_no%} del {{ep.part_no}}{%endif%}{%if ep.part_name%}: {{ep.part_name}}{%endif%}</h3>
 	{% if ep.teaser %}<p class="teaser">{{ep.teaser}}</p>{% endif %}
 	{% with ep.ref_keys.all as refs %}
 	  {% if refs %}<p class="i">Referenser: {{refs|linklist}}.</p>{% endif %}

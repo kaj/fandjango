@@ -42,7 +42,9 @@ def read_data_file(filename):
                     episode.episode=getText(epElem[0]);
                 partElem = evaluate(item, "/part")
                 if partElem:
-                    episode.part_no = partElem[0].getAttribute("no");
+                    no = partElem[0].getAttribute("no");
+                    if no:
+                        episode.part_no = no
                     episode.part_name = getText(partElem[0]);
                 teaserElem = evaluate(item, "/teaser")
                 if teaserElem:
