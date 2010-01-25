@@ -54,13 +54,13 @@ def read_data_file(filename):
                 episode.ref_keys = getRefKeys(item)
 
                 for byElem in evaluate(item, "/by"):
-                    # FIXME What role in the creative process?
+                    role = byElem.getAttribute('role')
                     whoElem = evaluate(byElem, "/who")
                     if whoElem:
                         for w in whoElem:
-                            CreativePart_create(episode, getText(w)).save()
+                            CreativePart_create(episode, getText(w), role).save()
                     else:
-                        CreativePart_create(episode, getText(byElem)).save()
+                        CreativePart_create(episode, getText(byElem), role).save()
                 
                 episode.save();
                 Publication(issue=issue, episode=episode, ordno=ordno).save()

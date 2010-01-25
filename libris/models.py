@@ -87,6 +87,26 @@ class Episode(models.Model):
     teaser = models.TextField(blank=True)
     ref_keys = models.ManyToManyField(RefKey)
 
+    def by(self):
+        '''Get the creators in [(role, [(slug, name), ...]), ...] format.'''
+        result = {}
+        for r, c in [(p.role, (p.creator.slug, p.alias or p.creator.name))
+                     for p in self.creativepart_set.all()]:
+            result[r] = result.get(r, []) + [c]
+        rolename = { '': 'Av',
+                     'text': 'Text:',
+                     'bild': 'Bild:',
+                     'ink': 'Tush:',
+                     'color': u'Färgläggning:',
+                     'redax': u'Redaktion:',
+                     'xlat': u'Översättning:',
+                     'textning': u'Textsättning:',
+                     }
+        return [(rolename[k], result.get(k)) 
+                for k in ('', 'text', 'bild', 'ink', 'color', 'redax', 
+                          'xlat', 'textning')
+                if k in result]
+    
     def __unicode__(self):
         if self.part_no:
             return u'%s: %s del %s: %s' % (self.title, self.episode,
@@ -185,7 +205,8 @@ class CreativePart(models.Model):
     episode = models.ForeignKey(Episode)
     creator = models.ForeignKey(Creator)
     alias = models.CharField(max_length=200, blank=True)
-
+    role = models.CharField(max_length=10, blank=True)
+    
     def name(self):
         return self.alias or self.creator.name
     
@@ -197,13 +218,13 @@ class CreativePart(models.Model):
     
     slug = property(_get_slug)
 
-def CreativePart_create(episode, name):
+def CreativePart_create(episode, name, role):
     if name in ALIASES:
         c = Creator.objects.get_or_create(name=ALIASES[name])[0]
-        return CreativePart(episode=episode, creator=c, alias=name)
+        return CreativePart(episode=episode, creator=c, alias=name, role=role)
     else:
         c = Creator.objects.get_or_create(name=name)[0]
-        return CreativePart(episode=episode, creator=c)
+        return CreativePart(episode=episode, creator=c, role=role)
 
 class Article(models.Model):
     '''Something published that is not an episode of a comic.'''
