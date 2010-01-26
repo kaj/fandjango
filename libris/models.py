@@ -103,8 +103,8 @@ class Episode(models.Model):
                      'textning': u'Textsättning:',
                      }
         return [(rolename[k], result.get(k)) 
-                for k in ('', 'text', 'bild', 'ink', 'color', 'redax', 
-                          'xlat', 'textning')
+                for k in ('', 'text', 'bild', 'ink', 'redax', 
+                          'xlat', 'color', 'textning')
                 if k in result]
     
     def __unicode__(self):
