@@ -17,9 +17,6 @@ def read_data_file(filename):
     dom = parse(filename)
     year = getText(evaluate(dom, "/libris/info/year")[0]);
     for issueElement in evaluate(dom, "/libris/issue"):
-        if issueElement.parentNode.tagName != 'libris':
-            print "Found non-relevant issue in", issueElement.parentNode.tagName
-            continue
         pages = issueElement.getAttribute("pages")
         if pages == '': pages = None
         issue = Issue(year=year, 
