@@ -131,12 +131,9 @@ def evaluate(node, expr) :
     return findnode(node, pgm)
 
 def getText(*nodes):
-    rc = ""
-    for parent in nodes:
-        for node in parent.childNodes:
-            if node.nodeType == node.TEXT_NODE:
-                rc = rc + node.data
-    return rc
+    return ''.join(''.join(child.data for child in node.childNodes
+                           if child.nodeType == node.TEXT_NODE)
+                   for node in nodes)
 
 if __name__ == "__main__" :
     xmltest = """
@@ -170,3 +167,4 @@ if __name__ == "__main__" :
 
     node = evaluate(root, '/nonesuch')
     assert not getText(*node)
+    assert '' == getText(*node)
