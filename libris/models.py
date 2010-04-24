@@ -218,13 +218,18 @@ class CreativePart(models.Model):
     
     slug = property(_get_slug)
 
+    class Meta:
+        unique_together = ('episode', 'creator', 'role')
+
 def CreativePart_create(episode, name, role):
     if name in ALIASES:
         c = Creator.objects.get_or_create(name=ALIASES[name])[0]
-        return CreativePart(episode=episode, creator=c, alias=name, role=role)
+        p =  CreativePart.objects.get_or_create(episode=episode, creator=c, role=role)[0]
+        p.alias=name
+        return p
     else:
         c = Creator.objects.get_or_create(name=name)[0]
-        return CreativePart(episode=episode, creator=c, role=role)
+        return CreativePart.objects.get_or_create(episode=episode, creator=c, role=role)[0]
 
 class Article(models.Model):
     '''Something published that is not an episode of a comic.'''
