@@ -103,7 +103,7 @@ def findnode(node, pgm) :
         # result.append(i)
 
     else :
-        for i in node.getElementsByTagName(searchCtx[0]) :
+        for i in getChildrenByTagName(node, searchCtx[0]) :
             if len(searchCtx) > 1 :
                 value = getText(i)
                 if searchCtx[1] == "=" :
@@ -123,6 +123,10 @@ def findnode(node, pgm) :
                 result.append(i)
 
     return result
+
+def getChildrenByTagName(node, tagname):
+    return (n for n in node.childNodes
+            if n.nodeType == n.ELEMENT_NODE and n.localName == tagname)
 
 def evaluate(node, expr) :
     """ main entry point for minixpath. 
@@ -168,3 +172,12 @@ if __name__ == "__main__" :
     node = evaluate(root, '/nonesuch')
     assert not getText(*node)
     assert '' == getText(*node)
+
+    xmltest2 = """
+<x><foo>aa</foo>
+<bar><foo>bb</foo></bar>
+<foo>cc</foo>
+</x>"""
+
+    root2 = xml.dom.minidom.parseString(xmltest2)
+    assert u'aacc' == getText(*evaluate(root2, '/x/foo'))
