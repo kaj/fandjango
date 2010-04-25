@@ -32,9 +32,10 @@ def read_data_file(filename):
             if item.nodeType != 1:
                 continue
             if item.tagName == 'serie':
-                #titleText = getText(item.getElementsByTagName("title")[0]);
-                titleText = getText(evaluate(item, "/title")[0]);
-                title = Title.objects.get_or_create(title=titleText)[0]
+                title, title_is_new = Title.objects.get_or_create(
+                    title=getText(evaluate(item, "/title")[0]))
+                if title_is_new:
+                    print "FOUND NEW TITLE: ", title
                 episode = Episode(title=title)
                 epElem = evaluate(item, "/episode")
                 if epElem:
