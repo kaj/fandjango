@@ -35,9 +35,9 @@ def read_data_file(filename):
                 title, title_is_new = Title.objects.get_or_create(
                     title=getText(evaluate(item, "/title")[0]))
                 if title_is_new:
-                    print "FOUND NEW TITLE: ", title
-                episodename = getText(*evaluate(item, "/episode")[:1]) or None
-                episode = Episode(title=title, episodename)
+                    print "FOUND NEW TITLE:", title
+                episodename = getText(*evaluate(item, "/episode")[:1]) or ''
+                episode = Episode(title=title, episode=episodename)
                 partElem = evaluate(item, "/part")
                 if partElem:
                     no = partElem[0].getAttribute("no");
