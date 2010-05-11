@@ -1,0 +1,41 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+from django.core.management import setup_environ
+import settings # Assumed to be in the same directory.
+setup_environ(settings)
+
+from libris.models import *
+
+def dumpepisode(episode, issue):
+    print '    <serie>'
+    print '      <title>%s</title>' % episode.title.title
+    if episode.episode:
+        print '      <episode>%s</episode>' % episode.episode
+    if episode.ref_keys.count():
+        print '      <ref>%s</ref>' % ' '.join('<key>%s</key>' % k for k in episode.ref_keys.all())
+    if episode.part_no and episode.part_name:
+        print '      <part no="%d">%s</part>' % (episode.part_no, episode.part_name)
+    elif episode.part_no:
+        print '      <part no="%d"/>' % episode.part_no
+    elif episode.part_name:
+        print '      <part>%s</part>' % episode.part_name
+    
+    for p in CreativePart.objects.filter(episode=episode):
+        if p.role:
+            print '      <by role="%s">%s</by>' % (p.role, p.alias or p.creator)
+        else:
+            print '      <by>%s</by>' % (p.alias or p.creator)
+    for p in Publication.objects.filter(episode=episode).exclude(issue=issue):
+        i = p.issue
+        print '      <prevpub><fa>%d</fa> <year>%d</year></prevpub>' % (i.number, i.year)
+    print '    </serie>'
+
+print '<?xml version="1.0" encoding="utf-8"?>'
+print '<libris>'
+for issue in Issue.objects.filter(year=1994):
+    print '  <issue nr="%d">' % (issue.number)
+    for pub in Publication.objects.filter(issue=issue):
+        if pub.episode: dumpepisode(pub.episode, issue)
+    print '  </issue>'
+print '</libris>'
+
