@@ -5,40 +5,61 @@ import settings # Assumed to be in the same directory.
 setup_environ(settings)
 
 from libris.models import *
+from xml.dom import minidom as dom
 
-def tag(name, content, **attrs):
-    data = {
-        'name': name,
-        'content': content,
-        'attrs': ''.join(' %s="%s"' % (n, attrs[n]) for n in attrs if attrs[n])
-        }
-    if content:
-        return '<%(name)s%(attrs)s>%(content)s</%(name)s>' % data
-    else:
-        return '<%(name)s%(attrs)s/>' % data
-    
-def dumpepisode(episode, issue):
-    print '    <serie>'
-    print '      <title>%s</title>' % episode.title.title
+def xmlEpisode(doc, episode):
+    elem = doc.createElement
+    text = doc.createTextNode
+    i = elem('serie')
+    i.appendChild(elem('title')).appendChild(text(episode.title.title))
     if episode.episode:
-        print '      <episode>%s</episode>' % episode.episode
-    if episode.ref_keys.count():
-        print '      <ref>%s</ref>' % ' '.join('<key>%s</key>' % k for k in episode.ref_keys.all())
+        i.appendChild(elem('episode')).appendChild(text(episode.episode))
     if episode.part_no or episode.part_name:
-        print '      %s' % tag('part', episode.part_name, no=episode.part_no)
-    for p in CreativePart.objects.filter(episode=episode):
-        print '      %s' % tag('by', p.alias or p.creator, role=p.role)
-    for p in Publication.objects.filter(episode=episode).exclude(issue=issue):
-        i = p.issue
-        print '      <prevpub><fa>%d</fa> <year>%d</year></prevpub>' % (i.number, i.year)
-    print '    </serie>'
+        px = i.appendChild(elem('part'))
+        if episode.part_no:
+            px.setAttribute('no', unicode(episode.part_no))
+        if episode.part_name:
+            px.appendChild(text(episode.part_name))
+    if episode.teaser:
+        i.appendChild(elem('teaser')).appendChild(text(episode.teaser))
+    
+    if episode.ref_keys.count():
+        ref = i.appendChild(elem('ref'))
+        for r in episode.ref_keys.all():
+            ref.appendChild(elem('key')).appendChild(text(r.title))
 
-print '<?xml version="1.0" encoding="utf-8"?>'
-print '<libris>'
+    for p in episode.creativepart_set.all():
+        px = i.appendChild(elem('by'))
+        px.appendChild(text(unicode(p.alias or p.creator)))
+        if p.role:
+            px.setAttribute('role', p.role)
+    return i
+
+def xmlArticle(doc, article):
+    elem = doc.createElement
+    text = doc.createTextNode
+    i = elem('text')
+    i.appendChild(elem('title')).appendChild(text(article.title))
+    if article.subtitle:
+        i.appendChild(elem('subtitle')).appendChild(text(article.subtitle))
+    if article.ref_keys.count():
+        ref = i.appendChild(elem('ref'))
+        for r in article.ref_keys.all():
+            ref.appendChild(elem('key')).appendChild(text(r.title))
+    return i
+
+d=dom.Document()
+libris = d.appendChild(d.createElement('libris'))
+info = libris.appendChild(d.createElement('info'))
+info.appendChild(d.createElement('title')).appendChild(d.createTextNode('Fantomen'))
+info.appendChild(d.createElement('year')).appendChild(d.createTextNode('1994'))
+
+
 for issue in Issue.objects.filter(year=1994):
-    print '  <issue nr="%d">' % (issue.number)
+    xmli = libris.appendChild(d.createElement('issue'))
+    xmli.setAttribute('nr', str(issue.number))
     for pub in Publication.objects.filter(issue=issue):
-        if pub.episode: dumpepisode(pub.episode, issue)
-    print '  </issue>'
-print '</libris>'
+        if pub.episode: xmli.appendChild(xmlEpisode(d, pub.episode))
+        if pub.article: xmli.appendChild(xmlArticle(d, pub.article))
 
+print d.toxml(encoding='utf-8')
