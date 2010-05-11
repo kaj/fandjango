@@ -51,14 +51,16 @@ def xmlArticle(doc, article):
             ref.appendChild(elem('key')).appendChild(text(r.title))
     return i
 
+
+year=1983
+
 d=dom.Document()
 libris = d.appendChild(d.createElement('libris'))
 info = libris.appendChild(d.createElement('info'))
 info.appendChild(d.createElement('title')).appendChild(d.createTextNode('Fantomen'))
-info.appendChild(d.createElement('year')).appendChild(d.createTextNode('1994'))
+info.appendChild(d.createElement('year')).appendChild(d.createTextNode(unicode(year)))
 
-
-for issue in Issue.objects.filter(year=1994):
+for issue in Issue.objects.filter(year=year):
     xmli = libris.appendChild(d.createElement('issue'))
     xmli.setAttribute('nr', str(issue.number))
     for pub in Publication.objects.filter(issue=issue):
