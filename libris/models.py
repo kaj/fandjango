@@ -86,6 +86,7 @@ class Episode(models.Model):
     part_name = models.CharField(max_length=200, blank=True)
     teaser = models.TextField(blank=True)
     ref_keys = models.ManyToManyField(RefKey)
+    copyright = models.CharField(max_length=200, blank=True)
 
     def by(self):
         '''Get the creators in [(role, [(slug, name), ...]), ...] format.'''

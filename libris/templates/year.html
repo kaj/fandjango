@@ -28,6 +28,9 @@
 	{% with ep.otherpub as pub %}
 	  {% if pub %}<p class="i">Även publicerad i {{pub|linklist}}.</p>{% endif %}
 	{% endwith %}
+	{% if ep.copyright %}
+	  <p class="i copyright">Copyright {{ep.copyright}}</p>
+	{% endif %}
       </div>
       {% endif %}{% endwith %}
       {% if x.article %}

@@ -47,6 +47,9 @@ def read_data_file(filename):
                 teaserElem = evaluate(item, "/teaser")
                 if teaserElem:
                     episode.teaser = getText(teaserElem[0])
+                copyElem = evaluate(item, '/copyright')
+                if copyElem:
+                    episode.copyright = getText(copyElem[0])
                 episode.save() # get an id
                 
                 episode.ref_keys = getRefKeys(item)

@@ -33,6 +33,9 @@ def xmlEpisode(doc, episode):
         px.appendChild(text(unicode(p.alias or p.creator)))
         if p.role:
             px.setAttribute('role', p.role)
+    
+    if episode.copyright:
+        i.appendChild(elem('copyright')).appendChild(text(episode.copyright))
     return i
 
 def xmlArticle(doc, article):

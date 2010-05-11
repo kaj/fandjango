@@ -19,6 +19,9 @@
       {% with ep.publication_set.all as pub %}
 	{% if pub %}<p class="i">Publicerad i {{pub|linklist}}.</p>{% endif %}
       {% endwith %}
+      {% if ep.copyright %}
+        <p class="i copyright">Copyright {{ep.copyright}}</p>
+      {% endif %}
     </div>
     {% endfor %}
   </div>
