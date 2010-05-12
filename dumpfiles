@@ -7,7 +7,7 @@ setup_environ(settings)
 from libris.models import *
 from xml.dom import minidom as dom
 
-def xmlEpisode(doc, episode):
+def xmlEpisode(doc, episode, issue):
     elem = doc.createElement
     text = doc.createTextNode
     i = elem('serie')
@@ -28,11 +28,26 @@ def xmlEpisode(doc, episode):
         for r in episode.ref_keys.all():
             ref.appendChild(elem('key')).appendChild(text(r.title))
 
-    for p in episode.creativepart_set.all():
-        px = i.appendChild(elem('by'))
-        px.appendChild(text(unicode(p.alias or p.creator)))
-        if p.role:
-            px.setAttribute('role', p.role)
+    creativeparts = episode.creativepart_set.all()
+    for role in ('', 'text', 'bild', 'xlat'):
+        by = [unicode(p.alias or p.creator)
+              for p in creativeparts.filter(role=role)]
+        if by:
+            px = i.appendChild(elem('by'))
+            if role:
+                px.setAttribute('role', role)
+            if len(by) == 1:
+                px.appendChild(text(by[0]))
+            else:
+                for b in by[:-1]:
+                    px.appendChild(elem('who')).appendChild(text(b))
+                    px.appendChild(text(' & '))
+                px.appendChild(elem('who')).appendChild(text(by[-1]))
+    
+    for ppub in episode.publication_set.exclude(issue=issue):
+        px = i.appendChild(elem('prevpub'))
+        px.appendChild(elem('fa')).appendChild(text(unicode(ppub.issue.number)))
+        px.appendChild(elem('year')).appendChild(text(unicode(ppub.issue.year)))
     
     if episode.copyright:
         i.appendChild(elem('copyright')).appendChild(text(episode.copyright))
@@ -64,7 +79,7 @@ for issue in Issue.objects.filter(year=year):
     xmli = libris.appendChild(d.createElement('issue'))
     xmli.setAttribute('nr', str(issue.number))
     for pub in Publication.objects.filter(issue=issue):
-        if pub.episode: xmli.appendChild(xmlEpisode(d, pub.episode))
+        if pub.episode: xmli.appendChild(xmlEpisode(d, pub.episode, issue))
         if pub.article: xmli.appendChild(xmlArticle(d, pub.article))
 
 print d.toxml(encoding='utf-8')
