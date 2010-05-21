@@ -64,7 +64,8 @@ def read_data_file(filename):
                         CreativePart_create(episode, getText(byElem), role).save()
                 
                 episode.save();
-                Publication(issue=issue, episode=episode, ordno=ordno).save()
+                Publication(issue=issue, episode=episode, ordno=ordno,
+                            label=getText(*evaluate(item, "/label")) or '').save()
                 prevFaElem = evaluate(item, "/prevpub[fa!='']")
                 for e in prevFaElem:
                     fa = getText(evaluate(e, "/fa")[0])

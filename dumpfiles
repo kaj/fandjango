@@ -7,10 +7,13 @@ setup_environ(settings)
 from libris.models import *
 from xml.dom import minidom as dom
 
-def xmlEpisode(doc, episode, issue):
+def xmlEpisode(doc, pub):
+    episode, issue = pub.episode, pub.issue
     elem = doc.createElement
     text = doc.createTextNode
     i = elem('serie')
+    if pub.label:
+        i.appendChild(elem('label')).appendChild(text(pub.label))
     i.appendChild(elem('title')).appendChild(text(episode.title.title))
     if episode.episode:
         i.appendChild(elem('episode')).appendChild(text(episode.episode))
@@ -79,7 +82,7 @@ for issue in Issue.objects.filter(year=year):
     xmli = libris.appendChild(d.createElement('issue'))
     xmli.setAttribute('nr', str(issue.number))
     for pub in Publication.objects.filter(issue=issue):
-        if pub.episode: xmli.appendChild(xmlEpisode(d, pub.episode, issue))
+        if pub.episode: xmli.appendChild(xmlEpisode(d, pub))
         if pub.article: xmli.appendChild(xmlArticle(d, pub.article))
 
 print d.toxml(encoding='utf-8')
