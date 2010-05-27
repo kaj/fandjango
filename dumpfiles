@@ -83,6 +83,8 @@ for issue in Issue.objects.filter(year=year):
     xmli.setAttribute('nr', str(issue.number))
     if issue.pages:
         xmli.setAttribute('pages', str(issue.pages))
+    if issue.price:
+        xmli.setAttribute('price', str(issue.price))
     cover = d.createElement('omslag')
     for creator in issue.cover_by.all():
         cover.appendChild(d.createElement('by')).\

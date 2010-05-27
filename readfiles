@@ -20,7 +20,8 @@ def read_data_file(filename):
         issue, issue_is_new = Issue.objects.get_or_create(
             year=year,
             number=issueElement.getAttribute("nr"),
-            defaults={'pages': issueElement.getAttribute('pages') or None})
+            defaults={'pages': issueElement.getAttribute('pages') or None,
+                      'price': issueElement.getAttribute('price') or None})
         ordno = 0;
         print "Found issue:", issue
         for item in issueElement.childNodes:

@@ -37,6 +37,8 @@ class Issue(models.Model):
     year = models.PositiveSmallIntegerField()
     number = models.PositiveSmallIntegerField()
     pages = models.PositiveSmallIntegerField(null=True, blank=True)
+    price = models.DecimalField(max_digits=5, decimal_places=2,
+                                null=True, blank=True)
     cover_by = models.ManyToManyField(Creator)
     
     class Meta:
