@@ -31,6 +31,12 @@ def read_data_file(filename):
             ordno = ordno + 1
             if item.nodeType != 1:
                 continue
+            if item.tagName == 'omslag':
+                issue.cover_by = [Creator.objects.get_or_create(name=name)[0]
+                                  for name, alias
+                                  in [name_alias(getText(by))
+                                      for by in evaluate(item, '/by')]]
+                
             if item.tagName == 'serie':
                 title, title_is_new = Title.objects.get_or_create(
                     title=getText(evaluate(item, "/title")[0]))

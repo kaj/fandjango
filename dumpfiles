@@ -81,6 +81,11 @@ info.appendChild(d.createElement('year')).appendChild(d.createTextNode(unicode(y
 for issue in Issue.objects.filter(year=year):
     xmli = libris.appendChild(d.createElement('issue'))
     xmli.setAttribute('nr', str(issue.number))
+    cover = d.createElement('omslag')
+    for creator in issue.cover_by.all():
+        cover.appendChild(d.createElement('by')).\
+            appendChild(d.createTextNode(creator.name))
+    xmli.appendChild(cover)
     for pub in Publication.objects.filter(issue=issue):
         if pub.episode: xmli.appendChild(xmlEpisode(d, pub))
         if pub.article: xmli.appendChild(xmlArticle(d, pub.article))

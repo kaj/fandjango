@@ -15,19 +15,6 @@ def makeslug(string):
         t = sub(p, r, t)
     return t
 
-class Issue(models.Model):
-    '''A single issue'''
-    year = models.PositiveSmallIntegerField()
-    number = models.PositiveSmallIntegerField()
-    pages = models.PositiveSmallIntegerField(null=True, blank=True)
-
-    class Meta:
-        ordering = ('year', 'number')
-        unique_together = ('year', 'number')
-    
-    def __unicode__(self):
-        return u'Fa %s %s' % (self.number, self.year)
-
 class Creator(models.Model):
     '''A person who takes part in creating the comics and/or texts.'''
     name = models.CharField(max_length=200, unique=True)
@@ -45,6 +32,20 @@ class Creator(models.Model):
     def __unicode__(self):
         return u'%s' % (self.name)
     
+class Issue(models.Model):
+    '''A single issue'''
+    year = models.PositiveSmallIntegerField()
+    number = models.PositiveSmallIntegerField()
+    pages = models.PositiveSmallIntegerField(null=True, blank=True)
+    cover_by = models.ManyToManyField(Creator)
+    
+    class Meta:
+        ordering = ('year', 'number')
+        unique_together = ('year', 'number')
+    
+    def __unicode__(self):
+        return u'Fa %s %s' % (self.number, self.year)
+
 class Title(models.Model):
     '''A (reocurring) title'''
     title = models.CharField(max_length=200, unique=True)
@@ -222,15 +223,21 @@ class CreativePart(models.Model):
     class Meta:
         unique_together = ('episode', 'creator', 'role')
 
-def CreativePart_create(episode, name, role):
-    if name in ALIASES:
-        c = Creator.objects.get_or_create(name=ALIASES[name])[0]
-        p =  CreativePart.objects.get_or_create(episode=episode, creator=c, role=role)[0]
-        p.alias=name
-        return p
+def name_alias(alias):
+    if alias in ALIASES:
+        return ALIASES[alias], alias
     else:
-        c = Creator.objects.get_or_create(name=name)[0]
-        return CreativePart.objects.get_or_create(episode=episode, creator=c, role=role)[0]
+        # alias is not a known alias, hope it is a real name.
+        return alias, ''
+
+def CreativePart_create(episode, name, role):
+    realname, alias = name_alias(name)
+    c, cisnew = Creator.objects.get_or_create(name=realname)
+    p, pisnew = CreativePart.objects.get_or_create(episode=episode,
+                                                   creator=c,
+                                                   role=role,
+                                                   defaults={'alias': alias})
+    return p
 
 class Article(models.Model):
     '''Something published that is not an episode of a comic.'''
