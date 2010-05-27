@@ -17,14 +17,10 @@ def read_data_file(filename):
     dom = parse(filename)
     year = getText(evaluate(dom, "/libris/info/year")[0]);
     for issueElement in evaluate(dom, "/libris/issue"):
-        try:
-            issue = Issue.objects.get_or_create(year=year,
-                                                number=issueElement.getAttribute("nr"))[0]
-        except ValueError as err:
-            print "Value error %s on issue %s of %s" % (err, issueElement.getAttribute("nr"), year)
-            raise err
-        issue.pages = issueElement.getAttribute("pages") or None
-        issue.save()
+        issue, issue_is_new = Issue.objects.get_or_create(
+            year=year,
+            number=issueElement.getAttribute("nr"),
+            defaults={'pages': issueElement.getAttribute('pages') or None})
         ordno = 0;
         print "Found issue:", issue
         for item in issueElement.childNodes:
