@@ -55,6 +55,17 @@ def read_data_file(filename):
                     episode.copyright = getText(copyElem[0])
                 episode.save() # get an id
                 
+                stripElem = evaluate(item, '/daystrip')
+                if stripElem:
+                    fromdate = evaluate(stripElem[0], '/from')
+                    todate = evaluate(stripElem[0], '/to')
+                    if fromdate and todate:
+                        episode.daystrip = DaystripRun.objects.create(
+                            fromdate=getText(*fromdate),
+                            todate=getText(*todate),
+                            is_sundays=(stripElem[0].getAttribute('d') == 'sun'))
+                    else:
+                        print "Unknown kind of daystrip: %s" % stripElem
                 episode.ref_keys = getRefKeys(item)
 
                 for byElem in evaluate(item, "/by"):
@@ -81,8 +92,11 @@ def read_data_file(filename):
             elif item.tagName == 'text':
                 article = Article.objects.create(
                     title=getText(*evaluate(item, '/title')),
-                    subtitle=getText(*evaluate(item, '/subtitle')),
-                    ref_keys = getRefKeys(item))
+                    subtitle=getText(*evaluate(item, '/subtitle')))
+                keys = getRefKeys(item)
+                if keys:
+                    article.ref_keys = keys
+                    article.save();
                 Publication(issue=issue, article=article, ordno=ordno).save()
                 
             else:

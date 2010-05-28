@@ -47,6 +47,14 @@ def xmlEpisode(doc, pub):
                     px.appendChild(text(' & '))
                 px.appendChild(elem('who')).appendChild(text(by[-1]))
     
+    if episode.daystrip:
+        dx = i.appendChild(elem('daystrip'))
+        strip=episode.daystrip
+        if strip.is_sundays:
+            dx.setAttribute('d', 'sun')
+        dx.appendChild(elem('from')).appendChild(text(unicode(strip.fromdate)))
+        dx.appendChild(elem('to')).appendChild(text(unicode(strip.todate)))
+        
     for ppub in episode.publication_set.exclude(issue=issue):
         px = i.appendChild(elem('prevpub'))
         px.appendChild(elem('fa')).appendChild(text(unicode(ppub.issue.number)))

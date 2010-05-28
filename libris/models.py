@@ -79,6 +79,11 @@ class RefKey(models.Model):
     def __unicode__(self):
         return u'%s' % (self.title)
 
+class DaystripRun(models.Model):
+    fromdate = models.DateField()
+    todate = models.DateField()
+    is_sundays = models.BooleanField(default=False)
+    
 class Episode(models.Model):
     '''An episode such as it occurs in an Issue.  This might mean an
     episode of a reoccuring title, a part of such an episode, a
@@ -89,6 +94,7 @@ class Episode(models.Model):
     part_name = models.CharField(max_length=200, blank=True)
     teaser = models.TextField(blank=True)
     ref_keys = models.ManyToManyField(RefKey)
+    daystrip = models.ForeignKey(DaystripRun, blank=True, null=True)
     copyright = models.CharField(max_length=200, blank=True)
 
     def by(self):
