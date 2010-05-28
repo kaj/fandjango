@@ -62,9 +62,9 @@ def read_data_file(filename):
                     whoElem = evaluate(byElem, "/who")
                     if whoElem:
                         for w in whoElem:
-                            CreativePart_create(episode, getText(w), role).save()
+                            CreativePart_create(episode, getText(w), role)
                     else:
-                        CreativePart_create(episode, getText(byElem), role).save()
+                        CreativePart_create(episode, getText(byElem), role)
                 
                 episode.save();
                 Publication(issue=issue, episode=episode, ordno=ordno,
@@ -79,11 +79,10 @@ def read_data_file(filename):
                 
                 print "Serie", episode
             elif item.tagName == 'text':
-                article = Article(title=getText(*evaluate(item, '/title')),
-                                  subtitle=getText(*evaluate(item, '/subtitle')))
-                article.save()
-                article.ref_keys = getRefKeys(item)
-                article.save()
+                article = Article.objects.create(
+                    title=getText(*evaluate(item, '/title')),
+                    subtitle=getText(*evaluate(item, '/subtitle')),
+                    ref_keys = getRefKeys(item))
                 Publication(issue=issue, article=article, ordno=ordno).save()
                 
             else:
