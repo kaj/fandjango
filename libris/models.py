@@ -97,25 +97,27 @@ class Episode(models.Model):
     daystrip = models.ForeignKey(DaystripRun, blank=True, null=True)
     copyright = models.CharField(max_length=200, blank=True)
 
+    _ROLES = (
+        ('', 'Av'),
+        ('text', 'Text:'),
+        ('bild', 'Bild:'),
+        ('ink', 'Tush:'),
+        ('color', u'Färgläggning:'),
+        ('redax', u'Redaktion:'),
+        ('xlat', u'Översättning:'),
+        ('textning', u'Textsättning:'),
+        )
+    ROLE = dict(_ROLES)
+    ROLES = [key for key, name in _ROLES]
+    
     def by(self):
         '''Get the creators in [(role, [(slug, name), ...]), ...] format.'''
         result = {}
         for r, c in [(p.role, (p.creator.slug, p.alias or p.creator.name))
                      for p in self.creativepart_set.all()]:
             result[r] = result.get(r, []) + [c]
-        rolename = { '': 'Av',
-                     'text': 'Text:',
-                     'bild': 'Bild:',
-                     'ink': 'Tush:',
-                     'color': u'Färgläggning:',
-                     'redax': u'Redaktion:',
-                     'xlat': u'Översättning:',
-                     'textning': u'Textsättning:',
-                     }
-        return [(rolename[k], result.get(k)) 
-                for k in ('', 'text', 'bild', 'ink', 'redax', 
-                          'xlat', 'color', 'textning')
-                if k in result]
+        
+        return [(self.ROLE[r], result[r]) for r in self.ROLES if r in result]
     
     def __unicode__(self):
         if self.part_no:

@@ -32,7 +32,7 @@ def xmlEpisode(doc, pub):
             ref.appendChild(elem('key')).appendChild(text(r.title))
 
     creativeparts = episode.creativepart_set.all()
-    for role in ('', 'text', 'bild', 'xlat'):
+    for role in Episode.ROLES:
         by = [unicode(p.alias or p.creator)
               for p in creativeparts.filter(role=role)]
         if by:
@@ -78,7 +78,7 @@ def xmlArticle(doc, article):
     return i
 
 
-year=1983
+year=2000
 
 d=dom.Document()
 libris = d.appendChild(d.createElement('libris'))
