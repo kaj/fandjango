@@ -36,16 +36,9 @@ def xmlEpisode(doc, pub):
         by = [unicode(p.alias or p.creator)
               for p in creativeparts.filter(role=role)]
         if by:
-            px = i.appendChild(elem('by'))
+            px = i.appendChild(byWho(doc, by))
             if role:
                 px.setAttribute('role', role)
-            if len(by) == 1:
-                px.appendChild(text(by[0]))
-            else:
-                for b in by[:-1]:
-                    px.appendChild(elem('who')).appendChild(text(b))
-                    px.appendChild(text(' & '))
-                px.appendChild(elem('who')).appendChild(text(by[-1]))
     
     if episode.daystrip:
         dx = i.appendChild(elem('daystrip'))
@@ -77,6 +70,21 @@ def xmlArticle(doc, article):
             ref.appendChild(elem('key')).appendChild(text(r.title))
     return i
 
+def byWho(doc, by):
+    elem = doc.createElement
+    text = doc.createTextNode
+    result = doc.createElement('by') 
+    if len(by) == 1:
+        result.appendChild(text(unicode(by[0])))
+    else:
+        by = list(by)
+        for b in by[:-2]:
+            result.appendChild(elem('who')).appendChild(text(unicode(b)))
+            result.appendChild(text(', '))
+        result.appendChild(elem('who')).appendChild(text(unicode(by[-2])))
+        result.appendChild(text(' & '))
+        result.appendChild(elem('who')).appendChild(text(unicode(by[-1])))
+    return result
 
 year=2000
 
@@ -94,9 +102,9 @@ for issue in Issue.objects.filter(year=year):
     if issue.price:
         xmli.setAttribute('price', str(issue.price))
     cover = d.createElement('omslag')
-    for creator in issue.cover_by.all():
-        cover.appendChild(d.createElement('by')).\
-            appendChild(d.createTextNode(creator.name))
+    cover_by = issue.cover_by.all()
+    if len(cover_by) > 0:
+        cover.appendChild(byWho(d, cover_by))
     xmli.appendChild(cover)
     for pub in Publication.objects.filter(issue=issue):
         if pub.episode: xmli.appendChild(xmlEpisode(d, pub))

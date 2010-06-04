@@ -31,8 +31,8 @@ def read_data_file(filename):
             if item.tagName == 'omslag':
                 issue.cover_by = [Creator.objects.get_or_create(name=name)[0]
                                   for name, alias
-                                  in [name_alias(getText(by))
-                                      for by in evaluate(item, '/by')]]
+                                  in [name_alias(who) for who
+                                      in getByWho(*evaluate(item, '/by'))]]
                 
             if item.tagName == 'serie':
                 title, title_is_new = Title.objects.get_or_create(
@@ -70,12 +70,8 @@ def read_data_file(filename):
 
                 for byElem in evaluate(item, "/by"):
                     role = byElem.getAttribute('role')
-                    whoElem = evaluate(byElem, "/who")
-                    if whoElem:
-                        for w in whoElem:
-                            CreativePart_create(episode, getText(w), role)
-                    else:
-                        CreativePart_create(episode, getText(byElem), role)
+                    for who in getByWho(byElem):
+                        CreativePart_create(episode, who, role)
                 
                 episode.save();
                 Publication(issue=issue, episode=episode, ordno=ordno,
@@ -102,6 +98,13 @@ def read_data_file(filename):
             else:
                 print 'Element', item.tagName
     dom.unlink()
+
+def getByWho(byElem):
+    whoElem = evaluate(byElem, "/who")
+    if whoElem:
+        return [getText(who) for who in whoElem]
+    else:
+        return [getText(byElem)]
 
 def getRefKeys(item):
     ref = evaluate(item, "/ref")
