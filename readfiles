@@ -51,12 +51,9 @@ def read_data_file(filename):
                     if no:
                         episode.part_no = no
                     episode.part_name = getText(partElem[0]);
-                teaserElem = evaluate(item, "/teaser")
-                if teaserElem:
-                    episode.teaser = getText(teaserElem[0])
-                copyElem = evaluate(item, '/copyright')
-                if copyElem:
-                    episode.copyright = getText(copyElem[0])
+                
+                episode.teaser = getText(*evaluate(item, "/teaser"))
+                episode.copyright = getText(*evaluate(item, '/copyright'))
                 episode.save() # get an id
                 
                 stripElem = evaluate(item, '/daystrip')
