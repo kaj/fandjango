@@ -19,13 +19,13 @@ def read_data_file(filename):
     dom = parse(filename)
     year = getText(evaluate(dom, "/libris/info/year")[0]);
     for issueElement in evaluate(dom, "/libris/issue"):
-        coverElem, = evaluate(issueElement, '/omslag')
+        coverElem = evaluate(issueElement, '/omslag')
         issue, issue_is_new = Issue.objects.get_or_create(
             year=year,
             number=issueElement.getAttribute("nr"),
             defaults={'pages': issueElement.getAttribute('pages') or None,
                       'price': issueElement.getAttribute('price') or None,
-                      'cover_best': getBestPlac(coverElem)})
+                      'cover_best': getBestPlac(coverElem[0]) if coverElem else 0})
         ordno = 0;
         print "Found issue:", issue
         for item in issueElement.childNodes:
