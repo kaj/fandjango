@@ -113,6 +113,7 @@ class Episode(models.Model):
     part_no = models.PositiveSmallIntegerField(blank=True, null=True)
     part_name = models.CharField(max_length=200, blank=True)
     teaser = models.TextField(blank=True)
+    note = models.TextField(blank=True)
     ref_keys = models.ManyToManyField(RefKey)
     daystrip = models.ForeignKey(DaystripRun, blank=True, null=True)
     copyright = models.CharField(max_length=200, blank=True)

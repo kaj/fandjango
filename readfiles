@@ -53,6 +53,7 @@ def read_data_file(filename):
                     episode.part_name = getText(partElem[0]);
                 
                 episode.teaser = getText(*evaluate(item, "/teaser"))
+                episode.note = getText(*evaluate(item, "/note"))
                 episode.copyright = getText(*evaluate(item, '/copyright'))
                 episode.save() # get an id
                 
