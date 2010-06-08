@@ -7,6 +7,19 @@ setup_environ(settings)
 from libris.models import *
 from xml.dom import minidom as dom
 
+def addRefKeys(doc, baseElem, keys):
+    elem = doc.createElement
+    text = doc.createTextNode
+    if keys.count():
+        ref = baseElem.appendChild(elem('ref'))
+        for r in keys.all():
+            if r.kind == 'F':
+                ref.appendChild(elem('fa')).setAttribute('no', r.slug)
+            elif r.kind == 'T':
+                ref.appendChild(elem('serie')).appendChild(text(r.title))
+            elif r.kind == 'X':
+                ref.appendChild(elem('key')).appendChild(text(r.title))
+
 def xmlEpisode(doc, pub):
     episode, issue = pub.episode, pub.issue
     elem = doc.createElement
@@ -26,11 +39,8 @@ def xmlEpisode(doc, pub):
     if episode.teaser:
         i.appendChild(elem('teaser')).appendChild(text(episode.teaser))
     
-    if episode.ref_keys.count():
-        ref = i.appendChild(elem('ref'))
-        for r in episode.ref_keys.all():
-            ref.appendChild(elem('key')).appendChild(text(r.title))
-
+    addRefKeys(doc, i, episode.ref_keys)
+    
     creativeparts = episode.creativepart_set.all()
     for role in Episode.ROLES:
         by = [unicode(p.alias or p.creator)
@@ -64,10 +74,7 @@ def xmlArticle(doc, article):
     i.appendChild(elem('title')).appendChild(text(article.title))
     if article.subtitle:
         i.appendChild(elem('subtitle')).appendChild(text(article.subtitle))
-    if article.ref_keys.count():
-        ref = i.appendChild(elem('ref'))
-        for r in article.ref_keys.all():
-            ref.appendChild(elem('key')).appendChild(text(r.title))
+    addRefKeys(doc, i, article.ref_keys)
     return i
 
 def byWho(doc, by):

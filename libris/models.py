@@ -56,9 +56,19 @@ class Title(models.Model):
 class RefKey(models.Model):
     '''Something that exists in the Phantom universe.
     May be a place, a person, a thing or even a concept.'''
+    KIND_CHOICES=(
+        ('F', 'Fantomen'),
+        ('T', 'Serietitel'),
+        ('X', 'In-story object'),
+        )
     title = models.CharField(max_length=200, unique=True)
+    kind = models.CharField(max_length=1, choices=KIND_CHOICES, default='X')
     slug = models.SlugField(unique=True)
 
+    class Meta:
+        unique_together = ('kind', 'slug')
+        ordering = ('kind', 'slug')
+    
     def save(self, **kwargs):
         if not self.slug:
             self.slug = makeslug(self.title)
@@ -71,6 +81,24 @@ class RefKey(models.Model):
     def __unicode__(self):
         return u'%s' % (self.title)
 
+    @classmethod
+    def FA(cls, n):
+        n = unicode(n)
+        result, new = cls.objects.get_or_create(title='Den %s:e Fantomen' % n,
+                                                kind='F',
+                                                slug=n)
+        return result
+    
+    @classmethod
+    def TITLE(cls, s):
+        result, new = cls.objects.get_or_create(title=s, kind='T')
+        return result
+    
+    @classmethod
+    def KEY(cls, k):
+        result, new = cls.objects.get_or_create(title=k)
+        return result
+    
 class DaystripRun(models.Model):
     fromdate = models.DateField()
     todate = models.DateField()

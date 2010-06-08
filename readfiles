@@ -8,11 +8,6 @@ from libris.models import *
 from xml.dom.minidom import parse
 from minixpath import *
 
-def faRefKey(elem):
-    n = elem.getAttribute('no')
-    return RefKey.objects.get_or_create(title='Den %s:e Fantomen' % (n),
-                                        slug='fa%s' % (n))[0]
-
 def getBestPlac(elem):
     bestElem = evaluate(elem, '/best')
     if bestElem:
@@ -118,7 +113,13 @@ def getByWho(byElem):
 def getRefKeys(item):
     ref = evaluate(item, "/ref")
     if ref:
-        keys = [faRefKey(k) for k in evaluate(ref[0], "/fa")] + [RefKey.objects.get_or_create(title=getText(k))[0] for k in evaluate(ref[0], "/key")]
+        keys = \
+            [ RefKey.FA(k.getAttribute('no'))
+              for k in evaluate(ref[0], '/fa') ] + \
+            [ RefKey.TITLE(getText(s))
+              for s in evaluate(ref[0], '/serie')] + \
+            [ RefKey.KEY(getText(k))
+              for k in evaluate(ref[0], '/key') ]
         print "  keys:", keys
         return keys
     else:
