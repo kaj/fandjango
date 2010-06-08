@@ -13,15 +13,24 @@ def faRefKey(elem):
     return RefKey.objects.get_or_create(title='Den %s:e Fantomen' % (n),
                                         slug='fa%s' % (n))[0]
 
+def getBestPlac(elem):
+    bestElem = evaluate(elem, '/best')
+    if bestElem:
+        return int(bestElem[0].getAttribute('plac'))
+    else:
+        return 0
+
 def read_data_file(filename):
     dom = parse(filename)
     year = getText(evaluate(dom, "/libris/info/year")[0]);
     for issueElement in evaluate(dom, "/libris/issue"):
+        coverElem, = evaluate(issueElement, '/omslag')
         issue, issue_is_new = Issue.objects.get_or_create(
             year=year,
             number=issueElement.getAttribute("nr"),
             defaults={'pages': issueElement.getAttribute('pages') or None,
-                      'price': issueElement.getAttribute('price') or None})
+                      'price': issueElement.getAttribute('price') or None,
+                      'cover_best': getBestPlac(coverElem)})
         ordno = 0;
         print "Found issue:", issue
         for item in issueElement.childNodes:

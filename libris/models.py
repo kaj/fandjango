@@ -28,6 +28,10 @@ class Issue(models.Model):
     price = models.DecimalField(max_digits=5, decimal_places=2,
                                 null=True, blank=True)
     cover_by = models.ManyToManyField(Creator)
+    cover_best = models.PositiveSmallIntegerField(
+        blank=True, default=0,
+        help_text='Position of this cover in yearly competition.')
+                                                  
     
     class Meta:
         ordering = ('year', 'number')
