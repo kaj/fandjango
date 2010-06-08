@@ -65,6 +65,11 @@ def xmlEpisode(doc, pub):
     
     if episode.copyright:
         i.appendChild(elem('copyright')).appendChild(text(episode.copyright))
+
+    if pub.best_plac:
+        best = i.appendChild(d.createElement('best'))
+        best.setAttribute('plac', unicode(pub.best_plac))
+
     return i
 
 def xmlArticle(doc, article):

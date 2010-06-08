@@ -189,10 +189,15 @@ class Article(models.Model):
     
 class Publication(models.Model):
     issue = models.ForeignKey(Issue)
-    episode = models.ForeignKey(Episode, null=True)
-    article = models.ForeignKey(Article, null=True)
     ordno = models.PositiveSmallIntegerField(default=4711)
     label = models.CharField(max_length=200, blank=True)
+    
+    episode = models.ForeignKey(Episode, null=True)
+    best_plac = models.PositiveSmallIntegerField(
+        blank=True, default=0,
+        help_text='Position of this episode in yearly competition.')
+    
+    article = models.ForeignKey(Article, null=True)
     
     def get_absolute_url(self):
         '''Get a hyperlink to the issue containing this publication, anchor on year page.'''
