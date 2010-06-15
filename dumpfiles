@@ -6,6 +6,9 @@ setup_environ(settings)
 
 from libris.models import *
 from xml.dom import minidom as dom
+from subprocess import Popen, PIPE
+import sys
+import codecs
 
 def addRefKeys(doc, baseElem, keys):
     elem = doc.createElement
@@ -127,4 +130,13 @@ def xmlForYear(year):
             if pub.article: xmli.appendChild(xmlArticle(d, pub.article))
     return d
 
-print xmlForYear(2000).toxml(encoding='utf-8')
+for year in Issue.objects.order_by('year').distinct().\
+        values_list('year', flat=True):
+
+    xmllint = Popen(['xmllint', '--format', '-'],
+                    stdin=PIPE, stdout=open('dump/%d.data' % year, 'w'))
+    xmlForYear(year).writexml(codecs.getwriter('utf-8')(xmllint.stdin),
+                              encoding='utf-8')
+    xmllint.stdin.close()
+    if xmllint.wait() != 0:
+        print "There were some errors"
