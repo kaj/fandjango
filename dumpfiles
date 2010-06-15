@@ -69,7 +69,7 @@ def xmlEpisode(doc, pub):
         i.appendChild(elem('copyright')).appendChild(text(episode.copyright))
 
     if pub.best_plac:
-        best = i.appendChild(d.createElement('best'))
+        best = i.appendChild(doc.createElement('best'))
         best.setAttribute('plac', unicode(pub.best_plac))
 
     return i
@@ -100,31 +100,31 @@ def byWho(doc, by):
         result.appendChild(elem('who')).appendChild(text(unicode(by[-1])))
     return result
 
-year=2000
+def xmlForYear(year):
+    d=dom.Document()
+    libris = d.appendChild(d.createElement('libris'))
+    info = libris.appendChild(d.createElement('info'))
+    info.appendChild(d.createElement('title')).appendChild(d.createTextNode('Fantomen'))
+    info.appendChild(d.createElement('year')).appendChild(d.createTextNode(unicode(year)))
 
-d=dom.Document()
-libris = d.appendChild(d.createElement('libris'))
-info = libris.appendChild(d.createElement('info'))
-info.appendChild(d.createElement('title')).appendChild(d.createTextNode('Fantomen'))
-info.appendChild(d.createElement('year')).appendChild(d.createTextNode(unicode(year)))
+    for issue in Issue.objects.filter(year=year):
+        xmli = libris.appendChild(d.createElement('issue'))
+        xmli.setAttribute('nr', str(issue.number))
+        if issue.pages:
+            xmli.setAttribute('pages', str(issue.pages))
+        if issue.price:
+            xmli.setAttribute('price', str(issue.price))
+        cover = d.createElement('omslag')
+        cover_by = issue.cover_by.all()
+        if len(cover_by) > 0:
+            cover.appendChild(byWho(d, cover_by))
+        if issue.cover_best:
+            best = cover.appendChild(d.createElement('best'))
+            best.setAttribute('plac', unicode(issue.cover_best))
+        xmli.appendChild(cover)
+        for pub in Publication.objects.filter(issue=issue):
+            if pub.episode: xmli.appendChild(xmlEpisode(d, pub))
+            if pub.article: xmli.appendChild(xmlArticle(d, pub.article))
+    return d
 
-for issue in Issue.objects.filter(year=year):
-    xmli = libris.appendChild(d.createElement('issue'))
-    xmli.setAttribute('nr', str(issue.number))
-    if issue.pages:
-        xmli.setAttribute('pages', str(issue.pages))
-    if issue.price:
-        xmli.setAttribute('price', str(issue.price))
-    cover = d.createElement('omslag')
-    cover_by = issue.cover_by.all()
-    if len(cover_by) > 0:
-        cover.appendChild(byWho(d, cover_by))
-    if issue.cover_best:
-        best = cover.appendChild(d.createElement('best'))
-        best.setAttribute('plac', unicode(issue.cover_best))
-    xmli.appendChild(cover)
-    for pub in Publication.objects.filter(issue=issue):
-        if pub.episode: xmli.appendChild(xmlEpisode(d, pub))
-        if pub.article: xmli.appendChild(xmlArticle(d, pub.article))
-
-print d.toxml(encoding='utf-8')
+print xmlForYear(2000).toxml(encoding='utf-8')
