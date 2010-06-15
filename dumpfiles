@@ -62,6 +62,11 @@ def xmlEpisode(doc, pub):
             dx.setAttribute('d', 'sun')
         dx.appendChild(elem('from')).appendChild(text(unicode(strip.fromdate)))
         dx.appendChild(elem('to')).appendChild(text(unicode(strip.todate)))
+
+    if episode.firstpub:
+        px = i.appendChild(elem('prevpub'))
+        px.setAttribute('role', 'orig')
+        px.appendChild(elem('date')).appendChild(text(unicode(episode.firstpub)))
         
     for ppub in episode.publication_set.exclude(issue=issue):
         px = i.appendChild(elem('prevpub'))

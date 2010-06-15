@@ -74,6 +74,10 @@ def read_data_file(filename):
                     role = byElem.getAttribute('role')
                     for who in getByWho(byElem):
                         CreativePart_create(episode, who, role)
+
+                origPubElem = evaluate(item, "/prevpub/date")
+                if origPubElem:
+                    episode.firstpub = getText(*origPubElem)
                 
                 episode.save();
                 Publication(issue=issue, episode=episode, ordno=ordno,
