@@ -46,14 +46,21 @@ def read_data_file(filename):
                 if title_is_new:
                     print "FOUND NEW TITLE:", title
                 episodename = getText(*evaluate(item, "/episode")[:1]) or ''
-                episode = Episode(title=title, episode=episodename)
+                part_no, part_name = None, ''
                 partElem = evaluate(item, "/part")
                 if partElem:
                     no = partElem[0].getAttribute("no");
                     if no:
-                        episode.part_no = no
-                    episode.part_name = getText(partElem[0]);
-                
+                        part_no = no
+                    part_name = getText(partElem[0]);
+                if episodename or part_no or part_name:
+                    episode, is_new_episode = Episode.objects.get_or_create(
+                        title=title, episode=episodename,
+                        part_no=part_no, part_name=part_name)
+                else:
+                    episode = Episode(title=title, episode=episodename,
+                                      part_no=part_no, part_name=part_name)
+                    is_new_episode = True
                 episode.teaser = getText(*evaluate(item, "/teaser"))
                 episode.note = getText(*evaluate(item, "/note"))
                 episode.copyright = getText(*evaluate(item, '/copyright'))
@@ -91,7 +98,7 @@ def read_data_file(filename):
                     y = getText(evaluate(e, "/year")[0])
                     i = Issue.objects.get_or_create(year=y, 
                                                     number=fa)[0]
-                    Publication(episode=episode, issue=i).save()
+                    Publication.objects.get_or_create(episode=episode, issue=i)
                 
                 print "Serie", episode
             elif item.tagName == 'text':
