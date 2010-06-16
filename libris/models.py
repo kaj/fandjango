@@ -180,7 +180,7 @@ def CreativePart_create(episode, name, role):
 class Article(models.Model):
     '''Something published that is not an episode of a comic.'''
     title = models.CharField(max_length=200)
-    subtitle = models.CharField(max_length=200)
+    subtitle = models.CharField(max_length=500)
     ref_keys = models.ManyToManyField(RefKey)
     
     def __unicode__(self):
