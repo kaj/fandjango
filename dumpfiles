@@ -41,11 +41,12 @@ def xmlEpisode(doc, pub):
             px.appendChild(text(episode.part_name))
     if episode.teaser:
         i.appendChild(elem('teaser')).appendChild(text(episode.teaser))
-    if episode.note:
-        i.appendChild(elem('note')).appendChild(text(episode.note))
     
     addRefKeys(doc, i, episode.ref_keys)
     
+    if episode.note:
+        i.appendChild(elem('note')).appendChild(text(episode.note))
+
     creativeparts = episode.creativepart_set.all()
     for role in Episode.ROLES:
         by = [unicode(p.alias or p.creator)
