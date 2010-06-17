@@ -60,11 +60,14 @@ def read_data_file(filename):
                 else:
                     episode = Episode(title=title, episode=episodename,
                                       part_no=part_no, part_name=part_name)
+                    episode.save() # get an id
                     is_new_episode = True
-                episode.teaser = getText(*evaluate(item, "/teaser"))
-                episode.note = getText(*evaluate(item, "/note"))
-                episode.copyright = getText(*evaluate(item, '/copyright'))
-                episode.save() # get an id
+                episode.teaser = episode.teaser or \
+                    getText(*evaluate(item, "/teaser"))
+                episode.note = episode.note or \
+                    getText(*evaluate(item, "/note"))
+                episode.copyright = episode.copyright or \
+                    getText(*evaluate(item, '/copyright'))
                 
                 stripElem = evaluate(item, '/daystrip')
                 if stripElem:
@@ -102,7 +105,7 @@ def read_data_file(filename):
                                                     number=fa)[0]
                     Publication.objects.get_or_create(episode=episode, issue=i)
                 
-                print "Serie", episode
+                #print "Serie", episode
             elif item.tagName == 'text':
                 article = Article.objects.create(
                     title=getText(*evaluate(item, '/title')),
