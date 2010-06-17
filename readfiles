@@ -77,8 +77,10 @@ def read_data_file(filename):
                             is_sundays=(stripElem[0].getAttribute('d') == 'sun'))
                     else:
                         print "Unknown kind of daystrip: %s" % stripElem
-                episode.ref_keys = getRefKeys(item)
-
+                
+                episode.ref_keys = set.union(getRefKeys(item),
+                                             episode.ref_keys.all())
+                
                 for byElem in evaluate(item, "/by"):
                     role = byElem.getAttribute('role')
                     for who in getByWho(byElem):
@@ -126,17 +128,16 @@ def getByWho(byElem):
 def getRefKeys(item):
     ref = evaluate(item, "/ref")
     if ref:
-        keys = \
-            [ RefKey.FA(k.getAttribute('no'))
-              for k in evaluate(ref[0], '/fa') ] + \
-            [ RefKey.TITLE(getText(s))
-              for s in evaluate(ref[0], '/serie')] + \
-            [ RefKey.KEY(getText(k))
-              for k in evaluate(ref[0], '/key') ]
+        keys = set.union(set(RefKey.FA(k.getAttribute('no'))
+                             for k in evaluate(ref[0], '/fa')),
+                         set(RefKey.TITLE(getText(s))
+                             for s in evaluate(ref[0], '/serie')),
+                         set(RefKey.KEY(getText(k))
+                             for k in evaluate(ref[0], '/key')))
         print "  keys:", keys
         return keys
     else:
-        return []
+        return set()
 
 if __name__ == "__main__":
     from sys import argv
