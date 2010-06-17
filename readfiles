@@ -104,7 +104,8 @@ def read_data_file(filename):
             elif item.tagName == 'text':
                 article = Article.objects.create(
                     title=getText(*evaluate(item, '/title')),
-                    subtitle=getText(*evaluate(item, '/subtitle')))
+                    subtitle=getText(*evaluate(item, '/subtitle')),
+                    note = getText(*evaluate(item, "/note")))
                 keys = getRefKeys(item)
                 if keys:
                     article.ref_keys = keys

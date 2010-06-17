@@ -182,6 +182,7 @@ class Article(models.Model):
     title = models.CharField(max_length=200)
     subtitle = models.CharField(max_length=500)
     ref_keys = models.ManyToManyField(RefKey)
+    note = models.TextField(blank=True)
     
     def __unicode__(self):
         if self.subtitle:

@@ -91,6 +91,8 @@ def xmlArticle(doc, article):
     if article.subtitle:
         i.appendChild(elem('subtitle')).appendChild(text(article.subtitle))
     addRefKeys(doc, i, article.ref_keys)
+    if article.note:
+        i.appendChild(elem('note')).appendChild(text(article.note))
     return i
 
 def byWho(doc, by):
