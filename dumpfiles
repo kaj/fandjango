@@ -4,6 +4,7 @@ from django.core.management import setup_environ
 import settings # Assumed to be in the same directory.
 setup_environ(settings)
 
+from django.db.models import Q
 from libris.models import *
 from xml.dom import minidom as dom
 from subprocess import Popen, PIPE
@@ -69,7 +70,9 @@ def xmlEpisode(doc, pub):
         px.setAttribute('role', 'orig')
         px.appendChild(elem('date')).appendChild(text(unicode(episode.firstpub)))
         
-    for ppub in episode.publication_set.exclude(issue=issue):
+    for ppub in episode.publication_set.filter(
+        Q(issue__year__lt=issue.year)
+        or (Q(issue__year=issue.year) and Q(issue__number__lt=issue.number))):
         px = i.appendChild(elem('prevpub'))
         px.appendChild(elem('fa')).appendChild(text(unicode(ppub.issue.number)))
         px.appendChild(elem('year')).appendChild(text(unicode(ppub.issue.year)))
