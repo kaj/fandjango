@@ -135,9 +135,11 @@ def getRefKeys(item):
                              for k in evaluate(ref[0], '/fa')),
                          set(RefKey.TITLE(getText(s))
                              for s in evaluate(ref[0], '/serie')),
+                         set(RefKey.WHO(getText(k))
+                             for k in evaluate(ref[0], '/who')),
                          set(RefKey.KEY(getText(k))
                              for k in evaluate(ref[0], '/key')))
-        print "  keys:", keys
+        #print "  keys:", keys
         return keys
     else:
         return set()

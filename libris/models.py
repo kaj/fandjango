@@ -59,6 +59,7 @@ class RefKey(models.Model):
     KIND_CHOICES=(
         ('F', 'Fantomen'),
         ('T', 'Serietitel'),
+        ('P', 'Real-life person (artist, writer, etc)'),
         ('X', 'In-story object'),
         )
     title = models.CharField(max_length=200, unique=True)
@@ -92,6 +93,11 @@ class RefKey(models.Model):
     @classmethod
     def TITLE(cls, s):
         result, new = cls.objects.get_or_create(title=s, kind='T')
+        return result
+    
+    @classmethod
+    def WHO(cls, s):
+        result, new = cls.objects.get_or_create(title=s, kind='P')
         return result
     
     @classmethod

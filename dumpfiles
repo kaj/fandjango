@@ -21,6 +21,8 @@ def addRefKeys(doc, baseElem, keys):
                 ref.appendChild(elem('fa')).setAttribute('no', r.slug)
             elif r.kind == 'T':
                 ref.appendChild(elem('serie')).appendChild(text(r.title))
+            elif r.kind == 'P':
+                ref.appendChild(elem('who')).appendChild(text(r.title))
             elif r.kind == 'X':
                 ref.appendChild(elem('key')).appendChild(text(r.title))
 
@@ -120,7 +122,8 @@ def xmlForYear(year):
     info = libris.appendChild(d.createElement('info'))
     info.appendChild(d.createElement('title')).appendChild(d.createTextNode('Fantomen'))
     info.appendChild(d.createElement('year')).appendChild(d.createTextNode(unicode(year)))
-
+    info.appendChild(d.createElement('note')) \
+        .appendChild(d.createTextNode(u'Källa: respektive tidning.'))
     for issue in Issue.objects.filter(year=year):
         xmli = libris.appendChild(d.createElement('issue'))
         xmli.setAttribute('nr', str(issue.number))
