@@ -40,7 +40,7 @@ def read_data_file(filename):
                                       in [name_alias(who) for who
                                           in getByWho(*cbe)]]
                 
-            if item.tagName == 'serie':
+            elif item.tagName == 'serie':
                 title, title_is_new = Title.objects.get_or_create(
                     title=getText(evaluate(item, "/title")[0]))
                 if title_is_new:
