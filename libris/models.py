@@ -131,6 +131,7 @@ class Episode(models.Model):
         ('bild', 'Bild:'),
         ('ink', 'Tush:'),
         ('color', u'Färgläggning:'),
+        ('orig', u'Efter en originalberättelse av:'),
         ('redax', u'Redaktion:'),
         ('xlat', u'Översättning:'),
         ('textning', u'Textsättning:'),

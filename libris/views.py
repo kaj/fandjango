@@ -18,7 +18,7 @@ def orderEpisodeQuery(query):
 def index(request):
     years = Issue.objects.order_by('year').distinct().values_list('year', flat=True)
     titles = Title.objects.order_by('title').all()
-    refs = RefKey.objects.order_by('title').annotate(Count('episode')).all()
+    refs = RefKey.objects.order_by('title').filter(kind='X').annotate(Count('episode')).all()
     people = Creator.objects.order_by('name').annotate(Count('creativepart')).all()
     return render_to_response('index.html', {'years': years, 'titles': titles,
                                              'refs': refs, 'people': people})

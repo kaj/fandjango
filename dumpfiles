@@ -123,7 +123,7 @@ def xmlForYear(year):
     info.appendChild(d.createElement('title')).appendChild(d.createTextNode('Fantomen'))
     info.appendChild(d.createElement('year')).appendChild(d.createTextNode(unicode(year)))
     info.appendChild(d.createElement('note')) \
-        .appendChild(d.createTextNode(u'Källa: respektive tidning.'))
+        .appendChild(d.createTextNode(u'Källa: Respektive tidning.'))
     for issue in Issue.objects.filter(year=year):
         xmli = libris.appendChild(d.createElement('issue'))
         xmli.setAttribute('nr', str(issue.number))
