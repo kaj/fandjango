@@ -9,6 +9,7 @@
     <div class="episode">
       <h3>{%if not ep.episode and not ep.part_no and not ep.part_name%}{{ep.title}}{%endif%}{%if ep.episode%}<strong>{{ep.episode}}</strong>{%endif%}{%if ep.part_no%} del {{ep.part_no}}{%endif%}{%if ep.part_name%}: {{ep.part_name}}{%endif%}</h3>
       <p class="teaser">{{ep.teaser}}</p>
+      {% if ep.note %}<p class="i note">{{ ep.note }}</p>{% endif %}
       {% origtitle ep.orig_name %}
       {% with ep.ref_keys.all as refs %}
 	{% if refs %}<p class="i">Referenser: {{refs|linklist:"/what/"}}.</p>{% endif %}

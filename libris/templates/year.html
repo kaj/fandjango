@@ -18,6 +18,7 @@
       <div class="episode">
 	<h3><strong><a href="/{{ep.title.slug}}">{{ep.title}}</a>{%if ep.episode%}: {{ep.episode}}{%endif%}</strong>{%if ep.part_no%} del {{ep.part_no}}{%endif%}{%if ep.part_name%}: {{ep.part_name}}{%endif%}</h3>
 	{% if ep.teaser %}<p class="teaser">{{ep.teaser}}</p>{% endif %}
+	{% if ep.note %}<p class="i note">{{ ep.note }}</p>{% endif %}
 	{% origtitle ep.orig_name %}
 	{% with ep.ref_keys.all as refs %}
 	  {% if refs %}<p class="i">Referenser: {{refs|linklist}}.</p>{% endif %}
