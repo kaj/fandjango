@@ -19,3 +19,11 @@ def link(value, linkbase='', autoescape=None):
 def linklist(value, linkbase='', autoescape=None):
     return mark_safe(u', '.join(link(i, linkbase) for i in value))
 linklist.needs_autoescape = True
+
+@register.simple_tag
+def origtitle(ot):
+    if ot:
+        return '<p class="i">Originaltitel: <q lang="%s">%s</q>.</p>' % (
+            ot.language, ot.title)
+    else:
+        return ''
