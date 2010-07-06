@@ -218,6 +218,9 @@ class Publication(models.Model):
     def get_absolute_url(self):
         '''Get a hyperlink to the issue containing this publication, anchor on year page.'''
         return u'/%d#i%d' % (self.issue.year, self.issue.number)
+
+    def is_prev_only(self):
+        return self.ordno == 4711
     
     def __unicode__(self):
         return unicode(self.issue)

@@ -33,6 +33,10 @@
 	{% if ep.copyright %}
 	  <p class="i copyright">Copyright {{ep.copyright}}</p>
 	{% endif %}
+	{% if x.is_prev_only %}
+          <p class="i prevonly">Denna publicering är känd bara genom
+	  att den är nämnd vid en senare publicering.</p>
+	{% endif %}
       </div>
       {% endif %}{% endwith %}
       {% if x.article %}
