@@ -77,6 +77,7 @@ def compileExpr(expr) :
 def findnode(node, pgm) :
     """ Recursive node finder
     """
+    #print "findnode:", pgm, "in", node.toxml()
 
     searchCtx = pgm[0]
     result = []
@@ -85,13 +86,14 @@ def findnode(node, pgm) :
         result.append(node.parentNode)
 
     elif searchCtx[0][0] == '@' :
-        attrib = searchCtx[0][1:]
+        attrib, operator, operand = searchCtx[0][1:], searchCtx[1], searchCtx[2]
         value = node.getAttribute(attrib)
-        if searchCtx[1] == "=" :
-            if searchCtx[2] != value :
+        #print "checking if @%s, %s %s %s" % (attrib, value, operator, operand)
+        if operator == "=" :
+            if operand != value : 
                 return None
-        elif searchCtx[1] == "!=" :
-            if searchCtx[2] == value :
+        elif operator == "!=" :
+            if operand == value :
                 return None
         else :
             return None
@@ -100,6 +102,8 @@ def findnode(node, pgm) :
             found = findnode(node, pgm[1:])
             if found != None :
                 result = result + found
+        else:
+            result.append(node)
         # result.append(i)
 
     else :
@@ -164,6 +168,13 @@ if __name__ == "__main__" :
     assert [u'patate', u'courge', u'gum'] == [getText(n) for n in node]
     assert u'patatecourgegum' == getText(*node)
     
+    node = evaluate(root, '/list/item[@active = "true"]')
+    assert node
+    # Note: note is one node that contains subnodes but no direct text.
+    # TODO Should getText be recursive?  Yes, I think so.
+    assert [u''] == [getText(n) for n in node]
+    assert u'' == getText(*node)
+
     node = evaluate(root, '/list/item[@active ="true"]/name')
     assert node
     assert [u'gum'] == [getText(n) for n in node]
