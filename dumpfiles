@@ -36,6 +36,11 @@ def xmlEpisode(doc, pub):
     i.appendChild(elem('title')).appendChild(text(episode.title.title))
     if episode.episode:
         i.appendChild(elem('episode')).appendChild(text(episode.episode))
+    if episode.orig_name:
+        oee = i.appendChild(elem('episode'))
+        oee.setAttribute('role', 'orig')
+        oee.setAttribute('xml:lang', unicode(episode.orig_name.language))
+        oee.appendChild(text(episode.orig_name.title))
     if episode.part_no or episode.part_name:
         px = i.appendChild(elem('part'))
         if episode.part_no:

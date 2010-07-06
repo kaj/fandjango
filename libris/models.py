@@ -109,6 +109,11 @@ class DaystripRun(models.Model):
     fromdate = models.DateField()
     todate = models.DateField()
     is_sundays = models.BooleanField(default=False)
+
+class ForeignName(models.Model):
+    """A title (probably the original title) in another language."""
+    title = models.CharField(max_length=200)
+    language = models.CharField(max_length=5)
     
 class Episode(models.Model):
     '''An episode such as it occurs in an Issue.  This might mean an
@@ -116,6 +121,7 @@ class Episode(models.Model):
     one-shot or a part of a one-shot.'''
     title = models.ForeignKey(Title)
     episode = models.CharField(max_length=200)
+    orig_name = models.ForeignKey(ForeignName, blank=True, null=True)
     part_no = models.PositiveSmallIntegerField(blank=True, null=True)
     part_name = models.CharField(max_length=200, blank=True)
     teaser = models.TextField(blank=True)

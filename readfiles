@@ -69,6 +69,16 @@ def read_data_file(filename):
                 episode.copyright = episode.copyright or \
                     getText(*evaluate(item, '/copyright'))
                 
+                origNameElem = evaluate(item, '/episode[@role ="orig"]')
+                if origNameElem and not episode.orig_name:
+                    print "FOUND ORIGNAME", origNameElem
+                    episode.orig_name, eon_isnew = \
+                        ForeignName.objects.get_or_create(
+                        title=getText(origNameElem[0]),
+                        language=origNameElem[0].getAttribute("xml:lang"))
+                elif origNameElem:
+                    print "FOUND ORIGNAME", ', '.join(origNameElem), "ignoring it."
+                    
                 stripElem = evaluate(item, '/daystrip')
                 if stripElem:
                     fromdate = evaluate(stripElem[0], '/from')
