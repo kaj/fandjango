@@ -29,7 +29,7 @@ def getNavYears(year, n=2):
     return years[max(i-n,0):i+n+1]
 
 def year(request, year):
-    issues = Issue.objects.filter(year=year)
+    issues = get_list_or_404(Issue, year=year)
     for issue in issues:
         issue.contents = issue.publication_set.all()
         for p in issue.contents:
