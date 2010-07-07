@@ -114,7 +114,14 @@ class ForeignName(models.Model):
     """A title (probably the original title) in another language."""
     title = models.CharField(max_length=200)
     language = models.CharField(max_length=5)
-    
+
+class OtherMag(models.Model):
+    '''Another magazine etc where a previous publication occurs.'''
+    title = models.CharField(max_length=200)
+    issue = models.PositiveSmallIntegerField(blank=True, null=True)
+    i_of = models.PositiveSmallIntegerField(blank=True, null=True)
+    year = models.PositiveSmallIntegerField(blank=True, null=True)
+
 class Episode(models.Model):
     '''An episode such as it occurs in an Issue.  This might mean an
     episode of a reoccuring title, a part of such an episode, a
@@ -129,6 +136,7 @@ class Episode(models.Model):
     ref_keys = models.ManyToManyField(RefKey)
     daystrip = models.ForeignKey(DaystripRun, blank=True, null=True)
     firstpub = models.DateField(blank=True, null=True)
+    prevpub = models.ManyToManyField(OtherMag)
     copyright = models.CharField(max_length=200, blank=True)
 
     _ROLES = (

@@ -103,6 +103,17 @@ def read_data_file(filename):
                 if origPubElem:
                     episode.firstpub = getText(*origPubElem)
                 
+                prevPubElem = evaluate(item, '/prevpub[magazine!=""]')
+                if prevPubElem:
+                    if not episode.prevpub.count():
+                        episode.prevpub = [
+                            prevpub for prevpub, isnew in
+                            [OtherMag.objects.get_or_create(
+                                    title=getText(*evaluate(ppe, "/magazine")),
+                                    issue=getText(*evaluate(ppe, "/issue")) or None,
+                                    i_of=getText(*evaluate(ppe, "/of")) or None,
+                                    year=getText(*evaluate(ppe, "/year")) or None)
+                             for ppe in prevPubElem]]
                 episode.save();
                 Publication(issue=issue, episode=episode, ordno=ordno,
                             label=getText(*evaluate(item, "/label")) or '',
