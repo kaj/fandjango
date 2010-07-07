@@ -77,6 +77,13 @@ def xmlEpisode(doc, pub):
         px.setAttribute('role', 'orig')
         px.appendChild(elem('date')).appendChild(text(unicode(episode.firstpub)))
         
+    for ppub in episode.publication_set.filter(
+        Q(issue__year__lt=issue.year)
+        or (Q(issue__year=issue.year) and Q(issue__number__lt=issue.number))):
+        px = i.appendChild(elem('prevpub'))
+        px.appendChild(elem('fa')).appendChild(text(unicode(ppub.issue.number)))
+        px.appendChild(elem('year')).appendChild(text(unicode(ppub.issue.year)))
+    
     for pp in episode.prevpub.all():
         px = i.appendChild(elem('prevpub'))
         px.appendChild(elem('magazine')).appendChild(text(pp.title))
@@ -87,13 +94,6 @@ def xmlEpisode(doc, pub):
         if pp.year:
             px.appendChild(elem('year')).appendChild(text(unicode(pp.year)))
             
-    for ppub in episode.publication_set.filter(
-        Q(issue__year__lt=issue.year)
-        or (Q(issue__year=issue.year) and Q(issue__number__lt=issue.number))):
-        px = i.appendChild(elem('prevpub'))
-        px.appendChild(elem('fa')).appendChild(text(unicode(ppub.issue.number)))
-        px.appendChild(elem('year')).appendChild(text(unicode(ppub.issue.year)))
-    
     if episode.copyright:
         i.appendChild(elem('copyright')).appendChild(text(episode.copyright))
 
