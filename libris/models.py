@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from autoslug.fields import AutoSlugField
 from django.db import models
 from fandjango.libris.alias import name_alias
 from fandjango.libris.util import makeslug
@@ -27,7 +28,7 @@ class Issue(models.Model):
     pages = models.PositiveSmallIntegerField(null=True, blank=True)
     price = models.DecimalField(max_digits=5, decimal_places=2,
                                 null=True, blank=True)
-    cover_by = models.ManyToManyField(Creator)
+    cover_by = models.ManyToManyField(Creator, null=True, blank=True)
     cover_best = models.PositiveSmallIntegerField(
         blank=True, default=0,
         help_text='Position of this cover in yearly competition.')
@@ -52,6 +53,9 @@ class Title(models.Model):
 
     def __unicode__(self):
         return u'%s' % (self.title)
+
+    class Meta:
+        ordering = ('title',)
 
 class RefKey(models.Model):
     '''Something that exists in the Phantom universe.
@@ -109,6 +113,11 @@ class DaystripRun(models.Model):
     fromdate = models.DateField()
     todate = models.DateField()
     is_sundays = models.BooleanField(default=False)
+    
+    def __unicode__(self):
+        return u'%s %s - %s' % (
+            u'Söndagssidor' if self.is_sundays else 'Dagstrip',
+            self.fromdate, self.todate)
 
 class ForeignName(models.Model):
     """A title (probably the original title) in another language."""
@@ -122,6 +131,12 @@ class OtherMag(models.Model):
     i_of = models.PositiveSmallIntegerField(blank=True, null=True)
     year = models.PositiveSmallIntegerField(blank=True, null=True)
 
+    def __unicode__(self):
+        return u''.join([self.title or '',
+                         self.issue and ' %d' % self.issue or '',
+                         self.i_of and ' of %d' % self.i_of or '',
+                         self.year and ' %d' %self.year or ''])
+    
 class Episode(models.Model):
     '''An episode such as it occurs in an Issue.  This might mean an
     episode of a reoccuring title, a part of such an episode, a
@@ -133,10 +148,10 @@ class Episode(models.Model):
     part_name = models.CharField(max_length=200, blank=True)
     teaser = models.TextField(blank=True)
     note = models.TextField(blank=True)
-    ref_keys = models.ManyToManyField(RefKey)
+    ref_keys = models.ManyToManyField(RefKey, blank=True)
     daystrip = models.ForeignKey(DaystripRun, blank=True, null=True)
     firstpub = models.DateField(blank=True, null=True)
-    prevpub = models.ManyToManyField(OtherMag)
+    prevpub = models.ManyToManyField(OtherMag, blank=True)
     copyright = models.CharField(max_length=200, blank=True)
 
     _ROLES = (
@@ -216,12 +231,12 @@ class Publication(models.Model):
     ordno = models.PositiveSmallIntegerField(default=4711)
     label = models.CharField(max_length=200, blank=True)
     
-    episode = models.ForeignKey(Episode, null=True)
+    episode = models.ForeignKey(Episode, null=True, blank=True)
     best_plac = models.PositiveSmallIntegerField(
         blank=True, default=0,
         help_text='Position of this episode in yearly competition.')
     
-    article = models.ForeignKey(Article, null=True)
+    article = models.ForeignKey(Article, null=True, blank=True)
     
     def get_absolute_url(self):
         '''Get a hyperlink to the issue containing this publication, anchor on year page.'''
@@ -231,7 +246,8 @@ class Publication(models.Model):
         return self.ordno == 4711
     
     def __unicode__(self):
-        return unicode(self.issue)
+        return u'%s: %d: %s' % (self.issue, self.ordno,
+                                self.episode or self.article)
 
     class Meta:
         ordering = ('issue', 'ordno')
