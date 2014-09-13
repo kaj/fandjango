@@ -1,6 +1,7 @@
 from fandjango.libris.models import *
 from django.shortcuts import render_to_response, get_object_or_404, get_list_or_404
 from django.http import HttpResponse
+from django.template import Context
 from django.db.models import Count, Min
 
 def ctx(**kwargs):
@@ -63,3 +64,9 @@ def creator(request, slug):
                                                   episodes=episodes,
                                                   articles=articles,
                                                   pagetitle=unicode(creator)))
+
+def style(request):
+    from fandjango.util.clevercss import convert
+    from django.template.loader import get_template
+    return HttpResponse(convert(get_template('style.css').render(Context())),
+                        mimetype='text/css')

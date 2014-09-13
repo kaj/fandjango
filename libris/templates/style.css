@@ -1,0 +1,51 @@
+body:
+    background: #fdf1cb;
+    color: black;
+
+h1:
+    margin: 1em;
+h2, h3:
+    font-family: sans-serif;
+    margin: 1em 0 0 0;
+h3:
+    font-weight: normal;
+
+.topnav:
+    margin: 0;
+    padding: 0;
+
+.issue, .titleMain, .refMain:
+    border: solid 1px black;
+    background: white;
+    margin: 1em;
+    padding: 0;
+    -webkit-border-radius: 1em;
+    -moz-border-radius: 1em;
+    border-radius: 1em;
+    -moz-box-shadow: 0.2em 0.4em 0.8em rgba(0, 0, 0, 0.2);
+
+    h2:
+        margin-top: 0;
+	margin-bottom: 0.6em;
+        border-bottom: solid 1px #cccccc;
+        padding: 0 0.6em;
+
+    .episode, .article:
+        margin: 0.8em 0.5em;
+	
+.issue .article:
+    color: #888888;
+
+.issue, .episode:
+    div p:
+        margin: 0.2em 0;
+
+.episode h3:
+    margin-top: 0;
+
+.episode p.teaser:
+    font-style: italic;
+
+.episode .article:
+    p.i:
+        font: 80% sans-serif;

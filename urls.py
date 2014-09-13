@@ -11,6 +11,8 @@ urlpatterns = patterns('',
     (r'^admin/doc/', include('django.contrib.admindocs.urls')),
     (r'^admin/', include(admin.site.urls)),
 
+    (r'^style/style.css', 'fandjango.libris.views.style'),
+
     (r'^what/(?P<slug>[a-z0-9_]+)', 'fandjango.libris.views.refKey'),
     (r'^who/(?P<slug>[a-z0-9_]+)', 'fandjango.libris.views.creator'),
     (r'^(?P<year>[0-9]{4})', 'fandjango.libris.views.year'),
