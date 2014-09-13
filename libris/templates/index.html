@@ -1,32 +1,36 @@
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <title>Fandjango</title>
-  </head>
-  
-  <body class="index">
-    <h1>Fandjango</h1>
-    
-    <p>
+{% extends "base.html" %}
+
+{% block maincontent %}
+  <div class="main">
+    <h2>Årgångar</h2>
+    <div class="article">
     {% for year in years %}
     <a href="{{year}}">{{year}}</a>,
     {% endfor %}
-    </p>
-
-    <p>
+    </div>
+  </div>
+  <div class="main">
+    <h2>Serier</h2>
+    <div class="article">
       {% for title in titles %}
       <a href="{{title.slug}}">{{title}}</a>,
       {% endfor %}
-    </p>
-
-    <p>
+    </div>
+  </div>
+  <div class="main">
+    <h2>Personer och företeelser i Fantomens värld</h2>
+    <div class="article cloud">
       {% for ref in refs %}
-      <a href="what/{{ref.slug}}">{{ref}}</a> ({{ref.episode__count}}),
+      <a class="c{{ref.episode__count}}" href="what/{{ref.slug}}">{{ref}}</a>,
       {% endfor %}
-    </p>
-    <p>
+    </div>
+  </div>
+  <div class="main">
+    <h2>Serieskapare</h2>
+    <div class="article cloud">
       {% for p in people %}
-      <a href="who/{{p.slug}}">{{p}}</a> ({{p.creativepart__count}}),
+      <a class="c{{p.creativepart__count}}" href="who/{{p.slug}}">{{p}}</a>,
       {% endfor %}
-    </p>
-  </body>
-</html>
+    </div>
+  </div>
+{% endblock %}

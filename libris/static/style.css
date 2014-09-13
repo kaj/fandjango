@@ -1,0 +1,61 @@
+body {
+    background-color: #612ca4;
+    background-image: repeating-linear-gradient(135deg, transparent, transparent 2em, rgba(255,255,255,.1) 2em, rgba(255,255,255,.1) 4em);
+    margin: 0;
+    padding: 0;
+}
+
+.topnav {
+    margin: 0;
+    padding: .3rem 1rem;
+    background: rgba(255,255,255,.6);
+}
+
+h1 {
+    margin: 1rem auto; 
+    padding: 0;
+    width: 95%;
+    max-width: 60rem;
+}
+h2, h3 { font-family: sans-serif; margin: 1em 0 0 0; }
+h3 { font-weight: normal; }
+.main, .issue, .titleMain {
+    border: solid 1px black;
+    background: rgba(255,255,255,0.5);
+    margin: 1rem auto; 
+    padding: 0;
+    width: 95%;
+    max-width: 60rem;
+    border-radius: .6em;
+    box-shadow: .2em .4em .8em rgba(0, 0, 0, 0.2);
+}
+.main.head {
+    min-height: 130px;
+    background-image: url(fa-lindahl-9915.png);
+    background-position: 100% 100%;
+    background-repeat: no-repeat;
+    position: relative;
+}
+.main.head:after {
+    font-style: italic; font-size: 60%; line-height: 1em;
+    content: "Vinjettbild: Hans Lindahl, ur Guldmakaren, Fa 15, 1999.";
+    display: block; position: absolute; bottom: 2px; right: 174px;
+    text-shadow: #ccccff 0.15ex 0.1ex 0.3ex;
+}
+.issue h2, .titleMain h2, .main h2 {
+    margin: 0;
+    padding: 0 .5rem;
+}
+.issue .episode, .titleMain .episode, .main .episode, .issue .article, .main .article {
+    background: rgba(255,255,255,0.5);
+    margin: .5rem;
+    padding: .2em;
+    border-radius: .3em;
+    border: solid 1px;
+    border-color: rgba(0,0,0,.4) rgba(255,255,255,.3) rgba(255,255,255,.2) rgba(0,0,0,.3);
+}
+.issue .article { color: #444; }
+.episode h3, .article h3 { margin-top: 0; }
+.issue div, .issue p, .episode div, .episode p { margin: 0.2em 0; }
+.episode p.teaser { font-style: italic; }
+.episode p.i, .article p.i { font: 80% sans-serif; }

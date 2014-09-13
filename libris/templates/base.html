@@ -1,41 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="sv">
   <head>
-    <title>{{headtitle}}</title>
-    <style type="text/css">
-      body { background: #fdf1cb; color: black; }
-      .topnav { margin: 0; padding: 0; }
-      h1 { margin: 1em; }
-      h2, h3 { font-family: sans-serif; margin: 1em 0 0 0; }
-      h3 { font-weight: normal; }
-      .issue, .titleMain, .refMain { border: solid 1px black; background: white;
-        margin: 1em; padding: 0;
-        -moz-border-radius: 1em;
-	-moz-box-shadow: 0.2em 0.4em 0.8em rgba(0, 0, 0, 0.2);
-      }
-      .issue h2, .titleMain h2, .refMain h2 { margin-top: 0; margin-bottom: 0.6em;
-        border-bottom: solid 1px #cccccc;
-        padding: 0 0.6em;
-      }
-      .issue .episode, .titleMain .episode, .refMain .episode, .issue .article, .refMain .article {
-        margin: 0.8em 0.5em;
-      }
-      .issue .article { color: #888888; }
-      .episode h3 { margin-top: 0; }
-      .issue div, .issue p, .episode div, .episode p { margin: 0.2em 0; }
-      .episode p.teaser { font-style: italic; }
-      .episode p.i, .article p.i { font: 80% sans-serif; }
-    </style>
+    <title>{% block title %}{{pagetitle}} - Rasmus Fantomenindex{% endblock %}</title>
+    <link rel="stylesheet" href="/static/style.css"/>
   </head>
   
   <body>
     <p class="topnav"><a href="/">Fantomenindex</a>{% block extranav %}{% endblock %}</p>
-    <h1>{{pagetitle}}</h1>
-
+    <div class="main head">
+      <h1>{{pagetitle}}</h1>
+    </div>
     {% block maincontent %}
-    <h1>{{headtitle}}</h1>
     {% endblock %}
   </body>
 </html>
