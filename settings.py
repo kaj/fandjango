@@ -9,19 +9,23 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-DATABASE_ENGINE = 'mysql'           # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-DATABASE_NAME = 'fandjango'       # Or path to database file if using sqlite3.
-DATABASE_USER = 'fandjango'             # Not used with sqlite3.
-DATABASE_PASSWORD = 'j3ldiIk3jdmkwk27j'         # Not used with sqlite3.
-DATABASE_HOST = ''             # Set to empty string for localhost. Not used with sqlite3.
-DATABASE_PORT = ''             # Set to empty string for default. Not used with sqlite3.
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'fandjango',
+        'USER': 'fandjango',
+        'PASSWORD': '',
+        'HOST': '',                      # Set to empty string for localhost.
+        'PORT': '',                      # Set to empty string for default.
+    }
+}
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
-TIME_ZONE = 'Sweden/Stockholm'
+TIME_ZONE = 'Europe/Stockholm'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
@@ -52,9 +56,9 @@ SECRET_KEY = '3r4r^+bld+%@78*80k=03oyxie7$8w$m=m&!$a^h4&&s#%tiep'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.load_template_source',
-    'django.template.loaders.app_directories.load_template_source',
-#     'django.template.loaders.eggs.load_template_source',
+    ('django.template.loaders.cached.Loader', (
+        'django.template.loaders.app_directories.Loader',
+    )),
 )
 
 MIDDLEWARE_CLASSES = (

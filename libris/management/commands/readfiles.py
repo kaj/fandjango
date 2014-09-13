@@ -1,12 +1,25 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-from django.core.management import setup_environ
-import settings # Assumed to be in the same directory.
-setup_environ(settings)
-
+from django.conf import settings
+from django.core.management.base import BaseCommand
 from libris.models import *
 from xml.dom.minidom import parse
 from minixpath import *
+from os import path
+from optparse import make_option
+
+class Command(BaseCommand):
+    help = 'Find and read data files'
+
+    option_list = BaseCommand.option_list + (
+        make_option('--dir', help='Directory to read data from',
+                    dest='dir'),
+        )
+
+    def handle(self, *args, **options):
+        dir = options.get('dir') or '../fantomen'
+        for year in args:
+            file = path.join(dir, year + '.data')
+            print "Should read from", file
+            read_data_file(file)
 
 def getBestPlac(elem):
     bestElem = evaluate(elem, '/best')
@@ -22,7 +35,7 @@ def read_data_file(filename):
         coverElem = evaluate(issueElement, '/omslag')
         issue, issue_is_new = Issue.objects.get_or_create(
             year=year,
-            number=issueElement.getAttribute("nr"),
+            number=issueElement.getAttribute("nr").split('-', 1)[0],
             defaults={'pages': issueElement.getAttribute('pages') or None,
                       'price': issueElement.getAttribute('price') or None,
                       'cover_best': getBestPlac(coverElem[0]) if coverElem else 0})
@@ -77,7 +90,7 @@ def read_data_file(filename):
                         title=getText(origNameElem[0]),
                         language=origNameElem[0].getAttribute("xml:lang"))
                 elif origNameElem:
-                    print "FOUND ORIGNAME", ', '.join(origNameElem), "ignoring it."
+                    print "FOUND ORIGNAME", origNameElem, "ignoring it."
                     
                 stripElem = evaluate(item, '/daystrip')
                 if stripElem:
@@ -165,8 +178,3 @@ def getRefKeys(item):
     else:
         return set()
 
-if __name__ == "__main__":
-    from sys import argv
-    for f in argv[1:]:
-        print 'Read data from', f
-        read_data_file(f)
