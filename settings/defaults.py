@@ -1,6 +1,6 @@
 # Django settings for fandjango project.
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -50,9 +50,6 @@ MEDIA_URL = ''
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
 ADMIN_MEDIA_PREFIX = '/media/'
-
-# Make this unique, and don't share it with anybody.
-SECRET_KEY = '3r4r^+bld+%@78*80k=03oyxie7$8w$m=m&!$a^h4&&s#%tiep'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
