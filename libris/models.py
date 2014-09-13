@@ -66,13 +66,13 @@ class RefKey(models.Model):
         ('P', 'Real-life person (artist, writer, etc)'),
         ('X', 'In-story object'),
         )
-    title = models.CharField(max_length=200, unique=True)
+    title = models.CharField(max_length=200)
     kind = models.CharField(max_length=1, choices=KIND_CHOICES, default='X')
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField()
 
     class Meta:
-        unique_together = ('kind', 'slug')
-        ordering = ('kind', 'slug')
+        unique_together = [('kind', 'slug'), ('kind', 'title')]
+        ordering = ('kind', 'title')
     
     def save(self, **kwargs):
         if not self.slug:
@@ -106,7 +106,7 @@ class RefKey(models.Model):
     
     @classmethod
     def KEY(cls, k):
-        result, new = cls.objects.get_or_create(title=k)
+        result, new = cls.objects.get_or_create(title=k, kind='X')
         return result
     
 class DaystripRun(models.Model):
