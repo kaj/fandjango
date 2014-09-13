@@ -16,10 +16,14 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         dir = options.get('dir') or '../fantomen'
-        for year in args:
-            file = path.join(dir, year + '.data')
-            print "Should read from", file
-            read_data_file(file)
+        years = args or range(1950, 2015)
+        for year in years:
+            file = path.join(dir, '%s.data' % year)
+            if path.exists(file):
+                print "Should read from", file
+                read_data_file(file)
+            else:
+                print "No such file: %s" % file
 
 def getBestPlac(elem):
     bestElem = evaluate(elem, '/best')
