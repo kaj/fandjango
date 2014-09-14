@@ -24,6 +24,8 @@ class Command(BaseCommand):
                 read_data_file(file)
             else:
                 print "No such file: %s" % file
+        # Clean up stray data
+        Article.objects.filter(publication=None).delete()
 
 def getBestPlac(elem):
     bestElem = evaluate(elem, '/best')
@@ -43,6 +45,8 @@ def read_data_file(filename):
             defaults={'pages': issueElement.getAttribute('pages') or None,
                       'price': issueElement.getAttribute('price') or None,
                       'cover_best': getBestPlac(coverElem[0]) if coverElem else 0})
+        # Purge before creating new content
+        issue.publication_set.all().delete()
         ordno = 0;
         print "Found issue:", issue
         for item in issueElement.childNodes:
