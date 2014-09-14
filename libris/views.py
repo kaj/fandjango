@@ -58,11 +58,20 @@ def year(request, year):
                                                navyears=getNavYears(year),
                                                pagetitle='Fantomen %s' %(year)))
 
-def title(request, slug):
+def title(request, slug, pagesize=200):
     title = get_object_or_404(Title, slug=slug)
+    count = title.episode_set.count()
     episodes = orderEpisodeQuery(title.episode_set).all()
+    if count >= 2*pagesize:
+        pages = range(1 + count / pagesize)
+        page = int(request.GET.get('page', 0))
+        episodes = episodes[page*pagesize:(page+1)*pagesize]
+    else:
+        pages = None
+
     return render_to_response('title.html', ctx(title=title, episodes=episodes,
-                                                pagetitle=unicode(title)))
+                                                pagetitle=unicode(title),
+                                                pages=pages))
 
 def refKey(request, slug):
     refkey = get_object_or_404(RefKey, slug=slug)

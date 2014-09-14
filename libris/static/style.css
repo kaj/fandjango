@@ -47,6 +47,11 @@ h3 { font-weight: normal; }
 .issue h2, .titleMain h2, .main h2 {
     margin: 0;
     padding: 0 .5rem;
+    display: inline-block;
+}
+.titleMain .pagination {
+    display: inline-block;
+    margin: 0 0 0 1em;
 }
 .issue img.cover {
     float: right;

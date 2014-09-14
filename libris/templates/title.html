@@ -4,6 +4,11 @@
 {% block maincontent %}
   <div class="titleMain">
     <h2>Publicerade episoder</h2>
+
+    {% if pages %}
+    <p class="pagination">Sidor: {% for p in pages %}
+    <a href="/{{title.slug}}?page={{p}}">{{p}}</a>{% if forloop.last %}.{% else %}, {% endif %}
+    {% endfor %}</p>{% endif %}
     
     {% for ep in episodes.all %}
     <div class="episode">
