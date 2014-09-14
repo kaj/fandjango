@@ -39,7 +39,7 @@ def read_data_file(filename):
         coverElem = evaluate(issueElement, '/omslag')
         issue, issue_is_new = Issue.objects.get_or_create(
             year=year,
-            number=issueElement.getAttribute("nr").split('-', 1)[0],
+            number=issueNr(issueElement.getAttribute("nr")),
             defaults={'pages': issueElement.getAttribute('pages') or None,
                       'price': issueElement.getAttribute('price') or None,
                       'cover_best': getBestPlac(coverElem[0]) if coverElem else 0})
@@ -137,7 +137,7 @@ def read_data_file(filename):
                             best_plac=getBestPlac(item)).save()
                 prevFaElem = evaluate(item, "/prevpub[fa!='']")
                 for e in prevFaElem:
-                    fa = getText(evaluate(e, "/fa")[0])
+                    fa = issueNr(getText(evaluate(e, "/fa")[0]))
                     y = getText(evaluate(e, "/year")[0])
                     i = Issue.objects.get_or_create(year=y, 
                                                     number=fa)[0]
@@ -158,6 +158,10 @@ def read_data_file(filename):
             else:
                 print 'Element', item.tagName
     dom.unlink()
+
+def issueNr(nrstr):
+    '''Dubbelnummer 2-3 och prevpub i delar 2/3/4 representeras av 2.'''
+    return int(nrstr.split('-',1)[0].split('/',1)[0].split(', ',1)[0])
 
 def getByWho(byElem):
     whoElem = evaluate(byElem, "/who")
