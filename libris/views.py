@@ -39,7 +39,7 @@ def index(request):
         'people': weighted(people, 'creativepart__count')
     })
 
-def getNavYears(year, n=2):
+def getNavYears(year, n=3):
     years = list(Issue.objects.order_by('year').distinct().values_list('year', flat=True))
     i = years.index(int(year))
     return years[max(i-n,0):i+n+1]

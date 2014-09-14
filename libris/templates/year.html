@@ -4,8 +4,7 @@
 {% block extranav %}
  ...
  {% for y in navyears %}
-     <a href="{{y}}">{{y}}</a>
-     ...
+     <a href="{{y}}">{{y}}</a>{% if forloop.last %} ...{% else %}, {% endif %}
  {% endfor %}
 {% endblock %}
 
