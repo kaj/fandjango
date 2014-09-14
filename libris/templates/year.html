@@ -13,6 +13,10 @@
     {% for issue in issues %}
     <div class="issue" id="i{{issue.number}}">
       <h2>Nummer {{issue.number}}</h2>
+      {% if issue.omslagurl %}
+        <img class="cover" src="{{issue.omslagurl}}"/>
+      {% endif %}
+
       {% for x in issue.contents %}
       {% with x.episode as ep %}{% if ep %}
       <div class="episode">
