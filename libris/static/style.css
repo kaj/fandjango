@@ -3,6 +3,7 @@ body {
     background-image: repeating-linear-gradient(135deg, transparent, transparent 2em, rgba(255,255,255,.1) 2em, rgba(255,255,255,.1) 4em);
     margin: 0;
     padding: 0;
+    color: black;
 }
 
 .topnav {
