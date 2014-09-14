@@ -59,3 +59,14 @@ h3 { font-weight: normal; }
 .issue div, .issue p, .episode div, .episode p { margin: 0.2em 0; }
 .episode p.teaser { font-style: italic; }
 .episode p.i, .article p.i { font: 80% sans-serif; }
+
+.cloud .w1 { font-size: 64% }
+.cloud .w2 { font-size: 72% }
+.cloud .w3 { font-size: 78% }
+.cloud .w4 { font-size: 84% }
+.cloud .w5 { font-size: 90% }
+.cloud .w6 { font-size: 100% }
+.cloud .w7 { font-size: 110% }
+.cloud .w8 { font-size: 120% }
+.cloud .w9 { font-size: 130% }
+.cloud .w10 { font-size: 140% }

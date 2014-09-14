@@ -11,9 +11,10 @@
   </div>
   <div class="main">
     <h2>Serier</h2>
-    <div class="article">
+    <div class="article cloud">
       {% for title in titles %}
-      <a href="{{title.slug}}">{{title}}</a>,
+      <a class="c{{title.episode__count}} w{{title.weight}}"
+	 href="{{title.slug}}">{{title}}</a>,
       {% endfor %}
     </div>
   </div>
@@ -21,7 +22,8 @@
     <h2>Personer och företeelser i Fantomens värld</h2>
     <div class="article cloud">
       {% for ref in refs %}
-      <a class="c{{ref.episode__count}}" href="what/{{ref.slug}}">{{ref}}</a>,
+      <a class="c{{ref.episode__count}} w{{ref.weight}}"
+	 href="what/{{ref.slug}}">{{ref}}</a>,
       {% endfor %}
     </div>
   </div>
@@ -29,7 +31,8 @@
     <h2>Serieskapare</h2>
     <div class="article cloud">
       {% for p in people %}
-      <a class="c{{p.creativepart__count}}" href="who/{{p.slug}}">{{p}}</a>,
+      <a class="c{{p.creativepart__count}} w{{p.weight}}"
+	 href="who/{{p.slug}}">{{p}}</a>,
       {% endfor %}
     </div>
   </div>

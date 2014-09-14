@@ -2,6 +2,7 @@ from fandjango.libris.models import *
 from django.shortcuts import render_to_response, get_object_or_404, get_list_or_404
 from django.http import HttpResponse
 from django.db.models import Count, Min
+from math import pow
 
 def ctx(**kwargs):
     '''Utility function for getting a rendering context.'''
@@ -19,13 +20,23 @@ def orderEpisodeQuery(query):
 
 def index(request):
     years = Issue.objects.order_by('year').distinct().values_list('year', flat=True)
-    titles = Title.objects.order_by('title').all()
+    titles = Title.objects.order_by('title').annotate(Count('episode')).all()
     refs = RefKey.objects.order_by('title').filter(kind='X').annotate(Count('episode')).all()
     people = Creator.objects.order_by('name').annotate(Count('creativepart')).all()
+    def weighted(tags, key):
+        counts = sorted(tag.__getattribute__(key) for tag in tags)
+        n = len(counts)
+        for tag in tags:
+            tag.weight = int(round(
+                pow(10, float(counts.index(tag.__getattribute__(key))) / n)))
+        return tags
+
     return render_to_response('index.html', {
         'pagetitle': 'Fantomenindex',
-        'years': years, 'titles': titles,
-        'refs': refs, 'people': people
+        'years': years,
+        'titles': weighted(titles, 'episode__count'),
+        'refs': weighted(refs, 'episode__count'),
+        'people': weighted(people, 'creativepart__count')
     })
 
 def getNavYears(year, n=2):
