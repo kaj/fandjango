@@ -16,7 +16,7 @@
   </div>
   {% endif %}
 
-  <div class="refMain">
+  <div class="main">
     <h2>Relaterade episoder</h2>
     
   {% for ep in episodes %}
@@ -33,7 +33,7 @@
 	{{r}} {%for slug, name in ccs%}{%if not forloop.first%}{%if forloop.last%} &amp; {%else%}, {%endif%}{%endif%}<a href="/who/{{slug}}">{{name}}</a>{%endfor%}{%if not forloop.last%}, {%endif%}{%endfor%}.</p>
       {%endif%}{%endwith%}
       {% with ep.publication_set.all as pub %}
-	{% if pub %}<p class="i">Publicerad i {{pub|linklist}}.</p>{% endif %}
+	{% if pub %}<p class="i pub">Publicerad i {{pub|linklist}}.</p>{% endif %}
       {% endwith %}
       {% if ep.copyright %}
         <p class="i copyright">Copyright {{ep.copyright}}</p>
