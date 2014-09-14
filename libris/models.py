@@ -246,6 +246,9 @@ class Publication(models.Model):
         return self.ordno == 4711
     
     def __unicode__(self):
+        return u'%s' % self.issue
+
+    def __ref__(self):
         return u'%s: %d: %s' % (self.issue, self.ordno,
                                 self.episode or self.article)
 
