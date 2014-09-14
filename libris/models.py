@@ -248,7 +248,7 @@ class Publication(models.Model):
     def __unicode__(self):
         return u'%s' % self.issue
 
-    def __ref__(self):
+    def __repr__(self):
         return u'%s: %d: %s' % (self.issue, self.ordno,
                                 self.episode or self.article)
 
