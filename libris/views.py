@@ -33,6 +33,7 @@ def index(request):
 
     return render_to_response('index.html', {
         'pagetitle': 'Fantomenindex',
+        'n_issues': Issue.objects.filter(publication__ordno__lt=4711).distinct().count(),
         'years': years,
         'titles': weighted(titles, 'episode__count'),
         'refs': weighted(refs, 'episode__count'),

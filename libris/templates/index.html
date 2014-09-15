@@ -1,5 +1,12 @@
 {% extends "base.html" %}
 
+{% block headextra %}
+  <p>Här listas innehållet i {{n_issues}} av de drygt 1500 svenska
+  Fantomentidningar som kommit ut.
+  Du kan välja att titta på en årgång, någon företeelse i
+  Fantomenserien, eller någon serieskapare i listorna nedan.</p>
+{% endblock %}
+
 {% block maincontent %}
   <div class="main">
     <h2>Årgångar</h2>
