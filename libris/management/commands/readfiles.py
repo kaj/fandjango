@@ -26,6 +26,7 @@ class Command(BaseCommand):
                 print "No such file: %s" % file
         # Clean up stray data
         Article.objects.filter(publication=None).delete()
+        Episode.objects.filter(publication=None).delete()
 
 def getBestPlac(elem):
     bestElem = evaluate(elem, '/best')
