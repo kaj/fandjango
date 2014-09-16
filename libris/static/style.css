@@ -45,6 +45,22 @@ h3 { font-weight: normal; }
 .main.head p {
     margin: 0 210px .8rem .5rem;
 }
+.main.footer {
+    border: 0;
+}
+.main.footer hr { display: none; }
+.main.footer .sc {
+    float: right;
+    margin: .5rem;
+}
+.main.footer .sc img {
+    max-width: 5em;
+    height: auto;
+}
+.main.footer p {
+    margin: .8rem .5rem .8rem .5rem;
+    max-width: 50em;
+}
 
 .issue h2, .titleMain h2, .main h2 {
     margin: 0;
