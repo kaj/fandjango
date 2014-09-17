@@ -81,10 +81,25 @@ class RefKey(models.Model):
 
     def get_absolute_url(self):
         '''Get a hyperlink to page for this reference.'''
-        return u'/what/%s' % (self.slug)
+        if self.kind=='F':
+            return u'/fa/%s' % (self.slug)
+        else:
+            return u'/what/%s' % (self.slug)
     
     def __unicode__(self):
-        return u'%s' % (self.title)
+        if self.kind=='F' and self.slug=='0':
+            return u'Kapten Walker'
+        else:
+            return u'%s' % (self.title)
+
+    def shortFa(self):
+        if self.kind=='F':
+            if self.slug=='0':
+                return u'Kapten Walker'
+            else:
+                return self.slug
+        else:
+            return self.__unicode__();
 
     @classmethod
     def FA(cls, n):

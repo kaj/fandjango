@@ -17,6 +17,14 @@
     </div>
   </div>
   <div class="main">
+    <h2>Historiska Fantomen</h2>
+    <div class="article">
+    {% for p in phantoms %}
+    <a href="{{p.get_absolute_url}}">{{p.shortFa}}</a>,
+    {% endfor %}
+    </div>
+  </div>
+  <div class="main">
     <h2>Serier</h2>
     <div class="article cloud">
       {% for title in titles %}

@@ -1,7 +1,7 @@
 from fandjango.libris.models import *
 from django.shortcuts import render_to_response, get_object_or_404, get_list_or_404
 from django.http import HttpResponse
-from django.db.models import Count, Min
+from django.db.models import Count, Min, Avg
 from math import pow
 
 def ctx(**kwargs):
@@ -22,6 +22,9 @@ def index(request):
     years = Issue.objects.order_by('year').distinct().values_list('year', flat=True)
     titles = Title.objects.order_by('title').annotate(Count('episode')).all()
     refs = RefKey.objects.order_by('title').filter(kind='X').annotate(Count('episode')).all()
+    # The Avg annotation is a hack to get 1,2,..,9,10 rather than 1,10,11,..,2
+    phantoms = RefKey.objects.annotate(n=Avg('slug')).order_by('n') \
+                    .filter(kind='F').annotate(Count('episode')).all()
     people = Creator.objects.order_by('name').annotate(Count('creativepart')).all()
     def weighted(tags, key):
         counts = sorted(tag.__getattribute__(key) for tag in tags)
@@ -35,6 +38,7 @@ def index(request):
         'pagetitle': 'Fantomenindex',
         'n_issues': Issue.objects.filter(publication__ordno__lt=4711).distinct().count(),
         'years': years,
+        'phantoms': phantoms,
         'titles': weighted(titles, 'episode__count'),
         'refs': weighted(refs, 'episode__count'),
         'people': weighted(people, 'creativepart__count')
