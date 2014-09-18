@@ -18,13 +18,15 @@ def orderEpisodeQuery(query):
     '''Take a query for Episodes and make it ordered by first publication.'''
     return query.annotate(Min('publication__issue__year')).annotate(Min('publication__issue__number')).order_by('publication__issue__number__min').order_by('publication__issue__year__min')
 
+def allPhantoms():
+    # The Avg annotation is a hack to get 1,2,..,9,10 rather than 1,10,11,..,2
+    return RefKey.objects.annotate(n=Avg('slug')).order_by('n') \
+                 .filter(kind='F').annotate(Count('episode')).all()
+
 def index(request):
     years = Issue.objects.order_by('year').distinct().values_list('year', flat=True)
     titles = Title.objects.order_by('title').annotate(Count('episode')).all()
     refs = RefKey.objects.order_by('title').filter(kind='X').annotate(Count('episode')).all()
-    # The Avg annotation is a hack to get 1,2,..,9,10 rather than 1,10,11,..,2
-    phantoms = RefKey.objects.annotate(n=Avg('slug')).order_by('n') \
-                    .filter(kind='F').annotate(Count('episode')).all()
     people = Creator.objects.order_by('name').annotate(Count('creativepart')).all()
     def weighted(tags, key):
         counts = sorted(tag.__getattribute__(key) for tag in tags)
@@ -38,7 +40,7 @@ def index(request):
         'pagetitle': 'Fantomenindex',
         'n_issues': Issue.objects.filter(publication__ordno__lt=4711).distinct().count(),
         'years': years,
-        'phantoms': phantoms,
+        'phantoms': allPhantoms(),
         'titles': weighted(titles, 'episode__count'),
         'refs': weighted(refs, 'episode__count'),
         'people': weighted(people, 'creativepart__count')
@@ -82,10 +84,10 @@ def refKey(request, slug):
     refkey = get_object_or_404(RefKey, slug=slug)
     episodes = orderEpisodeQuery(refkey.episode_set).all()
     articles = refkey.article_set.all()
-    return render_to_response('refkey.html', ctx(refkey=refkey, 
-                                                 episodes=episodes,
-                                                 articles=articles,
-                                                 pagetitle=unicode(refkey)))
+    return render_to_response('refkey.html', ctx(
+        refkey=refkey, episodes=episodes, articles=articles,
+        phantoms=allPhantoms() if refkey.kind=='F' else None,
+        pagetitle=unicode(refkey)))
 
 def creator(request, slug):
     creator = get_object_or_404(Creator, slug=slug)

@@ -3,6 +3,17 @@
 
 {% block bodyattrs %} class="{{refkey.kind}}_{{refkey.slug}}"{% endblock %}
 
+{% block headextra %}
+  {% if phantoms %}
+  <p>Fantomenätten:
+  {% for p in phantoms %}
+    {% if p == refkey %}<strong>{{p.shortFa}}</strong>{% else %}
+    <a href="{{p.get_absolute_url}}">{{p.shortFa}}</a>{% endif %},
+  {% endfor %}
+  </p>
+  {% endif %}
+{% endblock %}
+
 {% block maincontent %}
   {% if articles %}
   <div class="main">
