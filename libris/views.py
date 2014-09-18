@@ -37,7 +37,8 @@ def index(request):
         return tags
 
     return render_to_response('index.html', {
-        'pagetitle': 'Fantomenindex',
+        'frontpage': True,
+        'pagetitle': 'Rasmus Fantomenindex',
         'n_issues': Issue.objects.filter(publication__ordno__lt=4711).distinct().count(),
         'years': years,
         'phantoms': allPhantoms(),
@@ -46,7 +47,7 @@ def index(request):
         'people': weighted(people, 'creativepart__count')
     })
 
-def getNavYears(year, n=3):
+def getNavYears(year, n=5):
     years = list(Issue.objects.order_by('year').distinct().values_list('year', flat=True))
     i = years.index(int(year))
     return years[max(i-n,0):i+n+1]
@@ -61,7 +62,7 @@ def year(request, year):
         for p in issue.contents:
             if p.episode:
                 p.episode.otherpub = p.episode.publication_set.exclude(issue=issue)
-    return render_to_response('year.html', ctx(year=year, issues=issues,
+    return render_to_response('year.html', ctx(year=int(year), issues=issues,
                                                navyears=getNavYears(year),
                                                pagetitle='Fantomen %s' %(year)))
 

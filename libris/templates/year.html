@@ -2,11 +2,13 @@
 {% load libris_extras %}
 
 {% block bodyattrs %} class="year{{year}}"{% endblock %}
-{% block extranav %}
- ...
+
+{% block headextra %}
+ <p>Närbelägna år:
  {% for y in navyears %}
-     <a href="{{y}}">{{y}}</a>{% if forloop.last %} ...{% else %}, {% endif %}
- {% endfor %}
+ {% if y == year %}<strong>{{y}}</strong>{% else %}
+  <a href="{{y}}">{{y}}</a>{% endif %}{% if forloop.last %} ...{% else %}, {% endif %}
+ {% endfor %}</p>
 {% endblock %}
 
 {% block maincontent %}

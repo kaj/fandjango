@@ -6,14 +6,13 @@ body {
     color: black;
 }
 
-.topnav {
-    margin: 0;
-    padding: .3rem 1rem;
-    background: rgba(255,255,255,.6);
+.main.head p.topnav {
+    margin-top: .5em;
+    font-style: italic;
+    font-size: 90%;
 }
-
-h1 {
-    margin: 1rem .5rem;
+.main.head h1 {
+    margin: .5rem .5rem 1rem;
     padding: 0;
 }
 h2, h3 { font-family: sans-serif; margin: 1em 0 0 0; }

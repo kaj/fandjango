@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="sv">
   <head>
-    <title>{% block title %}{{pagetitle}} - Rasmus Fantomenindex{% endblock %}</title>
+    <title>{% block title %}{{pagetitle}}{% if not frontpage %} -
+    Rasmus Fantomenindex{% endif %}{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link rel="stylesheet" href="/static/style.css"/>
   </head>
   
   <body{% block bodyattrs %}{% endblock %}>
-    <p class="topnav"><a href="/">Fantomenindex</a>{% block extranav %}{% endblock %}</p>
     <div class="main head">
+      {% if not frontpage %}
+        <p class="topnav"><a href="/">Rasmus Fantomenindex</a>:</p>
+      {% endif %}
       <h1>{{pagetitle}}</h1>
       {% block headextra %}{% endblock %}
     </div>
