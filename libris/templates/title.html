@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% load libris_extras %}
 
+{% block bodyattrs %} class="t_{{title.slug}}"{% endblock %}
+
 {% block maincontent %}
   <div class="titleMain">
     <h2>Publicerade episoder</h2>

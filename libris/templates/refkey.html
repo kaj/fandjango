@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% load libris_extras %}
 
+{% block bodyattrs %} class="{{refkey.kind}}_{{refkey.slug}}"{% endblock %}
+
 {% block maincontent %}
   {% if articles %}
   <div class="main">

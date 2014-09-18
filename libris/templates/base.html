@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="/static/style.css"/>
   </head>
   
-  <body>
+  <body{% block bodyattrs %}{% endblock %}>
     <p class="topnav"><a href="/">Fantomenindex</a>{% block extranav %}{% endblock %}</p>
     <div class="main head">
       <h1>{{pagetitle}}</h1>

@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load libris_extras %}
 
+{% block bodyattrs %} class="year{{year}}"{% endblock %}
 {% block extranav %}
  ...
  {% for y in navyears %}

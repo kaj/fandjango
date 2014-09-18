@@ -13,7 +13,7 @@ body {
 }
 
 h1 {
-    margin: 1rem 210px 1rem .5rem;
+    margin: 1rem .5rem;
     padding: 0;
 }
 h2, h3 { font-family: sans-serif; margin: 1em 0 0 0; }
@@ -28,6 +28,9 @@ h3 { font-weight: normal; }
     border-radius: .6em;
     box-shadow: .2em .4em .8em rgba(0, 0, 0, 0.2);
     overflow: auto;
+}
+.main.head {
+    text-shadow: .2rem .1rem .3rem white;
 }
 .main.head p {
     margin: 0 .5rem .8rem;
@@ -44,10 +47,36 @@ h3 { font-weight: normal; }
     font-style: italic; font-size: 60%; line-height: 1em;
     content: "Vinjettbild: Hans Lindahl, ur Guldmakaren, Fa 15, 1999.";
     display: block; position: absolute; bottom: 2px; right: 174px;
-    text-shadow: #ccccff 0.15ex 0.1ex 0.3ex;
 }
-.main.head p {
+.main.head h1, .main.head p {
     margin-right: 210px;
+}
+.year1987 .main.head, .year2002 .main.head, .who_donne_avenell .main.head {
+  min-height: 160px;
+  background-image: url(fa-bade-8719.png);
+  background-position: 100% 90%;
+}
+.year1987 .main.head:after, .year2002 .main.head:after, .who_donne_avenell .main.head:after {
+  content: "Vinjettbild: Heiner Bade, ur Sp\00f6kpiraten, Fa 19, 1987.";
+  right: 140px;
+}
+.who_stan_lynde .main.head, .t_rick_oshay .main.head, .year1973 .main.head {
+   min-height: 165px;
+   background-image: url(rick_lilly.png);
+}
+.who_stan_lynde .main.head:after, .t_rick_oshay .main.head:after, .year1973 .main.head:after {
+  content: "Vinjettbild: Rick O'Shay och Lily the Kid av Stan Lynde";
+}
+.X_rodskagg .main.head, .X_djungelpatrullen .main.head, .year2007 .main.head,
+.who_heiner_bade .main.head, .who_david_bishop .main.head {
+  background-image: url(fa-bade-rodskagg-0720.png);
+  background-position: 100% 100%;
+}
+.X_rodskagg .main.head:after, .X_djungelpatrullen .main.head:after,
+.year2007 .main.head:after,
+.who_heiner_bade .main.head:after, .who_david_bishop .main.head:after {
+  content: "Vinjettbild: l\00f6jtnant R\00f6\0064sk\00e4gg, av Heiner Bade ur Dj\00e4vulens kyss, Fa 20, 2007.";
+  right: 77px;
 }
 }
 .main.footer {
