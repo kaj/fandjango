@@ -29,6 +29,10 @@ h3 { font-weight: normal; }
     box-shadow: .2em .4em .8em rgba(0, 0, 0, 0.2);
     overflow: auto;
 }
+.main.head p {
+    margin: 0 .5rem .8rem;
+}
+@media (min-width: 480px) {
 .main.head {
     min-height: 130px;
     background-image: url(fa-lindahl-9915.png);
@@ -43,7 +47,8 @@ h3 { font-weight: normal; }
     text-shadow: #ccccff 0.15ex 0.1ex 0.3ex;
 }
 .main.head p {
-    margin: 0 210px .8rem .5rem;
+    margin-right: 210px;
+}
 }
 .main.footer {
     border: 0;
@@ -60,6 +65,27 @@ h3 { font-weight: normal; }
 .main.footer p {
     margin: .8rem .5rem .8rem .5rem;
     max-width: 50em;
+}
+.wrapyyfa {
+    width: 95%;
+    max-width: 60em;
+    margin: 0 auto;
+    overflow: hidden;
+}
+.main.yy, .main.fa {
+    width: auto;
+}
+@media (min-width: 45em) {
+    .main.yy, .main.fa {
+        width: 60%;
+        margin: 0 1rem 0 0;
+        float: left;
+    }
+}
+.main.yy { margin-bottom: 1rem; }
+.main.links {
+    width: auto;
+    margin: 0;
 }
 
 .issue h2, .titleMain h2, .main h2 {

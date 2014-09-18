@@ -87,15 +87,31 @@ class RefKey(models.Model):
             return u'/what/%s' % (self.slug)
     
     def __unicode__(self):
-        if self.kind=='F' and self.slug=='0':
-            return u'Kapten Walker'
-        else:
-            return u'%s' % (self.title)
+        if self.kind=='F':
+            if self.slug=='0':
+                return u'Kapten Walker'
+            elif self.slug == '17.1':
+                return u'Julie'
+            elif self.slug == '22.1':
+                return u'Kit'
+            elif self.slug == '22.2':
+                return u'Heloise'
+            elif self.slug == '22':
+                return u'Kit & Heloise'
+        return u'%s' % (self.title)
 
     def shortFa(self):
         if self.kind=='F':
             if self.slug=='0':
                 return u'Kapten Walker'
+            elif self.slug == '17.1':
+                return u'Julie'
+            elif self.slug == '22.1':
+                return u'Kit'
+            elif self.slug == '22.2':
+                return u'Heloise'
+            elif self.slug == '22':
+                return u'Kit & Heloise'
             else:
                 return self.slug
         else:
@@ -121,6 +137,15 @@ class RefKey(models.Model):
     
     @classmethod
     def KEY(cls, k):
+        if k == u'Julie':
+            return cls.FA('17.1')
+        elif k == u'Kit & Heloise':
+            # To be replaced with both 21.1 and 21.2 somehow
+            return cls.FA('22')
+        elif k == u'Kit':
+            return cls.FA('22.1')
+        elif k == u'Heloise':
+            return cls.FA('22.2')
         result, new = cls.objects.get_or_create(title=k, kind='X')
         return result
     
