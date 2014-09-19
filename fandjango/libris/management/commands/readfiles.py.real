@@ -1,10 +1,11 @@
 from django.conf import settings
 from django.core.management.base import BaseCommand
-from libris.models import *
+from fandjango.libris.models import *
 from xml.dom.minidom import parse
 from minixpath import *
 from os import path
 from optparse import make_option
+from time import sleep
 
 class Command(BaseCommand):
     help = 'Find and read data files'
@@ -22,6 +23,7 @@ class Command(BaseCommand):
             if path.exists(file):
                 print "Should read from", file
                 read_data_file(file)
+                sleep(10)
             else:
                 print "No such file: %s" % file
         # Clean up stray data

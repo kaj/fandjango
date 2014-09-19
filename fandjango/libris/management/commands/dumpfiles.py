@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.core.management.base import BaseCommand
 from django.db.models import Q
-from libris.models import *
+from fandjango.libris.models import *
 from optparse import make_option
 from os import path
 from subprocess import Popen, PIPE
