@@ -1,15 +1,34 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from django.core.management import setup_environ
-import settings # Assumed to be in the same directory.
-setup_environ(settings)
-
+from django.core.management.base import BaseCommand
 from django.db.models import Q
 from libris.models import *
-from xml.dom import minidom as dom
+from optparse import make_option
+from os import path
 from subprocess import Popen, PIPE
-import sys
+from time import sleep
+from xml.dom import minidom as dom
 import codecs
+import sys
+
+class Command(BaseCommand):
+    help = 'Dump data to my traditional xml files'
+
+    option_list = BaseCommand.option_list + (
+        make_option('--dir', help='Directory to write data to',
+                    dest='dir'),
+        )
+
+    def handle(self, *args, **options):
+        dir = options.get('dir') or 'dump'
+        years = args or Issue.objects.order_by('year').distinct().\
+                values_list('year', flat=True)
+        for year in years:
+            file = path.join(dir, '%s.data' % year)
+            print "Should write to", file
+            xmlForYear(year).writexml(
+                codecs.getwriter('utf-8')(open(file, 'w')),
+                encoding='utf-8',
+                indent='', addindent='  ', newl='\n')
 
 def addRefKeys(doc, baseElem, keys):
     elem = doc.createElement
@@ -158,14 +177,3 @@ def xmlForYear(year):
             if pub.episode: xmli.appendChild(xmlEpisode(d, pub))
             if pub.article: xmli.appendChild(xmlArticle(d, pub.article))
     return d
-
-for year in Issue.objects.order_by('year').distinct().\
-        values_list('year', flat=True):
-
-    xmllint = Popen(['xmllint', '--format', '-'],
-                    stdin=PIPE, stdout=open('dump/%d.data' % year, 'w'))
-    xmlForYear(year).writexml(codecs.getwriter('utf-8')(xmllint.stdin),
-                              encoding='utf-8')
-    xmllint.stdin.close()
-    if xmllint.wait() != 0:
-        print "There were some errors"
