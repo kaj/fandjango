@@ -87,42 +87,28 @@ class RefKey(models.Model):
             return u'/what/%s' % (self.slug)
     
     def __unicode__(self):
-        if self.kind=='F':
-            if self.slug=='0':
-                return u'Kapten Walker'
-            elif self.slug == '17.1':
-                return u'Julie'
-            elif self.slug == '22.1':
-                return u'Kit'
-            elif self.slug == '22.2':
-                return u'Heloise'
-            elif self.slug == '22':
-                return u'Kit & Heloise'
         return u'%s' % (self.title)
 
     def shortFa(self):
-        if self.kind=='F':
-            if self.slug=='0':
-                return u'Kapten Walker'
-            elif self.slug == '17.1':
-                return u'Julie'
-            elif self.slug == '22.1':
-                return u'Kit'
-            elif self.slug == '22.2':
-                return u'Heloise'
-            elif self.slug == '22':
-                return u'Kit & Heloise'
-            else:
-                return self.slug
+        if self.kind=='F' and \
+           self.slug not in ['0', '17.1', '22.1','22.2', '22']:
+            return self.slug
         else:
-            return self.__unicode__();
+            return self.__unicode__()
 
     @classmethod
     def FA(cls, n):
         n = unicode(n)
-        result, new = cls.objects.get_or_create(title='Den %s:e Fantomen' % n,
-                                                kind='F',
-                                                slug=n)
+        special = {'0': 'Kapten Walker',
+                   '17.1': 'Julie',
+                   '22': 'Kit & Heloise',
+                   '22.1': 'Kit',
+                   '22.2': 'Heloise',
+               }
+        result, new = cls.objects.get_or_create(
+            title=special.get(n) or ('Den %s:e Fantomen' % n),
+            kind='F',
+            slug=n)
         return result
     
     @classmethod
