@@ -70,6 +70,11 @@ def title(request, slug, pagesize=200):
     title = get_object_or_404(Title, slug=slug)
     count = title.episode_set.count()
     episodes = orderEpisodeQuery(title.episode_set).all()
+    key = RefKey.objects.filter(kind='T', slug=slug).first()
+    if key:
+        articles = key.article_set.all()
+    else:
+        articles = None
     if count >= 2*pagesize:
         pages = range(1 + count / pagesize)
         page = int(request.GET.get('page', 0))
@@ -78,6 +83,7 @@ def title(request, slug, pagesize=200):
         pages = None
 
     return render_to_response('title.html', ctx(title=title, episodes=episodes,
+                                                articles=articles,
                                                 pagetitle=unicode(title),
                                                 pages=pages))
 

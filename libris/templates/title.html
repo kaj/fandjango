@@ -4,6 +4,18 @@
 {% block bodyattrs %} class="t_{{title.slug}}"{% endblock %}
 
 {% block maincontent %}
+  {% if articles %}
+  <div class="main">
+    <h2>Läs mer</h2>
+    {% for article in articles %}
+    <div class="article">
+      <h3>{{article}}</h3>
+      <p class="i">Publicerad i {{article.publication_set.all|linklist}}.</p>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
   <div class="titleMain">
     <h2>Publicerade episoder</h2>
 
