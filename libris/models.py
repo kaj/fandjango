@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from autoslug.fields import AutoSlugField
 from django.db import models
-from fandjango.libris.alias import name_alias
-from fandjango.libris.util import makeslug
+from libris.alias import name_alias
+from libris.util import makeslug
 
 class Creator(models.Model):
     '''A person who takes part in creating the comics and/or texts.'''
