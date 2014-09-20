@@ -1,6 +1,6 @@
 from django.shortcuts import render_to_response, get_object_or_404, get_list_or_404
 from django.http import HttpResponse
-from django.db.models import Count, Min, Avg
+from django.db.models import Count, Min, Max, Avg
 from libris.models import *
 from math import pow
 
@@ -25,7 +25,8 @@ def allPhantoms():
 
 def index(request):
     years = Issue.objects.order_by('year').distinct().values_list('year', flat=True)
-    titles = Title.objects.order_by('title').annotate(Count('episode')).all()
+    titles = Title.objects.order_by('title').annotate(Count('episode')) \
+            .filter(episode__count__gt=1).all()
     refs = RefKey.objects.order_by('title').filter(kind='X').annotate(Count('episode')).all()
     people = Creator.objects.order_by('name').annotate(Count('creativepart')).all()
     def weighted(tags, key):
@@ -45,6 +46,16 @@ def index(request):
         'titles': weighted(titles, 'episode__count'),
         'refs': weighted(refs, 'episode__count'),
         'people': weighted(people, 'creativepart__count')
+    })
+
+def titles(request):
+    titles = Title.objects.order_by('title') \
+        .annotate(first=Min('episode__publication__issue__year')) \
+        .annotate(latest=Max('episode__publication__issue__year')) \
+        .annotate(Count('episode')).all()
+    return render_to_response('titles.html', {
+        'pagetitle': 'Serier i Fantomentidningen',
+        'titles': titles,
     })
 
 def getNavYears(year, n=5):

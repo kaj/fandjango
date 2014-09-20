@@ -43,12 +43,16 @@
   </div>
   </div>
   <div class="main">
-    <h2>Serier</h2>
+    <h2>Återkommande serier</h2>
     <div class="article cloud">
-      {% for title in titles %}
+      <p>{% for title in titles %}
       <a class="c{{title.episode__count}} w{{title.weight}}"
 	 href="{{title.slug}}">{{title}}</a>,
-      {% endfor %}
+      {% endfor %}</p>
+    </div>
+    <div class="article">
+      <p>Se även <a href="/titles">sorterbar lista på alla serier i
+      mina indexerade Fantomentidningar</a>.</p>
     </div>
   </div>
   <div class="main">
