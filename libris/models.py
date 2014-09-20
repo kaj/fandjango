@@ -275,8 +275,8 @@ class Publication(models.Model):
         return u'%s' % self.issue
 
     def __repr__(self):
-        return u'%s: %d: %s' % (self.issue, self.ordno,
-                                self.episode or self.article)
+        return repr(u'%s: %d: %s' % (self.issue, self.ordno,
+                                     self.episode or self.article))
 
     class Meta:
         ordering = ('issue', 'ordno')
