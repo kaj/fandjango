@@ -27,6 +27,12 @@ class Command(BaseCommand):
         # Clean up stray data
         Article.objects.filter(publication=None).delete()
         Episode.objects.filter(publication=None).delete()
+        kh = RefKey.FA('22')
+        k = RefKey.FA('22.1')
+        h = RefKey.FA('22.2')
+        for e in kh.episode_set.all():
+            e.ref_keys = set.union({k, h}, e.ref_keys.all())
+        kh.delete()
 
 def getBestPlac(elem):
     bestElem = evaluate(elem, '/best')
