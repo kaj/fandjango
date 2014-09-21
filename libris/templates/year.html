@@ -17,9 +17,19 @@
       <h2>Nummer {{issue.number}}</h2>
       {% if issue.pages %}<p class="price">{{issue.pages}} sidor</p>{% endif %}
       {% if issue.price %}<p class="pages">pris {{issue.price}}</p>{% endif %}
+      <p class="cover{%if issue.omslagurl%} withimg{%endif%}">
       {% if issue.omslagurl %}
-        <img class="cover" src="{{issue.omslagurl}}"/>
+        <img src="{{issue.omslagurl}}" alt=""/>
       {% endif %}
+        {%with issue.cover_by.all as by%}{%if by%}
+        <span class="by">Omslag av
+          {%for artist in by%}{%if not forloop.first%}{%if forloop.last%} &amp;{%else%},{%endif%}{%endif%}
+          <a href="/who/{{artist.slug}}">{{artist}}</a>{%endfor%}.</span>
+        {%endif%}{%endwith%}
+        {%if issue.cover_best%}
+        <span class="bestcover">Nr {{issue.cover_best}} i bästa omslag.</span>
+        {%endif%}
+      </p>
 
       {% for x in issue.contents %}
       {% with x.episode as ep %}{% if ep %}

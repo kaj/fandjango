@@ -125,14 +125,22 @@ h3 { font-weight: normal; }
     display: inline-block;
     margin: 0 0 0 1em;
 }
-.issue .pages, .issue .price {
+.issue .pages, .issue .price, .issue p.cover {
     display: inline-block;
     margin: 0 0 0 .5em;
-    font-size: 80%;
+    font: 80% sans-serif;
 }
-.issue img.cover {
+.issue p.cover.withimg {
+    background: none repeat scroll 0 0 #dcd0eb;
+    border-radius: 0.3rem;
     float: right;
-    margin: .5rem .5rem .5rem .5rem;
+    margin: 0.5rem;
+    padding: 0.3rem;
+    width: 139px;
+    width: -moz-min-content;
+}
+.issue p.cover span {
+    display: inline-block;
 }
 .issue .episode, .titleMain .episode, .main .episode, .issue .article, .main .article {
     background: rgba(255,255,255,0.5);
