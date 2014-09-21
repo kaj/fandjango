@@ -91,12 +91,12 @@ def read_data_file(filename):
                                       part_no=part_no, part_name=part_name)
                     episode.save() # get an id
                     is_new_episode = True
-                episode.teaser = episode.teaser or \
-                    getText(*evaluate(item, "/teaser"))
-                episode.note = episode.note or \
-                    getText(*evaluate(item, "/note"))
-                episode.copyright = episode.copyright or \
-                    getText(*evaluate(item, '/copyright'))
+                episode.teaser = getText(*evaluate(item, "/teaser")) or \
+                                 episode.teaser
+                episode.note = getText(*evaluate(item, "/note")) or \
+                               episode.note
+                episode.copyright = getText(*evaluate(item, '/copyright')) or \
+                                    episode.copyright
                 
                 origNameElem = evaluate(item, '/episode[@role ="orig"]')
                 if origNameElem and not episode.orig_name:
