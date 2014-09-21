@@ -206,3 +206,8 @@ table.sortable th.sorttable_sorted,
 table.sortable th.sorttable_sorted_reverse {
     padding-right: .2rem;
 }
+.main.readmore .article h3,
+.main.readmore .article p {
+    display: inline-block;
+    margin-right: .5rem;
+}

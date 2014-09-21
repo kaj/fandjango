@@ -111,7 +111,11 @@ def creator(request, slug):
     creator = get_object_or_404(Creator, slug=slug)
     q=CreativePart.objects.filter(creator=creator)
     episodes = orderEpisodeQuery(Episode.objects.filter(creativepart__in=q)).all()
-    articles = () # refkey.article_set.all()
+    key = RefKey.objects.filter(kind='P', slug=slug).first()
+    if key:
+        articles = key.article_set.all()
+    else:
+        articles = None
     return render_to_response('creator.html', ctx(creator=creator,
                                                   episodes=episodes,
                                                   articles=articles,

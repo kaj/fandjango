@@ -3,9 +3,18 @@
 
 {% block bodyattrs %} class="t_{{title.slug}}"{% endblock %}
 
+{% block headextra %}
+  <p>Här listas de gånger serien <strong>{{title}}</strong>
+    (<a href="http://seriewikin.serieframjandet.se/index.php/Special:Search?search={{title}}&amp;go=go"
+	title="Sök &quot;{{title}}&quot; i Seriewikin">Seriewikin</a>,
+    <a href="http://sv.wikipedia.org/wiki/Special:Search?search={{title}}&amp;go=go"
+       title="Sök &quot;{{title}}&quot; i Svenska Wikipedia">wikipedia</a>)
+    förekommer i mina indexerade fantomentidningar.</p>
+{% endblock %}
+
 {% block maincontent %}
   {% if articles %}
-  <div class="main">
+  <div class="main readmore">
     <h2>Läs mer</h2>
     {% for article in articles %}
     <div class="article">
