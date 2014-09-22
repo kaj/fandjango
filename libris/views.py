@@ -1,8 +1,11 @@
-from django.shortcuts import render_to_response, get_object_or_404, get_list_or_404
-from django.http import HttpResponse
+from django.core import urlresolvers
 from django.db.models import Count, Min, Max, Avg
+from django.http import HttpResponsePermanentRedirect
+from django.shortcuts import render_to_response, get_object_or_404, get_list_or_404
+from django.views.defaults import page_not_found
 from libris.models import *
 from math import pow
+import re
 
 def ctx(**kwargs):
     '''Utility function for getting a rendering context.'''
@@ -120,6 +123,24 @@ def creator(request, slug):
                                                   episodes=episodes,
                                                   articles=articles,
                                                   pagetitle=unicode(creator)))
+
+def redirectold(request):
+    path = request.path_info.lower()
+    if path.endswith('index.html'):
+        path = path[:-10]
+    elif path.endswith('.html'):
+        path = path[:-5]
+    if path in ['/who/', '/what/']:
+        path = '/'
+    path = re.sub('__+', '_', path) \
+             .replace('_2_an', '_2an').replace('_o_shay', '_oshay')
+    urlconf = getattr(request, 'urlconf', None)
+    if (path != request.path_info and
+        urlresolvers.is_valid_path(path, urlconf)):
+        return HttpResponsePermanentRedirect("%s://%s%s" % (
+            'https' if request.is_secure() else 'http',
+            request.get_host(), path))
+    return page_not_found(request)
 
 SERIESAMOMSLAG = {
     # Based on list I got in mail from Thomas E/seriesam <thom@seriesam.com>
