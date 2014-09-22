@@ -40,7 +40,7 @@
       {% if ep.note %}<p class="i note">{{ ep.note }}</p>{% endif %}
       {% origtitle ep.orig_name %}
       {% with ep.ref_keys.all as refs %}
-	{% if refs %}<p class="i">Referenser: {{refs|linklist:"/what/"}}.</p>{% endif %}
+	{% if refs %}<p class="i">Referenser: {{refs|linklist}}.</p>{% endif %}
       {% endwith %}
       {%with ep.by as by%}{%if by%}
       <p class="i">{%for r, ccs in ep.by%}

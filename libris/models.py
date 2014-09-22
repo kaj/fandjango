@@ -83,6 +83,10 @@ class RefKey(models.Model):
         '''Get a hyperlink to page for this reference.'''
         if self.kind=='F':
             return u'/fa/%s' % (self.slug)
+        elif self.kind=='P':
+            return u'/who/%s' % (self.slug)
+        elif self.kind=='T':
+            return u'/%s' % (self.slug)
         else:
             return u'/what/%s' % (self.slug)
     

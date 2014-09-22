@@ -63,7 +63,7 @@
 	{% if x.article.ref_keys.all %}
 	<p class="i">Referenser:
 	  {% for r in x.article.ref_keys.all %}
-	  <a href="/what/{{r.slug}}">{{r}}</a>{% if not forloop.last %}, {% endif %}{% endfor %}.
+	  <a href="{{r.get_absolute_url}}">{{r}}</a>{% if not forloop.last %}, {% endif %}{% endfor %}.
 	</p>
 	{% endif %}
       </div>
