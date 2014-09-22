@@ -12,7 +12,7 @@
       {% if not frontpage %}
         <p class="topnav"><a href="/">Rasmus Fantomenindex</a>:</p>
       {% endif %}
-      <h1>{{pagetitle}}</h1>
+      <h1>{%block pagetitle%}{{pagetitle}}{%endblock%}</h1>
       {% block headextra %}{% endblock %}
     </div>
     {% block maincontent %}

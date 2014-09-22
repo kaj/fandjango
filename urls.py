@@ -1,4 +1,5 @@
 from django.conf.urls import patterns, include, url
+from django.conf import settings
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -22,3 +23,6 @@ urlpatterns = patterns('',
 
 from libris.views import redirectold
 handler404 = redirectold
+
+if settings.DEBUG:
+    urlpatterns += patterns('', url('\+404', handler404))

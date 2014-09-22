@@ -1,8 +1,21 @@
 {% extends "base.html" %}
 {% load libris_extras %}
 
+{% block title %}404: Du hittar inte Fantomen ...{% endblock %}
+
+{% block pagetitle %}
+Du hittar inte Fantomen
+<em style="white-space: nowrap">... han hittar dig!</em>
+{% endblock %}
+
 {% block maincontent %}
-    <div class="main">
-      <p>En snäll och hjälpsam text här vore bra.</p>
-    </div>
+<div class="main">
+  <h2>Vad göra?</h2>
+  <div class="article">
+    <p>Antingen kan du <a href="/">gå tillbaks till fantomenindexets
+        förstasida</a> och leta, eller så kan du helt enkelt gå ut i
+      djungeln och ropa efter
+      <a href="mailto:rasmus@krats.se">rasmus@krats.se</a>.</p>
+  </div>
+</div>
 {% endblock %}
