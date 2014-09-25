@@ -1,12 +1,38 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-from django.core.management import setup_environ
-import settings # Assumed to be in the same directory.
-setup_environ(settings)
-
+from django.conf import settings
+from django.core.management.base import BaseCommand
 from libris.models import *
 from xml.dom.minidom import parse
 from minixpath import *
+from os import path
+from optparse import make_option
+
+class Command(BaseCommand):
+    help = 'Find and read data files'
+
+    option_list = BaseCommand.option_list + (
+        make_option('--dir', help='Directory to read data from',
+                    dest='dir'),
+        )
+
+    def handle(self, *args, **options):
+        dir = options.get('dir') or '../fantomen'
+        years = args or range(1950, 2015)
+        for year in years:
+            file = path.join(dir, '%s.data' % year)
+            if path.exists(file):
+                print "Should read from", file
+                read_data_file(file)
+            else:
+                print "No such file: %s" % file
+        # Clean up stray data
+        Article.objects.filter(publication=None).delete()
+        Episode.objects.filter(publication=None).delete()
+        kh = RefKey.FA('22')
+        k = RefKey.FA('22.1')
+        h = RefKey.FA('22.2')
+        for e in kh.episode_set.all():
+            e.ref_keys = set.union({k, h}, e.ref_keys.all())
+        kh.delete()
 
 def getBestPlac(elem):
     bestElem = evaluate(elem, '/best')
@@ -20,12 +46,24 @@ def read_data_file(filename):
     year = getText(evaluate(dom, "/libris/info/year")[0]);
     for issueElement in evaluate(dom, "/libris/issue"):
         coverElem = evaluate(issueElement, '/omslag')
+        pages = issueElement.getAttribute('pages') or None
+        price =  issueElement.getAttribute('price') or None
+        cover_best = getBestPlac(coverElem[0]) if coverElem else 0
+        print "%s sidor, pris %s" % (pages, price)
+        nrattr = issueElement.getAttribute("nr")
         issue, issue_is_new = Issue.objects.get_or_create(
             year=year,
-            number=issueElement.getAttribute("nr"),
-            defaults={'pages': issueElement.getAttribute('pages') or None,
-                      'price': issueElement.getAttribute('price') or None,
-                      'cover_best': getBestPlac(coverElem[0]) if coverElem else 0})
+            number=issueNr(nrattr),
+            defaults={'pages': pages, 'price': price, 'numberStr': nrattr,
+                      'cover_best': cover_best})
+        if not issue_is_new:
+            issue.pages = pages
+            issue.price =  price
+            issue.cover_best = cover_best
+            issue.numberStr=nrattr
+            issue.save()
+        # Purge before creating new content
+        issue.publication_set.all().delete()
         ordno = 0;
         print "Found issue:", issue
         for item in issueElement.childNodes:
@@ -62,12 +100,12 @@ def read_data_file(filename):
                                       part_no=part_no, part_name=part_name)
                     episode.save() # get an id
                     is_new_episode = True
-                episode.teaser = episode.teaser or \
-                    getText(*evaluate(item, "/teaser"))
-                episode.note = episode.note or \
-                    getText(*evaluate(item, "/note"))
-                episode.copyright = episode.copyright or \
-                    getText(*evaluate(item, '/copyright'))
+                episode.teaser = getText(*evaluate(item, "/teaser")) or \
+                                 episode.teaser
+                episode.note = getText(*evaluate(item, "/note")) or \
+                               episode.note
+                episode.copyright = getText(*evaluate(item, '/copyright')) or \
+                                    episode.copyright
                 
                 origNameElem = evaluate(item, '/episode[@role ="orig"]')
                 if origNameElem and not episode.orig_name:
@@ -77,7 +115,7 @@ def read_data_file(filename):
                         title=getText(origNameElem[0]),
                         language=origNameElem[0].getAttribute("xml:lang"))
                 elif origNameElem:
-                    print "FOUND ORIGNAME", ', '.join(origNameElem), "ignoring it."
+                    print "FOUND ORIGNAME", origNameElem, "ignoring it."
                     
                 stripElem = evaluate(item, '/daystrip')
                 if stripElem:
@@ -120,7 +158,7 @@ def read_data_file(filename):
                             best_plac=getBestPlac(item)).save()
                 prevFaElem = evaluate(item, "/prevpub[fa!='']")
                 for e in prevFaElem:
-                    fa = getText(evaluate(e, "/fa")[0])
+                    fa = issueNr(getText(evaluate(e, "/fa")[0]))
                     y = getText(evaluate(e, "/year")[0])
                     i = Issue.objects.get_or_create(year=y, 
                                                     number=fa)[0]
@@ -141,6 +179,10 @@ def read_data_file(filename):
             else:
                 print 'Element', item.tagName
     dom.unlink()
+
+def issueNr(nrstr):
+    '''Dubbelnummer 2-3 och prevpub i delar 2/3/4 representeras av 2.'''
+    return int(nrstr.split('-',1)[0].split('/',1)[0].split(', ',1)[0])
 
 def getByWho(byElem):
     whoElem = evaluate(byElem, "/who")
@@ -165,8 +207,3 @@ def getRefKeys(item):
     else:
         return set()
 
-if __name__ == "__main__":
-    from sys import argv
-    for f in argv[1:]:
-        print 'Read data from', f
-        read_data_file(f)

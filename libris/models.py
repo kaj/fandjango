@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from autoslug.fields import AutoSlugField
 from django.db import models
-from fandjango.libris.alias import name_alias
-from fandjango.libris.util import makeslug
+from libris.alias import name_alias
+from libris.util import makeslug
 
 class Creator(models.Model):
     '''A person who takes part in creating the comics and/or texts.'''
@@ -25,6 +25,9 @@ class Issue(models.Model):
     '''A single issue'''
     year = models.PositiveSmallIntegerField()
     number = models.PositiveSmallIntegerField()
+    numberStr = models.CharField(
+        max_length=5,
+        help_text='number in char form, or e.g. "19-20" for double.')
     pages = models.PositiveSmallIntegerField(null=True, blank=True)
     price = models.DecimalField(max_digits=5, decimal_places=2,
                                 null=True, blank=True)
@@ -39,7 +42,7 @@ class Issue(models.Model):
         unique_together = ('year', 'number')
     
     def __unicode__(self):
-        return u'Fa %s %s' % (self.number, self.year)
+        return u'Fa %s %s' % (self.numberStr, self.year)
 
 class Title(models.Model):
     '''A (reocurring) title'''
@@ -66,13 +69,13 @@ class RefKey(models.Model):
         ('P', 'Real-life person (artist, writer, etc)'),
         ('X', 'In-story object'),
         )
-    title = models.CharField(max_length=200, unique=True)
+    title = models.CharField(max_length=200)
     kind = models.CharField(max_length=1, choices=KIND_CHOICES, default='X')
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField()
 
     class Meta:
-        unique_together = ('kind', 'slug')
-        ordering = ('kind', 'slug')
+        unique_together = [('kind', 'slug'), ('kind', 'title')]
+        ordering = ('kind', 'title')
     
     def save(self, **kwargs):
         if not self.slug:
@@ -81,17 +84,38 @@ class RefKey(models.Model):
 
     def get_absolute_url(self):
         '''Get a hyperlink to page for this reference.'''
-        return u'/what/%s' % (self.slug)
+        if self.kind=='F':
+            return u'/fa/%s' % (self.slug)
+        elif self.kind=='P':
+            return u'/who/%s' % (self.slug)
+        elif self.kind=='T':
+            return u'/%s' % (self.slug)
+        else:
+            return u'/what/%s' % (self.slug)
     
     def __unicode__(self):
         return u'%s' % (self.title)
 
+    def shortFa(self):
+        if self.kind=='F' and \
+           self.slug not in ['0', '17.1', '22.1','22.2', '22']:
+            return self.slug
+        else:
+            return self.__unicode__()
+
     @classmethod
     def FA(cls, n):
         n = unicode(n)
-        result, new = cls.objects.get_or_create(title='Den %s:e Fantomen' % n,
-                                                kind='F',
-                                                slug=n)
+        special = {'0': 'Kapten Walker',
+                   '17.1': 'Julie',
+                   '22': 'Kit & Heloise',
+                   '22.1': 'Kit',
+                   '22.2': 'Heloise',
+               }
+        result, new = cls.objects.get_or_create(
+            title=special.get(n) or ('Den %s:e Fantomen' % n),
+            kind='F',
+            slug=n)
         return result
     
     @classmethod
@@ -106,7 +130,16 @@ class RefKey(models.Model):
     
     @classmethod
     def KEY(cls, k):
-        result, new = cls.objects.get_or_create(title=k)
+        if k == u'Julie':
+            return cls.FA('17.1')
+        elif k == u'Kit & Heloise':
+            # To be replaced with both 21.1 and 21.2 somehow
+            return cls.FA('22')
+        elif k == u'Kit':
+            return cls.FA('22.1')
+        elif k == u'Heloise':
+            return cls.FA('22.2')
+        result, new = cls.objects.get_or_create(title=k, kind='X')
         return result
     
 class DaystripRun(models.Model):
@@ -246,8 +279,11 @@ class Publication(models.Model):
         return self.ordno == 4711
     
     def __unicode__(self):
-        return u'%s: %d: %s' % (self.issue, self.ordno,
-                                self.episode or self.article)
+        return u'%s' % self.issue
+
+    def __repr__(self):
+        return repr(u'%s: %d: %s' % (self.issue, self.ordno,
+                                     self.episode or self.article))
 
     class Meta:
         ordering = ('issue', 'ordno')

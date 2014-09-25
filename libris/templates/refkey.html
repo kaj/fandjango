@@ -1,9 +1,22 @@
 {% extends "base.html" %}
 {% load libris_extras %}
 
+{% block bodyattrs %} class="{{refkey.kind}}_{{refkey.slug}}"{% endblock %}
+
+{% block headextra %}
+  {% if phantoms %}
+  <p>Fantomenätten:
+  {% for p in phantoms %}
+    {% if p == refkey %}<strong>{{p.shortFa}}</strong>{% else %}
+    <a href="{{p.get_absolute_url}}">{{p.shortFa}}</a>{% endif %},
+  {% endfor %}
+  </p>
+  {% endif %}
+{% endblock %}
+
 {% block maincontent %}
   {% if articles %}
-  <div class="refMain">
+  <div class="main readmore">
     <h2>Läs mer</h2>
     {% for article in articles %}
     <div class="article">
@@ -14,7 +27,7 @@
   </div>
   {% endif %}
 
-  <div class="refMain">
+  <div class="main">
     <h2>Relaterade episoder</h2>
     
   {% for ep in episodes %}
@@ -24,14 +37,14 @@
       {% if ep.note %}<p class="i note">{{ ep.note }}</p>{% endif %}
       {% origtitle ep.orig_name %}
       {% with ep.ref_keys.all as keys %}
-	{% if keys %}<p class="i">Referenser: {{keys|linklist:"/what/"}}.</p>{% endif %}
+	{% if keys %}<p class="i">Referenser: {{keys|linklist}}.</p>{% endif %}
       {% endwith %}
       {%with ep.by as by%}{%if by%}
       <p class="i">{%for r, ccs in ep.by%}
 	{{r}} {%for slug, name in ccs%}{%if not forloop.first%}{%if forloop.last%} &amp; {%else%}, {%endif%}{%endif%}<a href="/who/{{slug}}">{{name}}</a>{%endfor%}{%if not forloop.last%}, {%endif%}{%endfor%}.</p>
       {%endif%}{%endwith%}
       {% with ep.publication_set.all as pub %}
-	{% if pub %}<p class="i">Publicerad i {{pub|linklist}}.</p>{% endif %}
+	{% if pub %}<p class="i pub">Publicerad i {{pub|linklist}}.</p>{% endif %}
       {% endwith %}
       {% if ep.copyright %}
         <p class="i copyright">Copyright {{ep.copyright}}</p>

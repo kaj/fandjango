@@ -1,4 +1,4 @@
-from fandjango.libris.models import *
+from libris.models import *
 from django.contrib import admin
 
 class PublicationInIssue(admin.TabularInline):

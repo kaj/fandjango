@@ -1,18 +1,36 @@
 {% extends "base.html" %}
 {% load libris_extras %}
 
-{% block extranav %}
- ...
+{% block bodyattrs %} class="year{{year}}"{% endblock %}
+
+{% block headextra %}
+ <p>Närbelägna år:
  {% for y in navyears %}
-     <a href="{{y}}">{{y}}</a>
-     ...
- {% endfor %}
+ {% if y == year %}<strong>{{y}}</strong>{% else %}
+  <a href="{{y}}">{{y}}</a>{% endif %}{% if forloop.last %} ...{% else %}, {% endif %}
+ {% endfor %}</p>
 {% endblock %}
 
 {% block maincontent %}
     {% for issue in issues %}
     <div class="issue" id="i{{issue.number}}">
-      <h2>Nummer {{issue.number}}</h2>
+      <h2>Nummer {{issue.numberStr}}</h2>
+      {% if issue.pages %}<p class="price">{{issue.pages}} sidor</p>{% endif %}
+      {% if issue.price %}<p class="pages">pris {{issue.price}}</p>{% endif %}
+      <p class="cover{%if issue.omslagurl%} withimg{%endif%}">
+      {% if issue.omslagurl %}
+        <img src="{{issue.omslagurl}}" alt=""/>
+      {% endif %}
+        {%with issue.cover_by.all as by%}{%if by%}
+        <span class="by">Omslag av
+          {%for artist in by%}{%if not forloop.first%}{%if forloop.last%} &amp;{%else%},{%endif%}{%endif%}
+          <a href="/who/{{artist.slug}}">{{artist}}</a>{%endfor%}.</span>
+        {%endif%}{%endwith%}
+        {%if issue.cover_best%}
+        <span class="bestcover">Nr {{issue.cover_best}} i bästa omslag.</span>
+        {%endif%}
+      </p>
+
       {% for x in issue.contents %}
       {% with x.episode as ep %}{% if ep %}
       <div class="episode">
@@ -28,7 +46,7 @@
 	    {{r}} {%for slug, name in ccs%}{%if not forloop.first%}{%if forloop.last%} &amp; {%else%}, {%endif%}{%endif%}<a href="/who/{{slug}}">{{name}}</a>{%endfor%}{%if not forloop.last%}, {%endif%}{%endfor%}.</p>
 	{%endif%}{%endwith%}
 	{% with ep.otherpub as pub %}
-	  {% if pub %}<p class="i">Även publicerad i {{pub|linklist}}.</p>{% endif %}
+	  {% if pub %}<p class="i pub">Även publicerad i {{pub|linklist}}.</p>{% endif %}
 	{% endwith %}
 	{% if ep.copyright %}
 	  <p class="i copyright">Copyright {{ep.copyright}}</p>
@@ -45,7 +63,7 @@
 	{% if x.article.ref_keys.all %}
 	<p class="i">Referenser:
 	  {% for r in x.article.ref_keys.all %}
-	  <a href="/what/{{r.slug}}">{{r}}</a>{% if not forloop.last %}, {% endif %}{% endfor %}.
+	  <a href="{{r.get_absolute_url}}">{{r}}</a>{% if not forloop.last %}, {% endif %}{% endfor %}.
 	</p>
 	{% endif %}
       </div>

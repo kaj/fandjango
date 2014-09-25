@@ -1,0 +1,7 @@
+*~
+*.pyc
+
+/settings/local.py
+/static/
+/ve/
+/dump/

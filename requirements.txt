@@ -1,0 +1,5 @@
+# Required python packages for fandjango
+# Can be installed py "pip install -r requirements.txt"
+
+Django >= 1.7
+django-autoslug

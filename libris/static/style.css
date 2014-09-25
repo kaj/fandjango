@@ -1,0 +1,214 @@
+body {
+    background-color: #612ca4;
+    background-image: repeating-linear-gradient(132deg, transparent, transparent 2em, rgba(255,255,255,.1) 2em, rgba(255,255,255,.1) 4em);
+    margin: 0;
+    padding: 0;
+    color: black;
+}
+
+.main.head p.topnav {
+    margin-top: .5em;
+    font-style: italic;
+    font-size: 90%;
+}
+.main.head h1 {
+    margin: .5rem .5rem 1rem;
+    padding: 0;
+}
+h2, h3 { font-family: sans-serif; margin: 1em 0 0 0; }
+h3 { font-weight: normal; }
+.main, .issue, .titleMain {
+    border: solid 1px black;
+    background-color: white;
+    background-color: rgba(255,255,255,0.5);
+    margin: 1rem auto; 
+    padding: 0;
+    width: 95%;
+    max-width: 60rem;
+    border-radius: .6em;
+    box-shadow: .2em .4em .8em rgba(0, 0, 0, 0.2);
+    overflow: auto;
+}
+.main.head {
+    text-shadow: .2rem .1rem .3rem white;
+}
+.main.head p {
+    margin: 0 .5rem .8rem;
+}
+@media (min-width: 480px) {
+.main.head {
+    min-height: 130px;
+    background-image: url(fa-lindahl-9915.png);
+    background-position: 100% 100%;
+    background-repeat: no-repeat;
+    position: relative;
+}
+.main.head:after {
+    font-style: italic; font-size: 60%; line-height: 1em;
+    content: "Vinjettbild: Hans Lindahl, ur Guldmakaren, Fa 15, 1999.";
+    display: block; position: absolute; bottom: 2px; right: 174px;
+}
+.main.head h1, .main.head p {
+    margin-right: 210px;
+}
+.year1987 .main.head, .year2002 .main.head, .who_donne_avenell .main.head {
+  min-height: 160px;
+  background-image: url(fa-bade-8719.png);
+  background-position: 100% 90%;
+}
+.year1987 .main.head:after, .year2002 .main.head:after, .who_donne_avenell .main.head:after {
+  content: "Vinjettbild: Heiner Bade, ur Sp\00f6kpiraten, Fa 19, 1987.";
+  right: 140px;
+}
+.who_stan_lynde .main.head, .t_rick_oshay .main.head, .year1973 .main.head {
+   min-height: 165px;
+   background-image: url(rick_lilly.png);
+}
+.who_stan_lynde .main.head:after, .t_rick_oshay .main.head:after, .year1973 .main.head:after {
+  content: "Vinjettbild: Rick O'Shay och Lily the Kid av Stan Lynde";
+}
+.X_rodskagg .main.head, .X_djungelpatrullen .main.head, .year2007 .main.head,
+.who_heiner_bade .main.head, .who_david_bishop .main.head {
+  background-image: url(fa-bade-rodskagg-0720.png);
+  background-position: 100% 100%;
+}
+.X_rodskagg .main.head:after, .X_djungelpatrullen .main.head:after,
+.year2007 .main.head:after,
+.who_heiner_bade .main.head:after, .who_david_bishop .main.head:after {
+  content: "Vinjettbild: l\00f6jtnant R\00f6\0064sk\00e4gg, av Heiner Bade ur Dj\00e4vulens kyss, Fa 20, 2007.";
+  right: 77px;
+}
+}
+.main.footer {
+    border: 0;
+}
+.main.footer hr { display: none; }
+.main.footer .sc {
+    float: right;
+    margin: .5rem;
+}
+.main.footer .sc img {
+    max-width: 5em;
+    height: auto;
+}
+.main.footer p {
+    margin: .8rem .5rem .8rem .5rem;
+    max-width: 50em;
+}
+.wrapyyfa {
+    width: 95%;
+    max-width: 60em;
+    margin: 0 auto;
+    overflow: hidden;
+}
+.main.yy, .main.fa {
+    width: auto;
+}
+@media (min-width: 45em) {
+    .main.yy, .main.fa {
+        width: 60%;
+        margin: 0 1rem 0 0;
+        float: left;
+    }
+}
+.main.yy { margin-bottom: 1rem; }
+.main.links {
+    width: auto;
+    margin: 0;
+}
+
+.issue h2, .titleMain h2, .main h2 {
+    margin: 0;
+    padding: 0 .5rem;
+    display: inline-block;
+}
+.titleMain .pagination {
+    display: inline-block;
+    margin: 0 0 0 1em;
+}
+.issue .pages, .issue .price, .issue p.cover {
+    display: inline-block;
+    margin: 0 0 0 .5em;
+    font: 80% sans-serif;
+}
+.issue p.cover.withimg {
+    background: none repeat scroll 0 0 #dcd0eb;
+    border-radius: 0.3rem;
+    float: right;
+    margin: 0.5rem;
+    padding: 0.3rem;
+    width: 139px;
+    width: -moz-min-content;
+}
+.issue p.cover span {
+    display: inline-block;
+}
+.issue .episode, .titleMain .episode, .main .episode, .issue .article, .main .article {
+    background: rgba(255,255,255,0.5);
+    margin: .5rem;
+    padding: .2em;
+    border-radius: .3em;
+    border: solid 1px;
+    border-color: rgba(0,0,0,.4) rgba(255,255,255,.3) rgba(255,255,255,.2) rgba(0,0,0,.3);
+}
+.issue .article { color: #444; }
+.episode h3, .article h3 { margin-top: 0; }
+.issue div, .issue p, .episode div, .episode p, .article p { margin: 0.2em 0; }
+.episode p.teaser { font-style: italic; }
+.episode p.i, .article p.i { font: 80% sans-serif; }
+.episode p.i.pub, .episode p.i.copyright { display: inline-block; }
+
+.cloud .w1 { font-size: 64% }
+.cloud .w2 { font-size: 72% }
+.cloud .w3 { font-size: 78% }
+.cloud .w4 { font-size: 84% }
+.cloud .w5 { font-size: 90% }
+.cloud .w6 { font-size: 100% }
+.cloud .w7 { font-size: 110% }
+.cloud .w8 { font-size: 120% }
+.cloud .w9 { font-size: 130% }
+.cloud .w10 { font-size: 140% }
+
+table.titles {
+    background: rgba(255,255,255,0.5);
+    margin: .5rem auto;
+    border-radius: .3em;
+    border: solid 1px;
+    border-color: rgba(0,0,0,.4) rgba(255,255,255,.3) rgba(255,255,255,.2) rgba(0,0,0,.3);
+    border-collapse: collapse;
+    width: 98%;
+}
+table.titles th,
+table.titles td {
+    border: solid 1px rgba(0,0,0,.2);
+    padding: .2em;
+}
+table.titles th:nth-child(1) {
+    text-align: left;
+}
+table.titles td:nth-child(2) {
+    text-align: right;
+    padding-right: 2rem;
+}
+table.titles td:nth-child(n+3) {
+    text-align: center;
+}
+table tr:nth-child(2n) {
+    background: rgba(255,255,255,.2);
+}
+table thead tr,
+table tbody tr:hover {
+    background: rgba(255,255,255,.7);
+}
+table.sortable th {
+    padding-right: 1rem;
+}
+table.sortable th.sorttable_sorted,
+table.sortable th.sorttable_sorted_reverse {
+    padding-right: .2rem;
+}
+.main.readmore .article h3,
+.main.readmore .article p {
+    display: inline-block;
+    margin-right: .5rem;
+}
