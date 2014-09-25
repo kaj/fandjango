@@ -132,7 +132,8 @@ def redirectold(request):
         path = path[:-5]
     if path in ['/who/', '/what/']:
         path = '/'
-    path = re.sub('__+', '_', path) \
+    path = re.sub('^/fa-', '/fa/', path)
+    path = re.sub('__+', '_', path).replace('-', '') \
              .replace('_2_an', '_2an').replace('_o_shay', '_oshay')
     urlconf = getattr(request, 'urlconf', None)
     if (path != request.path_info and
