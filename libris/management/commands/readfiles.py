@@ -49,7 +49,6 @@ def read_data_file(filename):
         pages = issueElement.getAttribute('pages') or None
         price =  issueElement.getAttribute('price') or None
         cover_best = getBestPlac(coverElem[0]) if coverElem else 0
-        print "%s sidor, pris %s" % (pages, price)
         nrattr = issueElement.getAttribute("nr")
         issue, issue_is_new = Issue.objects.get_or_create(
             year=year,
