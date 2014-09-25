@@ -14,7 +14,7 @@
 {% block maincontent %}
     {% for issue in issues %}
     <div class="issue" id="i{{issue.number}}">
-      <h2>Nummer {{issue.number}}</h2>
+      <h2>Nummer {{issue.numberStr}}</h2>
       {% if issue.pages %}<p class="price">{{issue.pages}} sidor</p>{% endif %}
       {% if issue.price %}<p class="pages">pris {{issue.price}}</p>{% endif %}
       <p class="cover{%if issue.omslagurl%} withimg{%endif%}">

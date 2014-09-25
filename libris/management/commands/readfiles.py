@@ -50,14 +50,17 @@ def read_data_file(filename):
         price =  issueElement.getAttribute('price') or None
         cover_best = getBestPlac(coverElem[0]) if coverElem else 0
         print "%s sidor, pris %s" % (pages, price)
+        nrattr = issueElement.getAttribute("nr")
         issue, issue_is_new = Issue.objects.get_or_create(
             year=year,
-            number=issueNr(issueElement.getAttribute("nr")),
-            defaults={'pages': pages, 'price': price, 'cover_best': cover_best})
+            number=issueNr(nrattr),
+            defaults={'pages': pages, 'price': price, 'numberStr': nrattr,
+                      'cover_best': cover_best})
         if not issue_is_new:
             issue.pages = pages
-            price =  price
-            cover_best = cover_best
+            issue.price =  price
+            issue.cover_best = cover_best
+            issue.numberStr=nrattr
             issue.save()
         # Purge before creating new content
         issue.publication_set.all().delete()

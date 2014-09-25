@@ -25,6 +25,9 @@ class Issue(models.Model):
     '''A single issue'''
     year = models.PositiveSmallIntegerField()
     number = models.PositiveSmallIntegerField()
+    numberStr = models.CharField(
+        max_length=5,
+        help_text='number in char form, or e.g. "19-20" for double.')
     pages = models.PositiveSmallIntegerField(null=True, blank=True)
     price = models.DecimalField(max_digits=5, decimal_places=2,
                                 null=True, blank=True)
@@ -39,7 +42,7 @@ class Issue(models.Model):
         unique_together = ('year', 'number')
     
     def __unicode__(self):
-        return u'Fa %s %s' % (self.number, self.year)
+        return u'Fa %s %s' % (self.numberStr, self.year)
 
 class Title(models.Model):
     '''A (reocurring) title'''
