@@ -83,3 +83,5 @@ INSTALLED_APPS = (
 )
 
 STATIC_URL = '/static/'
+
+TEST_RUNNER = 'django.test.runner.DiscoverRunner'
