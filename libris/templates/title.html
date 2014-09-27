@@ -19,6 +19,10 @@
     {% for article in articles %}
     <div class="article">
       <h3>{{article}}</h3>
+      {%with article.creators.all as by%}{%if by%}
+        <p class="i">Av
+          {%for c in by%}{%if not forloop.first%}{%if forloop.last%} &amp; {%else%}, {%endif%}{%endif%}<a href="{{c.get_absolute_url}}">{{c}}</a>{%endfor%}.</p>
+      {%endif%}{%endwith%}
       <p class="i">Publicerad i {{article.publication_set.all|linklist}}.</p>
     </div>
     {% endfor %}
