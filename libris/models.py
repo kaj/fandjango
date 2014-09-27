@@ -258,6 +258,14 @@ class Article(models.Model):
             return u'%s: %s' % (self.title, self.subtitle)
         else:
             return unicode(self.title)
+
+    def by(self):
+        '''Get the creators in [(role, [(slug, name), ...]), ...] format.'''
+        result = {}
+        for r, c in [(p.role, (p.creator.slug, p.alias or p.creator.name))
+                     for p in self.creativepart_set.all()]:
+            result[r] = result.get(r, []) + [c]
+        return [(self.ROLE[r], result[r]) for r in self.ROLES if r in result]
     
 class Publication(models.Model):
     issue = models.ForeignKey(Issue)

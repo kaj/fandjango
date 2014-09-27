@@ -42,7 +42,7 @@
 	  {% if refs %}<p class="i">Referenser: {{refs|linklist}}.</p>{% endif %}
 	{% endwith %}
 	{%with ep.by as by%}{%if by%}
-	  <p class="i">{%for r, ccs in ep.by%}
+	  <p class="i">{%for r, ccs in by%}
 	    {{r}} {%for slug, name in ccs%}{%if not forloop.first%}{%if forloop.last%} &amp; {%else%}, {%endif%}{%endif%}<a href="/who/{{slug}}">{{name}}</a>{%endfor%}{%if not forloop.last%}, {%endif%}{%endfor%}.</p>
 	{%endif%}{%endwith%}
 	{% with ep.otherpub as pub %}
