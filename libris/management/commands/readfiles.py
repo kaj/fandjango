@@ -49,7 +49,6 @@ def read_data_file(filename):
         pages = issueElement.getAttribute('pages') or None
         price =  issueElement.getAttribute('price') or None
         cover_best = getBestPlac(coverElem[0]) if coverElem else 0
-        print "%s sidor, pris %s" % (pages, price)
         nrattr = issueElement.getAttribute("nr")
         issue, issue_is_new = Issue.objects.get_or_create(
             year=year,
@@ -173,7 +172,14 @@ def read_data_file(filename):
                 keys = getRefKeys(item)
                 if keys:
                     article.ref_keys = keys
-                    article.save();
+                creators = evaluate(item, "/by")
+                if creators:
+                    article.creators = [Creator.objects.get_or_create(name=name)[0]
+                                        for name, alias
+                                        in [name_alias(who) for who
+                                            in getByWho(*creators)]]
+                if keys or creators:
+                    article.save()
                 Publication(issue=issue, article=article, ordno=ordno).save()
                 
             else:

@@ -20,13 +20,13 @@ h3 { font-weight: normal; }
 .main, .issue, .titleMain {
     border: solid 1px black;
     background-color: white;
-    background-color: rgba(255,255,255,0.5);
+    background-color: rgba(255,255,255,.5);
     margin: 1rem auto; 
     padding: 0;
     width: 95%;
     max-width: 60rem;
     border-radius: .6em;
-    box-shadow: .2em .4em .8em rgba(0, 0, 0, 0.2);
+    box-shadow: .2em .4em .8em rgba(0,0,0,.2);
     overflow: auto;
 }
 .main.head {
@@ -78,6 +78,14 @@ h3 { font-weight: normal; }
   content: "Vinjettbild: l\00f6jtnant R\00f6\0064sk\00e4gg, av Heiner Bade ur Dj\00e4vulens kyss, Fa 20, 2007.";
   right: 77px;
 }
+.t_spirit .main.head, .who_will_eisner .main.head, .year1982 .main.head {
+  background-image: url(pgell.png);
+}
+.t_spirit .main.head:after, .who_will_eisner .main.head:after,
+.year1982 .main.head:after {
+  content: "Vinjettbild: P'Gell ur Spirit av Will Eisner.";
+  right: 235px;
+}
 }
 .main.footer {
     border: 0;
@@ -119,7 +127,7 @@ h3 { font-weight: normal; }
 
 .issue h2, .titleMain h2, .main h2 {
     margin: 0;
-    padding: 0 .5rem;
+    padding: .2rem .5rem;
     display: inline-block;
 }
 .titleMain .pagination {
@@ -132,28 +140,30 @@ h3 { font-weight: normal; }
     font: 80% sans-serif;
 }
 .issue p.cover.withimg {
-    background: none repeat scroll 0 0 #dcd0eb;
-    border-radius: 0.3rem;
+    background: #e7e0f2;
+    border-radius: .3rem;
     float: right;
-    margin: 0.5rem;
-    padding: 0.3rem;
+    margin: .5rem;
+    padding: .3rem;
+    position: relative;
     width: 139px;
     width: -moz-min-content;
+    z-index: 10;
 }
 .issue p.cover span {
     display: inline-block;
 }
 .issue .episode, .titleMain .episode, .main .episode, .issue .article, .main .article {
-    background: rgba(255,255,255,0.5);
-    margin: .5rem;
-    padding: .2em;
+    background: rgba(255,255,255,.7);
+    margin: 0 .5rem .5rem .5rem;
+    padding: .2em .5em;
     border-radius: .3em;
     border: solid 1px;
-    border-color: rgba(0,0,0,.4) rgba(255,255,255,.3) rgba(255,255,255,.2) rgba(0,0,0,.3);
+    border-color: rgba(0,0,0,.6) rgba(255,255,255,.9) rgba(255,255,255,.8) rgba(0,0,0,.5);
 }
-.issue .article { color: #444; }
+.issue .article { opacity: .7; }
 .episode h3, .article h3 { margin-top: 0; }
-.issue div, .issue p, .episode div, .episode p, .article p { margin: 0.2em 0; }
+.issue div, .issue p, .episode div, .episode p, .article p { margin: .2em 0; }
 .episode p.teaser { font-style: italic; }
 .episode p.i, .article p.i { font: 80% sans-serif; }
 .episode p.i.pub, .episode p.i.copyright { display: inline-block; }
@@ -170,7 +180,7 @@ h3 { font-weight: normal; }
 .cloud .w10 { font-size: 140% }
 
 table.titles {
-    background: rgba(255,255,255,0.5);
+    background: rgba(255,255,255,.5);
     margin: .5rem auto;
     border-radius: .3em;
     border: solid 1px;

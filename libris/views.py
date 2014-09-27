@@ -67,7 +67,17 @@ def getNavYears(year, n=5):
     return years[max(i-n,0):i+n+1]
 
 def year(request, year):
-    issues = get_list_or_404(Issue, year=year)
+    issues = get_list_or_404(
+        Issue.objects \
+        .prefetch_related('publication_set__episode__title') \
+        .prefetch_related('publication_set__episode__orig_name') \
+        .prefetch_related('publication_set__episode__ref_keys') \
+        .prefetch_related('publication_set__episode__creativepart_set__creator') \
+        .prefetch_related('publication_set__episode__publication_set') \
+        .prefetch_related('publication_set__episode__publication_set__issue') \
+        .prefetch_related('publication_set__article__ref_keys') \
+        .prefetch_related('cover_by'),
+        year=year)
     for issue in issues:
         ssnum = int('%d%d' % (issue.year, issue.number))
         if (ssnum in SERIESAMOMSLAG):
@@ -75,7 +85,8 @@ def year(request, year):
         issue.contents = issue.publication_set.all()
         for p in issue.contents:
             if p.episode:
-                p.episode.otherpub = p.episode.publication_set.exclude(issue=issue)
+                p.episode.otherpub = \
+                    [op for op in p.episode.publication_set.all() if op != p]
     return render_to_response('year.html', ctx(year=int(year), issues=issues,
                                                navyears=getNavYears(year),
                                                pagetitle='Fantomen %s' %(year)))
@@ -83,7 +94,12 @@ def year(request, year):
 def title(request, slug, pagesize=200):
     title = get_object_or_404(Title, slug=slug)
     count = title.episode_set.count()
-    episodes = orderEpisodeQuery(title.episode_set).all()
+    episodes = orderEpisodeQuery(title.episode_set) \
+        .select_related('orig_name') \
+        .prefetch_related('creativepart_set__creator') \
+        .prefetch_related('publication_set__issue') \
+        .prefetch_related('ref_keys') \
+        .all()
     key = RefKey.objects.filter(kind='T', slug=slug).first()
     if key:
         articles = key.article_set.all()
@@ -103,8 +119,14 @@ def title(request, slug, pagesize=200):
 
 def refKey(request, slug):
     refkey = get_object_or_404(RefKey, slug=slug)
-    episodes = orderEpisodeQuery(refkey.episode_set).all()
-    articles = refkey.article_set.all()
+    episodes = orderEpisodeQuery(refkey.episode_set) \
+        .select_related('title') \
+        .select_related('orig_name') \
+        .prefetch_related('creativepart_set__creator') \
+        .prefetch_related('publication_set__issue') \
+        .prefetch_related('ref_keys') \
+        .all()
+    articles = refkey.article_set.prefetch_related('publication_set__issue').all()
     return render_to_response('refkey.html', ctx(
         refkey=refkey, episodes=episodes, articles=articles,
         phantoms=allPhantoms() if refkey.kind=='F' else None,
@@ -113,7 +135,13 @@ def refKey(request, slug):
 def creator(request, slug):
     creator = get_object_or_404(Creator, slug=slug)
     q=CreativePart.objects.filter(creator=creator)
-    episodes = orderEpisodeQuery(Episode.objects.filter(creativepart__in=q)).all()
+    episodes = orderEpisodeQuery(Episode.objects.filter(creativepart__in=q)) \
+        .select_related('title') \
+        .select_related('orig_name') \
+        .prefetch_related('creativepart_set__creator') \
+        .prefetch_related('publication_set__issue') \
+        .prefetch_related('ref_keys') \
+        .all()
     key = RefKey.objects.filter(kind='P', slug=slug).first()
     if key:
         articles = key.article_set.all()

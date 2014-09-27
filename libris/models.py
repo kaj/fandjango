@@ -251,6 +251,7 @@ class Article(models.Model):
     title = models.CharField(max_length=200)
     subtitle = models.CharField(max_length=500)
     ref_keys = models.ManyToManyField(RefKey)
+    creators = models.ManyToManyField(Creator)
     note = models.TextField(blank=True)
     
     def __unicode__(self):
@@ -258,6 +259,7 @@ class Article(models.Model):
             return u'%s: %s' % (self.title, self.subtitle)
         else:
             return unicode(self.title)
+
     
 class Publication(models.Model):
     issue = models.ForeignKey(Issue)
