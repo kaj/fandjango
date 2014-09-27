@@ -78,6 +78,14 @@ h3 { font-weight: normal; }
   content: "Vinjettbild: l\00f6jtnant R\00f6\0064sk\00e4gg, av Heiner Bade ur Dj\00e4vulens kyss, Fa 20, 2007.";
   right: 77px;
 }
+.t_spirit .main.head, .who_will_eisner .main.head, .year1982 .main.head {
+  background-image: url(pgell.png);
+}
+.t_spirit .main.head:after, .who_will_eisner .main.head:after,
+.year1982 .main.head:after {
+  content: "Vinjettbild: P'Gell ur Spirit av Will Eisner.";
+  right: 235px;
+}
 }
 .main.footer {
     border: 0;
