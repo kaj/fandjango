@@ -9,6 +9,8 @@
  {% if y == year %}<strong>{{y}}</strong>{% else %}
   <a href="{{y}}">{{y}}</a>{% endif %}{% if forloop.last %} ...{% else %}, {% endif %}
  {% endfor %}</p>
+ <p class="thisyear"><strong>{{year}}:</strong>
+   {%for i in issues%}<span><a href="#i{{i.number}}">{{i.numberStr}}</a>{%if forloop.last%}.{%else%}, {%endif%}</span>{%endfor%}</p>
 {% endblock %}
 
 {% block maincontent %}

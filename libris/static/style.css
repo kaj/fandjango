@@ -222,3 +222,22 @@ table.sortable th.sorttable_sorted_reverse {
     display: inline-block;
     margin-right: .5rem;
 }
+@media (min-width: 70rem) {
+.main.head .thisyear {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    margin: 0;
+    padding: .6rem;
+    width: 5em;
+    width: -moz-min-content;
+    border: solid 1px black;
+    background-color: white;
+    background-color: rgba(255,255,255,.5);
+    border-radius: .6rem 0 0 0;
+    border-width: 1px 0 0 1px;
+}
+.main.head .thisyear span {
+    display: block;
+}
+}
