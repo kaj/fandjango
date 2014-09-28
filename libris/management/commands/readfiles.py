@@ -157,10 +157,11 @@ def read_data_file(filename):
                             best_plac=getBestPlac(item)).save()
                 prevFaElem = evaluate(item, "/prevpub[fa!='']")
                 for e in prevFaElem:
-                    fa = issueNr(getText(evaluate(e, "/fa")[0]))
+                    numberstr = getText(evaluate(e, "/fa")[0])
+                    fa = issueNr(numberstr)
                     y = getText(evaluate(e, "/year")[0])
-                    i = Issue.objects.get_or_create(year=y, 
-                                                    number=fa)[0]
+                    i = Issue.objects.get_or_create(year=y, number=fa,
+                                                    numberStr=numberstr)[0]
                     Publication.objects.get_or_create(episode=episode, issue=i)
                 
                 #print "Serie", episode

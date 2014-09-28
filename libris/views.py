@@ -76,6 +76,7 @@ def year(request, year):
         .prefetch_related('publication_set__episode__publication_set') \
         .prefetch_related('publication_set__episode__publication_set__issue') \
         .prefetch_related('publication_set__article__ref_keys') \
+        .prefetch_related('publication_set__article__creators') \
         .prefetch_related('cover_by'),
         year=year)
     for issue in issues:
@@ -126,7 +127,10 @@ def refKey(request, slug):
         .prefetch_related('publication_set__issue') \
         .prefetch_related('ref_keys') \
         .all()
-    articles = refkey.article_set.prefetch_related('publication_set__issue').all()
+    articles = refkey.article_set \
+        .prefetch_related('publication_set__issue') \
+        .prefetch_related('creators') \
+        .all()
     return render_to_response('refkey.html', ctx(
         refkey=refkey, episodes=episodes, articles=articles,
         phantoms=allPhantoms() if refkey.kind=='F' else None,
