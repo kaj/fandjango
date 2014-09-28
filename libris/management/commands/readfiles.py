@@ -157,11 +157,10 @@ def read_data_file(filename):
                             best_plac=getBestPlac(item)).save()
                 prevFaElem = evaluate(item, "/prevpub[fa!='']")
                 for e in prevFaElem:
-                    numberstr = getText(evaluate(e, "/fa")[0])
-                    fa = issueNr(numberstr)
+                    fa, fastr = issueNrStr(getText(evaluate(e, "/fa")[0]))
                     y = getText(evaluate(e, "/year")[0])
                     i = Issue.objects.get_or_create(year=y, number=fa,
-                                                    numberStr=numberstr)[0]
+                                                    numberStr=fastr)[0]
                     Publication.objects.get_or_create(episode=episode, issue=i)
                 
                 #print "Serie", episode
@@ -186,6 +185,10 @@ def read_data_file(filename):
             else:
                 print 'Element', item.tagName
     dom.unlink()
+
+def issueNrStr(nrstr):
+    t = nrstr.split('/', 1)[0].split(', ', 1)[0]
+    return (int(t.split('-', 1)[0]), t)
 
 def issueNr(nrstr):
     '''Dubbelnummer 2-3 och prevpub i delar 2/3/4 representeras av 2.'''
