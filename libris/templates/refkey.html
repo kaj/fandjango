@@ -26,6 +26,7 @@
           {%for c in by%}{%if not forloop.first%}{%if forloop.last%} &amp; {%else%}, {%endif%}{%endif%}<a href="{{c.get_absolute_url}}">{{c}}</a>{%endfor%}.</p>
       {%endif%}{%endwith%}
       <p class="i">Publicerad i {{article.publication_set.all|linklist}}.</p>
+      {%if article.note%}<p class="i note">{{article.note}}</p>{%endif%}
     </div>
     {% endfor %}
   </div>

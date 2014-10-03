@@ -62,6 +62,7 @@
       {% if x.article %}
       <div class="article">
 	<h3>{{x.article.title}}{% if x.article.subtitle %}: {{x.article.subtitle}}{% endif %}</h3>
+	{%if x.article.note%}<p class="i note">{{x.article.note}}</p>{%endif%}
 	{% if x.article.ref_keys.all %}
 	<p class="i">Referenser:
 	  {% for r in x.article.ref_keys.all %}
