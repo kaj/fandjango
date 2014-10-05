@@ -17,6 +17,7 @@
       <p class="i">Publicerad i
 	{% for i in article.publication_set.all %}
 	<a href="/{{i.issue.year}}#i{{i.issue.number}}">{{i.issue}}</a>{% endfor %}.</p>
+      {%if article.note%}<p class="i note">{{article.note}}</p>{%endif%}
     </div>
     {% endfor %}
   </div>

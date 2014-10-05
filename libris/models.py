@@ -177,8 +177,6 @@ class Episode(models.Model):
     title = models.ForeignKey(Title)
     episode = models.CharField(max_length=200)
     orig_name = models.ForeignKey(ForeignName, blank=True, null=True)
-    part_no = models.PositiveSmallIntegerField(blank=True, null=True)
-    part_name = models.CharField(max_length=200, blank=True)
     teaser = models.TextField(blank=True)
     note = models.TextField(blank=True)
     ref_keys = models.ManyToManyField(RefKey, blank=True)
@@ -211,11 +209,10 @@ class Episode(models.Model):
         return [(self.ROLE[r], result[r]) for r in self.ROLES if r in result]
     
     def __unicode__(self):
-        if self.part_no:
-            return u'%s: %s del %s: %s' % (self.title, self.episode,
-                                           self.part_no, self.part_name)
-        else:
+        if self.episode:
             return u'%s: %s' % (self.title, self.episode)
+        else:
+            return u'%s' % self.title
 
 class CreativePart(models.Model):
     episode = models.ForeignKey(Episode)
@@ -270,6 +267,8 @@ class Publication(models.Model):
     best_plac = models.PositiveSmallIntegerField(
         blank=True, default=0,
         help_text='Position of this episode in yearly competition.')
+    part_no = models.PositiveSmallIntegerField(blank=True, null=True)
+    part_name = models.CharField(max_length=200, blank=True)
     
     article = models.ForeignKey(Article, null=True, blank=True)
     
@@ -280,6 +279,9 @@ class Publication(models.Model):
     def is_prev_only(self):
         return self.ordno == 4711
     
+    def begins(self):
+        return self.part_no is None or self.part_no == 1
+
     def __unicode__(self):
         return u'%s' % self.issue
 
@@ -288,5 +290,5 @@ class Publication(models.Model):
                                      self.episode or self.article))
 
     class Meta:
-        ordering = ('issue', 'ordno')
+        ordering = ('issue__year', 'issue__number', 'ordno')
         unique_together = ('issue', 'episode', 'article')

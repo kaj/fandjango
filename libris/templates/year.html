@@ -36,8 +36,8 @@
       {% for x in issue.contents %}
       {% with x.episode as ep %}{% if ep %}
       <div class="episode">
-	<h3><strong><a href="/{{ep.title.slug}}">{{ep.title}}</a>{%if ep.episode%}: {{ep.episode}}{%endif%}</strong>{%if ep.part_no%} del {{ep.part_no}}{%endif%}{%if ep.part_name%}: {{ep.part_name}}{%endif%}</h3>
-	{% if ep.teaser %}<p class="teaser">{{ep.teaser}}</p>{% endif %}
+	<h3><strong><a href="/{{ep.title.slug}}">{{ep.title}}</a>{%if ep.episode%}: {{ep.episode}}{%endif%}</strong>{%if x.part_no%} del {{x.part_no}}{%endif%}{%if x.part_name%}: {{x.part_name}}{%endif%}</h3>
+	{%if ep.teaser and x.begins %}<p class="teaser">{{ep.teaser}}</p>{% endif %}
 	{% if ep.note %}<p class="i note">{{ ep.note }}</p>{% endif %}
 	{% origtitle ep.orig_name %}
 	{% with ep.ref_keys.all as refs %}
@@ -47,8 +47,8 @@
 	  <p class="i">{%for r, ccs in by%}
 	    {{r}} {%for slug, name in ccs%}{%if not forloop.first%}{%if forloop.last%} &amp; {%else%}, {%endif%}{%endif%}<a href="/who/{{slug}}">{{name}}</a>{%endfor%}{%if not forloop.last%}, {%endif%}{%endfor%}.</p>
 	{%endif%}{%endwith%}
-	{% with ep.otherpub as pub %}
-	  {% if pub %}<p class="i pub">Även publicerad i {{pub|linklist}}.</p>{% endif %}
+	{% with x.otherpub as pub %}
+	  {% if pub %}<p class="i pub">Även i {{pub|linklist}}.</p>{% endif %}
 	{% endwith %}
 	{% if ep.copyright %}
 	  <p class="i copyright">Copyright {{ep.copyright}}</p>
@@ -62,6 +62,7 @@
       {% if x.article %}
       <div class="article">
 	<h3>{{x.article.title}}{% if x.article.subtitle %}: {{x.article.subtitle}}{% endif %}</h3>
+	{%if x.article.note%}<p class="i note">{{x.article.note}}</p>{%endif%}
 	{% if x.article.ref_keys.all %}
 	<p class="i">Referenser:
 	  {% for r in x.article.ref_keys.all %}
