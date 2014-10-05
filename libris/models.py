@@ -290,5 +290,5 @@ class Publication(models.Model):
                                      self.episode or self.article))
 
     class Meta:
-        ordering = ('issue', 'ordno')
+        ordering = ('issue__year', 'issue__number', 'ordno')
         unique_together = ('issue', 'episode', 'article')
