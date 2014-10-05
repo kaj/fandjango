@@ -90,15 +90,8 @@ def read_data_file(filename):
                     if no:
                         part_no = no
                     part_name = getText(partElem[0]);
-                if episodename or part_no or part_name:
-                    episode, is_new_episode = Episode.objects.get_or_create(
-                        title=title, episode=episodename,
-                        part_no=part_no, part_name=part_name)
-                else:
-                    episode = Episode(title=title, episode=episodename,
-                                      part_no=part_no, part_name=part_name)
-                    episode.save() # get an id
-                    is_new_episode = True
+                episode, is_new_episode = Episode.objects.get_or_create(
+                    title=title, episode=episodename)
                 episode.teaser = getText(*evaluate(item, "/teaser")) or \
                                  episode.teaser
                 episode.note = getText(*evaluate(item, "/note")) or \
@@ -154,6 +147,7 @@ def read_data_file(filename):
                 episode.save();
                 Publication(issue=issue, episode=episode, ordno=ordno,
                             label=getText(*evaluate(item, "/label")) or '',
+                            part_no=part_no, part_name=part_name,
                             best_plac=getBestPlac(item)).save()
                 prevFaElem = evaluate(item, "/prevpub[fa!='']")
                 for e in prevFaElem:

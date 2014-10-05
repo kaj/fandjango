@@ -13,7 +13,18 @@ def link(value, linkbase='', autoescape=None):
         url = value.get_absolute_url()
     else:
         url = linkbase + value.slug
-    return mark_safe(u'<a href="%s">%s</a>' % (url, esc(value)))
+    if 'part_no' in dir(value) and 'part_name' in dir(value):
+        if value.part_no and value.part_name:
+            extra = ' (del %d: %s)' % (value.part_no, value.part_name)
+        elif value.part_no:
+            extra = ' (del %d)' % value.part_no
+        elif value.part_name:
+            extra = ' (%s)' % value.part_name
+        else:
+            extra = ''
+    else:
+        extra = ''
+    return mark_safe(u'<a href="%s">%s</a>%s' % (url, esc(value), esc(extra)))
 
 @register.filter
 def linklist(value, linkbase='', autoescape=None):

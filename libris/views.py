@@ -86,8 +86,8 @@ def year(request, year):
         issue.contents = issue.publication_set.all()
         for p in issue.contents:
             if p.episode:
-                p.episode.otherpub = \
-                    [op for op in p.episode.publication_set.all() if op != p]
+                p.otherpub = [op for op in p.episode.publication_set.all()
+                              if op.issue != issue]
     return render_to_response('year.html', ctx(year=int(year), issues=issues,
                                                navyears=getNavYears(year),
                                                pagetitle='Fantomen %s' %(year)))
