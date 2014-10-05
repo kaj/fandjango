@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block headextra %}
+  <p>Du kan sortera listan i bokstavsordning, efter antal
+  publicerade episoder, första eller senaste publiceringsår.</p>
+{% endblock %}
+
+{% block maincontent %}
+  <script type="text/javascript" src="/static/sorttable.js" async></script>
+  <div class="main">
+    <table class="titles sortable">
+      <thead><tr><th>Namn<th>Antal<th>Först<th>Senast</tr></thead>
+      <tbody>{%for i in items%}
+	<tr><td><a href="{{i.slug}}">{{i}}</a>
+	<td>{{i.count}}<td>{{i.first}}<td>{{i.latest}}</tr>{%endfor%}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

@@ -1,3 +1,4 @@
+# -*- encoding: utf-8; -*-
 from django.core import urlresolvers
 from django.db.models import Count, Min, Max, Avg
 from django.http import HttpResponsePermanentRedirect
@@ -28,17 +29,16 @@ def allPhantoms():
 
 def index(request):
     years = Issue.objects.order_by('year').distinct().values_list('year', flat=True)
-    titles = Title.objects.order_by('title').annotate(Count('episode')) \
-            .filter(episode__count__gt=1).all()
-    refs = RefKey.objects.order_by('title').filter(kind='X').annotate(Count('episode')).all()
-    people = Creator.objects.order_by('name').annotate(Count('creativepart')).all()
-    def weighted(tags, key):
-        counts = sorted(tag.__getattribute__(key) for tag in tags)
+    titles = Title.objects.order_by('title')
+    refs = RefKey.objects.order_by('title').filter(kind='X')
+    people = Creator.objects.order_by('name')
+    def weighted(items, key, limit=1):
+        items = items.annotate(cnt=Count(key)).filter(cnt__gt=limit).all()
+        counts = sorted(item.cnt for item in items)
         n = len(counts)
-        for tag in tags:
-            tag.weight = int(round(
-                pow(10, float(counts.index(tag.__getattribute__(key))) / n)))
-        return tags
+        for i in items:
+            i.weight = int(round(pow(10, float(counts.index(i.cnt)) / n)))
+        return items
 
     return render_to_response('index.html', {
         'frontpage': True,
@@ -46,19 +46,19 @@ def index(request):
         'n_issues': Issue.objects.filter(publication__ordno__lt=4711).distinct().count(),
         'years': years,
         'phantoms': allPhantoms(),
-        'titles': weighted(titles, 'episode__count'),
-        'refs': weighted(refs, 'episode__count'),
-        'people': weighted(people, 'creativepart__count')
+        'titles': weighted(titles, 'episode', 4),
+        'refs': weighted(refs, 'episode', 3),
+        'people': weighted(people, 'creativepart', 10)
     })
 
 def titles(request):
     titles = Title.objects.order_by('title') \
         .annotate(first=Min('episode__publication__issue__year')) \
         .annotate(latest=Max('episode__publication__issue__year')) \
-        .annotate(Count('episode')).all()
-    return render_to_response('titles.html', {
+        .annotate(count=Count('episode')).all()
+    return render_to_response('list.html', {
         'pagetitle': 'Serier i Fantomentidningen',
-        'titles': titles,
+        'items': titles,
     })
 
 def getNavYears(year, n=5):
@@ -136,6 +136,16 @@ def refKey(request, slug):
         phantoms=allPhantoms() if refkey.kind=='F' else None,
         pagetitle=unicode(refkey)))
 
+def refKeys(request):
+    refkeys = RefKey.objects.filter(kind='X').order_by('title') \
+        .annotate(first=Min('episode__publication__issue__year')) \
+        .annotate(latest=Max('episode__publication__issue__year')) \
+        .annotate(count=Count('episode')).all()
+    return render_to_response('list.html', {
+        'pagetitle': u'Personer, platser och företeelser i Fantomens värld',
+        'items': refkeys,
+    })
+
 def creator(request, slug):
     creator = get_object_or_404(Creator, slug=slug)
     q=CreativePart.objects.filter(creator=creator)
@@ -155,6 +165,18 @@ def creator(request, slug):
                                                   episodes=episodes,
                                                   articles=articles,
                                                   pagetitle=unicode(creator)))
+
+def creators(request):
+    # The filter should be removed when cover images are better handled.
+    creators = Creator.objects.order_by('name') \
+      .annotate(first=Min('creativepart__episode__publication__issue__year')) \
+      .annotate(latest=Max('creativepart__episode__publication__issue__year')) \
+      .annotate(count=Count('creativepart__episode')) \
+      .filter(count__gt=0).all()
+    return render_to_response('list.html', {
+        'pagetitle': 'Serieskapare i Fantomentidningen',
+        'items': creators,
+    })
 
 def redirectold(request):
     path = request.path_info.lower()

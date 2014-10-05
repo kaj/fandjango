@@ -134,7 +134,7 @@ h3 { font-weight: normal; }
     display: inline-block;
     margin: 0 0 0 1em;
 }
-.issue .pages, .issue .price, .issue p.cover {
+.main > .fulllist, .issue .pages, .issue .price, .issue p.cover {
     display: inline-block;
     margin: 0 0 0 .5em;
     font: 80% sans-serif;
