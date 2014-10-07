@@ -1,5 +1,6 @@
 # -*- encoding: utf-8; -*-
 from django.core import urlresolvers
+from django.conf import settings
 from django.db.models import Count, Min, Max, Avg
 from django.http import HttpResponse, HttpResponsePermanentRedirect
 from django.shortcuts import render_to_response, get_object_or_404, get_list_or_404
@@ -190,8 +191,8 @@ def redirectold(request):
     if path in ['/who/', '/what/']:
         path = '/'
     path = re.sub('^/fa-', '/fa/', path)
-    path = re.sub('__+', '_', path).replace('-', '') \
-             .replace('_2_an', '_2an').replace('_o_shay', '_oshay')
+    path = re.sub('__+', '_', path).replace('-', '')
+    path = settings.FORWARDS.get(path, path)
     urlconf = getattr(request, 'urlconf', None)
     if (path != request.path_info and
         urlresolvers.is_valid_path(path, urlconf)):
