@@ -1,8 +1,7 @@
-from django.conf.urls import patterns, include, url
 from django.conf import settings
-
-# Uncomment the next two lines to enable the admin:
+from django.conf.urls import patterns, include, url
 from django.contrib import admin
+
 admin.autodiscover()
 
 urlpatterns = patterns('',
@@ -21,6 +20,8 @@ urlpatterns = patterns('',
     (r'^(?P<year>[0-9]{4})$', 'libris.views.year'),
     (r'^(?P<slug>[a-z0-9_]+)$', 'libris.views.title'),
     (r'^$', 'libris.views.index'),
+
+    url(r'^robots\.txt$', 'libris.views.robots'),
 )
 
 from libris.views import redirectold

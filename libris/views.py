@@ -1,7 +1,7 @@
 # -*- encoding: utf-8; -*-
 from django.core import urlresolvers
 from django.db.models import Count, Min, Max, Avg
-from django.http import HttpResponsePermanentRedirect
+from django.http import HttpResponse, HttpResponsePermanentRedirect
 from django.shortcuts import render_to_response, get_object_or_404, get_list_or_404
 from django.views.defaults import page_not_found
 from libris.models import *
@@ -177,6 +177,9 @@ def creators(request):
         'pagetitle': 'Serieskapare i Fantomentidningen',
         'items': creators,
     })
+
+def robots(request):
+    return HttpResponse('', content_type='text/plain')
 
 def redirectold(request):
     path = request.path_info.lower()
