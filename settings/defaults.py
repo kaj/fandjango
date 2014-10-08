@@ -87,6 +87,7 @@ STATIC_URL = '/static/'
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
 FORWARDS = {
+    '/favicon.ico':            '/static/goda-16.png',
     '/rick_o_shay':            '/rick_oshay',
     '/what/christophe_d_errant': '/what/christophe_derrant',
     '/what/julie':             '/fa/17.1',
