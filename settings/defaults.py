@@ -85,3 +85,17 @@ INSTALLED_APPS = (
 STATIC_URL = '/static/'
 
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
+
+FORWARDS = {
+    '/favicon.ico':            '/static/goda-16.png',
+    '/rick_o_shay':            '/rick_oshay',
+    '/what/christophe_d_errant': '/what/christophe_derrant',
+    '/what/julie':             '/fa/17.1',
+    '/what/mystiska_2_an':     '/what/mystiska_2an',
+    '/what/nelson_n_dela':     '/what/nelson_ndela',
+    '/what/rhodiska_urbefolkningens_frihetstrupper': '/what/rba',
+    '/who/arthur_conan_doyle': '/who/sir_arthur_conan_doyle',
+    '/who/mikael_frenneson':   '/who/mikael_frennesson',
+    '/who/sir_a_conan_doyle':  '/who/sir_arthur_conan_doyle',
+    '/who/yves_sente':         '/who/yves_sente',
+}
