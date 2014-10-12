@@ -21,7 +21,8 @@ def ctx(**kwargs):
     
 def orderEpisodeQuery(query):
     '''Take a query for Episodes and make it ordered by first publication.'''
-    return query.annotate(Min('publication__issue__year')).annotate(Min('publication__issue__number')).order_by('publication__issue__number__min').order_by('publication__issue__year__min')
+    return query.annotate(sortno=Min('publication__issue__ordering')) \
+                .order_by('sortno')
 
 def allPhantoms():
     # The Avg annotation is a hack to get 1,2,..,9,10 rather than 1,10,11,..,2
