@@ -166,6 +166,7 @@ h3 { font-weight: normal; }
 .issue div, .issue p, .episode div, .episode p, .article p { margin: .2em 0; }
 .episode p.teaser { font-style: italic; }
 .episode p.i, .article p.i { font: 80% sans-serif; }
+.episode p.i.orig, .episode p.i.strip,
 .episode p.i.pub, .episode p.i.copyright { display: inline-block; }
 
 .cloud .w1 { font-size: 64% }

@@ -44,6 +44,7 @@
       <p class="teaser">{{ep.teaser}}</p>
       {% if ep.note %}<p class="i note">{{ ep.note }}</p>{% endif %}
       {% origtitle ep.orig_name %}
+      {% if ep.daystrip %}<p class="i strip">{{ep.daystrip}}</p>{% endif %}
       {% with ep.ref_keys.all as refs %}
 	{% if refs %}<p class="i">Referenser: {{refs|linklist}}.</p>{% endif %}
       {% endwith %}

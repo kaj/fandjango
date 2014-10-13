@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from autoslug.fields import AutoSlugField
 from django.db import models
+from django.template.defaultfilters import date as filterdate
 from libris.alias import name_alias
 from libris.util import makeslug
 
@@ -153,9 +154,10 @@ class DaystripRun(models.Model):
     is_sundays = models.BooleanField(default=False)
     
     def __unicode__(self):
-        return u'%s %s - %s' % (
+        return u'%s %s - %s.' % (
             u'Söndagssidor' if self.is_sundays else 'Dagstrip',
-            self.fromdate, self.todate)
+            filterdate(self.fromdate, 'j F Y'),
+            filterdate(self.todate, 'j F Y'))
 
 class ForeignName(models.Model):
     """A title (probably the original title) in another language."""
