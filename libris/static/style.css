@@ -163,6 +163,13 @@ h3 { font-weight: normal; }
 }
 .issue .article { opacity: .7; }
 .episode h3, .article h3 { margin-top: 0; }
+.episode h3 .label {
+    font-size: 72%;
+    font-stretch: condensed;
+    font-style: oblique;
+    font-weight: 100;
+    vertical-align: top;
+}
 .issue div, .issue p, .episode div, .episode p, .article p { margin: .2em 0; }
 .episode p.teaser { font-style: italic; }
 .episode p.i, .article p.i { font: 80% sans-serif; }
