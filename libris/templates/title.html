@@ -43,8 +43,6 @@
       <h3>{%if not ep.episode and not ep.part_no and not ep.part_name%}{{ep.title}}{%endif%}{%if ep.episode%}<strong>{{ep.episode}}</strong>{%endif%}{%if ep.part_no%} del {{ep.part_no}}{%endif%}{%if ep.part_name%}: {{ep.part_name}}{%endif%}</h3>
       <p class="teaser">{{ep.teaser}}</p>
       {% if ep.note %}<p class="i note">{{ ep.note }}</p>{% endif %}
-      {% origtitle ep.orig_name %}
-      {% if ep.daystrip %}<p class="i strip">{{ep.daystrip}}</p>{% endif %}
       {% with ep.ref_keys.all as refs %}
 	{% if refs %}<p class="i">Referenser: {{refs|linklist}}.</p>{% endif %}
       {% endwith %}
@@ -52,6 +50,8 @@
       <p class="i">{%for r, ccs in ep.by%}
 	{{r}} {%for slug, name in ccs%}{%if not forloop.first%}{%if forloop.last%} &amp; {%else%}, {%endif%}{%endif%}<a href="/who/{{slug}}">{{name}}</a>{%endfor%}{%if not forloop.last%}, {%endif%}{%endfor%}.</p>
       {%endif%}{%endwith%}
+      {% origtitle ep.orig_name %}
+      {% if ep.daystrip %}<p class="i strip">{{ep.daystrip}}</p>{% endif %}
       {% with ep.publication_set.all as pub %}
 	{% if pub %}<p class="i pub">Publicerad i {{pub|linklist}}.</p>{% endif %}
       {% endwith %}
