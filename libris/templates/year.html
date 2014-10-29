@@ -47,7 +47,8 @@
 	    {{r}} {%for slug, name in ccs%}{%if not forloop.first%}{%if forloop.last%} &amp; {%else%}, {%endif%}{%endif%}<a href="/who/{{slug}}">{{name}}</a>{%endfor%}{%if not forloop.last%}, {%endif%}{%endfor%}.</p>
 	{%endif%}{%endwith%}
 	{% origtitle ep.orig_name %}
-	{% if ep.daystrip %}<p class="i strip">{{ep.daystrip}}</p>{% endif %}
+        {% if ep.firstpub %}<p class="i pub">Först publicerad {{ep.firstpub|date:"j F Y"}}.</p>{% endif %}
+        {% if ep.daystrip %}<p class="i strip">{{ep.daystrip}}</p>{% endif %}
 	{% with x.otherpub as pub %}
 	  {% if pub %}<p class="i pub">Även i {{pub|linklist}}.</p>{% endif %}
 	{% endwith %}
