@@ -36,10 +36,9 @@
       {% for x in issue.contents %}
       {% with x.episode as ep %}{% if ep %}
       <div class="episode">
-	<h3><strong><a href="/{{ep.title.slug}}">{{ep.title}}</a>{%if ep.episode%}: {{ep.episode}}{%endif%}</strong>{%if x.part_no%} del {{x.part_no}}{%endif%}{%if x.part_name%}: {{x.part_name}}{%endif%}</h3>
+	<h3>{%if x.label%}<span class="label">{{x.label}}:</span> {%endif%}<strong><a href="/{{ep.title.slug}}">{{ep.title}}</a>{%if ep.episode%}: {{ep.episode}}{%endif%}</strong>{%if x.part_no%} del {{x.part_no}}{%endif%}{%if x.part_name%}: {{x.part_name}}{%endif%}</h3>
 	{%if ep.teaser and x.begins %}<p class="teaser">{{ep.teaser}}</p>{% endif %}
 	{% if ep.note %}<p class="i note">{{ ep.note }}</p>{% endif %}
-	{% origtitle ep.orig_name %}
 	{% with ep.ref_keys.all as refs %}
 	  {% if refs %}<p class="i">Referenser: {{refs|linklist}}.</p>{% endif %}
 	{% endwith %}
@@ -47,6 +46,9 @@
 	  <p class="i">{%for r, ccs in by%}
 	    {{r}} {%for slug, name in ccs%}{%if not forloop.first%}{%if forloop.last%} &amp; {%else%}, {%endif%}{%endif%}<a href="/who/{{slug}}">{{name}}</a>{%endfor%}{%if not forloop.last%}, {%endif%}{%endfor%}.</p>
 	{%endif%}{%endwith%}
+	{% origtitle ep.orig_name %}
+        {% if ep.firstpub %}<p class="i pub">Först publicerad {{ep.firstpub|date:"j F Y"}}.</p>{% endif %}
+        {% if ep.daystrip %}<p class="i strip">{{ep.daystrip}}</p>{% endif %}
 	{% with x.otherpub as pub %}
 	  {% if pub %}<p class="i pub">Även i {{pub|linklist}}.</p>{% endif %}
 	{% endwith %}

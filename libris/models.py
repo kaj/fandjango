@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from autoslug.fields import AutoSlugField
 from django.db import models
+from django.template.defaultfilters import date as filterdate
 from libris.alias import name_alias
 from libris.util import makeslug
 
@@ -35,12 +36,17 @@ class Issue(models.Model):
     cover_best = models.PositiveSmallIntegerField(
         blank=True, default=0,
         help_text='Position of this cover in yearly competition.')
-                                                  
-    
+    ordering = models.PositiveIntegerField()
+
     class Meta:
-        ordering = ('year', 'number')
+        ordering = ('ordering',)
         unique_together = ('year', 'number')
     
+    def save(self, **kwargs):
+        if not self.ordering:
+            self.ordering = int(self.year) * 100 + int(self.number)
+        models.Model.save(self, kwargs)
+
     def __unicode__(self):
         return u'Fa %s %s' % (self.numberStr, self.year)
 
@@ -148,9 +154,10 @@ class DaystripRun(models.Model):
     is_sundays = models.BooleanField(default=False)
     
     def __unicode__(self):
-        return u'%s %s - %s' % (
+        return u'%s %s - %s.' % (
             u'Söndagssidor' if self.is_sundays else 'Dagstrip',
-            self.fromdate, self.todate)
+            filterdate(self.fromdate, 'j F Y'),
+            filterdate(self.todate, 'j F Y'))
 
 class ForeignName(models.Model):
     """A title (probably the original title) in another language."""
@@ -262,7 +269,7 @@ class Publication(models.Model):
     issue = models.ForeignKey(Issue)
     ordno = models.PositiveSmallIntegerField(default=4711)
     label = models.CharField(max_length=200, blank=True)
-    
+
     episode = models.ForeignKey(Episode, null=True, blank=True)
     best_plac = models.PositiveSmallIntegerField(
         blank=True, default=0,
@@ -290,5 +297,5 @@ class Publication(models.Model):
                                      self.episode or self.article))
 
     class Meta:
-        ordering = ('issue__year', 'issue__number', 'ordno')
+        ordering = ('issue__ordering', 'ordno')
         unique_together = ('issue', 'episode', 'article')

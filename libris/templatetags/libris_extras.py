@@ -34,7 +34,7 @@ linklist.needs_autoescape = True
 @register.simple_tag
 def origtitle(ot):
     if ot:
-        return '<p class="i">Originaltitel: <q lang="%s">%s</q>.</p>' % (
+        return '<p class="i orig">Originaltitel: <q lang="%s">%s</q>.</p>' % (
             ot.language, ot.title)
     else:
         return ''

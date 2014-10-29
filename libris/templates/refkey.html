@@ -40,7 +40,6 @@
       <h3><strong><a href="/{{ep.title.slug}}">{{ep.title}}</a>{%if ep.episode%}: {{ep.episode}}{%endif%}</strong>{%if ep.part_no%} del {{ep.part_no}}{%endif%}{%if ep.part_name%}: {{ep.part_name}}{%endif%}</h3>
       {% if ep.teaser %}<p class="teaser">{{ep.teaser}}</p>{% endif %}
       {% if ep.note %}<p class="i note">{{ ep.note }}</p>{% endif %}
-      {% origtitle ep.orig_name %}
       {% with ep.ref_keys.all as keys %}
 	{% if keys %}<p class="i">Referenser: {{keys|linklist}}.</p>{% endif %}
       {% endwith %}
@@ -48,6 +47,8 @@
       <p class="i">{%for r, ccs in ep.by%}
 	{{r}} {%for slug, name in ccs%}{%if not forloop.first%}{%if forloop.last%} &amp; {%else%}, {%endif%}{%endif%}<a href="/who/{{slug}}">{{name}}</a>{%endfor%}{%if not forloop.last%}, {%endif%}{%endfor%}.</p>
       {%endif%}{%endwith%}
+      {% origtitle ep.orig_name %}
+      {% if ep.daystrip %}<p class="i strip">{{ep.daystrip}}</p>{% endif %}
       {% with ep.publication_set.all as pub %}
 	{% if pub %}<p class="i pub">Publicerad i {{pub|linklist}}.</p>{% endif %}
       {% endwith %}

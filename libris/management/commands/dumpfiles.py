@@ -96,9 +96,8 @@ def xmlEpisode(doc, pub):
         px.setAttribute('role', 'orig')
         px.appendChild(elem('date')).appendChild(text(unicode(episode.firstpub)))
         
-    for ppub in episode.publication_set.filter(
-        Q(issue__year__lt=issue.year)
-        or (Q(issue__year=issue.year) and Q(issue__number__lt=issue.number))):
+    for ppub in episode.publication_set \
+                       .filter(issue__ordering__lt=issue.ordering):
         px = i.appendChild(elem('prevpub'))
         px.appendChild(elem('fa')).appendChild(text(unicode(ppub.issue.number)))
         px.appendChild(elem('year')).appendChild(text(unicode(ppub.issue.year)))
