@@ -16,7 +16,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         dir = options.get('dir') or '../fantomen'
-        years = args or range(1950, 2015)
+        years = args or range(1950, 2016)
         for year in years:
             file = path.join(dir, '%s.data' % year)
             if path.exists(file):
