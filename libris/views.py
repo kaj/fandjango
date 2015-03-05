@@ -6,6 +6,7 @@ from django.http import HttpResponse, HttpResponsePermanentRedirect
 from django.shortcuts import render_to_response, get_object_or_404, get_list_or_404
 from django.views.defaults import page_not_found
 from libris.models import *
+from libris.alias import *
 from math import pow
 import re
 
@@ -194,6 +195,13 @@ def redirectold(request):
     path = re.sub('^/fa-', '/fa/', path)
     path = re.sub('__+', '_', path).replace('-', '')
     path = settings.FORWARDS.get(path, path)
+    if path.startswith('/who/'):
+        nameslug = path[5:]
+        for n in ALIASES.keys():
+            from django.utils.text import slugify
+            if nameslug == slugify(n):
+                match = name_alias(n)
+                path = Creator.objects.get(name=match[0]).get_absolute_url()
     urlconf = getattr(request, 'urlconf', None)
     if (path != request.path_info and
         urlresolvers.is_valid_path(path, urlconf)):
