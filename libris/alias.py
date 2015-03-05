@@ -9,9 +9,9 @@ ALIASES = dict(
     aliases(u'Alfredo Castelli', u'Castelli') +
     aliases(u'Anders Eklund', u'A. Eklund') +
     aliases(u'André Franquin', u'Franquin') +  
-    aliases(u'Anette Salmelin', u'A. Salmelin') +  
+    aliases(u'Anette Salmelin', u'A. Salmelin') +
     aliases(u'Ann Schwenke', u'A. Schwenke') +
-    aliases(u'Anniqa Tjernlund', u'A. Tjernlund') +  
+    aliases(u'Anniqa Tjernlund', u'A. Tjernlund') +
     aliases(u'Bengt Sahlberg', u'B. Sahlberg') +
     aliases(u'Bertil Wilhelmsson', u'B. Wilhelmsson', u'Wilhelmsson') +
     aliases(u'Birgit Lundborg', u'Biggan Lundborg', u'B. Lundborg') +
@@ -27,10 +27,11 @@ ALIASES = dict(
     aliases(u'Falco Pellerin', u'F. Pellerin', u'Terje Nordberg') +
     aliases(u'Ferdinando Tacconi', u'Fernanino Tacconi', u'Tacconi') +
     aliases(u'Fred Fredericks', u'Fredericks') +
-    aliases(u'G. Rosinski', u'Rosinski') +  
+    aliases(u'G. Rosinski', u'Rosinski') +
     aliases(u'Georges Bessis', u'Georges Bess', u'G. Bess') +
     aliases(u'Germano Ferri', u'Ferri') +
     aliases(u'Grzegorz Rosinski', u'G. Rosinski') +
+    aliases(u'Göran Semb', u'Semb') +
     aliases(u'Hans Jonsson', u'Hans Jonson', u'Hasse Jonsson', u'H. Jonsson', u'H Jonsson') +
     aliases(u'Hans Lindahl', u'Hasse Lindahl', u'H. Lindahl', u'Lindahl') +
     aliases(u'Heiner Bade', u'Helmer Bade', u'H. Bade', u'H Bade', u'H. Baade', u'Bade') + 
@@ -40,13 +41,14 @@ ALIASES = dict(
     aliases(u'Iván Boix', u'Ivàn Boix', u'Ivan Boix') +
     aliases(u'Jaime Vallvé', u'J. Vallvé', u'Vallvé') +
     aliases(u'Janne Lundström', u'Jan Lundström', u'J. Lundström', u'Lundström') +
-    aliases(u'Jean Giraud', u'J. Giraud', u'Giraud') +  
+    aliases(u'Jean Giraud', u'J. Giraud', u'Giraud') +
     aliases(u'Jean Van Hamme', u'J. Van Hamme', u'J Van Hamme', u'Van Hamme') +
     aliases(u'Jean-Michel Charlier', u'J-M. Charlier', u'J-M Charlier', u'Charlier') +
     aliases(u'Jean-Yves Mitton', u'J-Y Mitton', u'Mitton') +
     aliases(u'Kari Leppänen', u'Kari T. Leppänen', u'Kari T Leppänen', u'Kari Leppänän', u'Kari Läppänen', u'Kari Läppenen', u'K. Leppänen', u'Leppänen') +  
     aliases(u'Karin Bergh', u'K. Bergh') +
     aliases(u'Knut Westad', u'K. Westad', u'Westad') +
+    aliases(u'Layla Gauraz', u'Layla') +
     aliases(u'Lee Falk', u'Falk') +
     aliases(u'Leif Bergendorff', u'L. Bergendorff') +
     aliases(u'Lennart Allen', u'L. Allen') +
@@ -60,7 +62,7 @@ ALIASES = dict(
     aliases(u'Mel Keefer', u'M. Keefer', u'Keefer') +
     aliases(u'Michael Jaatinen', u'Mikael Jaatinen', u'M. Jaatinen') +
     aliases(u'Michael Tierres', u'M. Tierres', u'Tierres') +
-    aliases(u'Mèziéres', u'Mézières') +	
+    aliases(u'Mèziéres', u'Mézières') +
     aliases(u'Nils Schröder', u'Schröder') +
     aliases(u'Norman Worker', u'N. Worker', u'Worker', u'John Bull', u'J. Bull') +
     aliases(u'Ola Westerberg', u'O. Westerberg') +  
