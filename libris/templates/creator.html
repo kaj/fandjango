@@ -3,6 +3,16 @@
 
 {% block bodyattrs %} class="who_{{creator.slug}}"{% endblock %}
 
+{% block headextra %}
+  <p>Här listas de serier <strong>{{creator}}</strong>
+    (<a href="http://seriewikin.serieframjandet.se/index.php/Special:Search?search={{creator}}&amp;go=go"
+	title="Sök &quot;{{creator}}&quot; i Seriewikin">Seriewikin</a>,
+    <a href="http://sv.wikipedia.org/wiki/Special:Search?search={{creator}}&amp;go=go"
+       title="Sök &quot;{{creator}}&quot; i Svenska Wikipedia">wikipedia</a>)
+    varit med att skapa som förekommer i mina indexerade
+    fantomentidningar.</p>
+{% endblock %}
+
 {% block maincontent %}
   {% if articles %}
   <div class="main readmore">
