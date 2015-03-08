@@ -34,7 +34,8 @@ def index(request):
     years = Issue.objects.order_by('year').distinct().values_list('year', flat=True)
     titles = Title.objects.order_by('title')
     refs = RefKey.objects.order_by('title').filter(kind='X')
-    people = Creator.objects.order_by('name')
+    people = Creator.objects.order_by('name') \
+                            .filter(creativepart__role__in=['', 'text', 'bild', 'ink'])
     def weighted(items, key, limit=1):
         items = items.annotate(cnt=Count(key)).filter(cnt__gt=limit).all()
         counts = sorted(item.cnt for item in items)
@@ -49,9 +50,9 @@ def index(request):
         'n_issues': Issue.objects.filter(publication__ordno__lt=4711).distinct().count(),
         'years': years,
         'phantoms': allPhantoms(),
-        'titles': weighted(titles, 'episode', 4),
-        'refs': weighted(refs, 'episode', 3),
-        'people': weighted(people, 'creativepart', 10)
+        'titles': weighted(titles, 'episode', 7),
+        'refs': weighted(refs, 'episode', 4),
+        'people': weighted(people, 'creativepart', 20),
     })
 
 def titles(request):
