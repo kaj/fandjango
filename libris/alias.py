@@ -27,10 +27,9 @@ ALIASES = dict(
     aliases(u'Falco Pellerin', u'F. Pellerin', u'Terje Nordberg') +
     aliases(u'Ferdinando Tacconi', u'Fernanino Tacconi', u'Tacconi') +
     aliases(u'Fred Fredericks', u'Fredericks') +
-    aliases(u'G. Rosinski', u'Rosinski') +
     aliases(u'Georges Bessis', u'Georges Bess', u'G. Bess') +
     aliases(u'Germano Ferri', u'Ferri') +
-    aliases(u'Grzegorz Rosinski', u'G. Rosinski') +
+    aliases(u'Grzegorz Rosinski', u'G. Rosinski', u'Rosinski') +
     aliases(u'Göran Semb', u'Semb') +
     aliases(u'Hans Jonsson', u'Hans Jonson', u'Hasse Jonsson', u'H. Jonsson', u'H Jonsson') +
     aliases(u'Hans Lindahl', u'Hasse Lindahl', u'H. Lindahl', u'Lindahl') +
