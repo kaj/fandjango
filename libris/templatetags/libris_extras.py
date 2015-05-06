@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 from django import template
 from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe
@@ -24,7 +25,11 @@ def link(value, linkbase='', autoescape=None):
             extra = ''
     else:
         extra = ''
-    return mark_safe(u'<a href="%s">%s</a>%s' % (url, esc(value), esc(extra)))
+    if 'best_plac' in dir(value) and value.best_plac in [1,2,3]:
+        best = u' <span class="best%(p)s">(#%(p)s i bästa äventyr)</span>' % {'p': value.best_plac}
+    else:
+        best = ''
+    return mark_safe(u'<a href="%s">%s</a>%s%s' % (url, esc(value), esc(extra), best))
 
 @register.filter
 def linklist(value, linkbase='', autoescape=None):

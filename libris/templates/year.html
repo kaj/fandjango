@@ -29,7 +29,7 @@
           <a href="/who/{{artist.slug}}">{{artist}}</a>{%endfor%}.</span>
         {%endif%}{%endwith%}
         {%if issue.cover_best%}
-        <span class="bestcover">Nr {{issue.cover_best}} i bästa omslag.</span>
+        <span class="cover best{{issue.cover_best}}">Nr {{issue.cover_best}} i bästa omslag.</span>
         {%endif%}
       </p>
 
@@ -54,6 +54,10 @@
 	{% endwith %}
 	{% if ep.copyright %}
 	  <p class="i copyright">Copyright {{ep.copyright}}</p>
+	{% endif %}
+	{% if x.best_plac %}
+	  <p class="i best{{x.best_plac}}">Nummer {{x.best_plac}} i omröstningen om
+	  bästa äventyr {{issue.year}}.</p>
 	{% endif %}
 	{% if x.is_prev_only %}
           <p class="i prevonly">Denna publicering är känd bara genom

@@ -138,6 +138,7 @@ h3 { font-weight: normal; }
     display: inline-block;
     margin: 0 0 0 .5em;
     font: 80% sans-serif;
+    position: relative;
 }
 .issue p.cover.withimg {
     background: #e7e0f2;
@@ -160,6 +161,7 @@ h3 { font-weight: normal; }
     border-radius: .3em;
     border: solid 1px;
     border-color: rgba(0,0,0,.6) rgba(255,255,255,.9) rgba(255,255,255,.8) rgba(0,0,0,.5);
+    position: relative;
 }
 .issue .article { opacity: .7; }
 .episode h3, .article h3 { margin-top: 0; }
@@ -239,6 +241,50 @@ table.sortable th.sorttable_sorted_reverse {
 .main.readmore .article p {
     display: inline-block;
     margin-right: .5rem;
+}
+.best1:before, .best2:before,
+.best3:before {
+    background-image: radial-gradient(circle at 60% 80%, rgba(255,255,255,0), rgba(255,255,255,.6), rgba(255,255,255,0));
+    border-radius: 50%;
+    box-shadow: .1em .1em .1em black;
+    font-size: 140%;
+    line-height: 2em;
+    position: absolute;
+    right: -.3em;
+    text-align: center;
+    top: -.3em;
+    vertical-align: middle;
+    width: 2em;
+    z-index: 20;
+}
+.best1:before {
+    content: "#1";
+    background-color: #ffd722;
+    z-index: 22;
+}
+.best2:before {
+    content: "#2";
+    background-color: #c9c0bb;
+    z-index: 21;
+}
+.best3:before {
+    content: "#3";
+    background-color: #cd7f32;
+}
+.issue .episode .best1:before,
+.issue .episode .best2:before,
+.issue .episode .best3:before {
+    right: 145px;
+}
+.issue p.cover .best1,
+.issue p.cover .best2,
+.issue p.cover .best3 {
+    padding-right: 3em;
+}
+.issue p.cover.withimg .best1,
+.issue p.cover.withimg .best2,
+.issue p.cover.withimg .best3 {
+    padding-right: 0;
 }
 @media (min-width: 70rem) {
 .main.head .thisyear {
