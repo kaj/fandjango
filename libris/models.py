@@ -154,10 +154,15 @@ class DaystripRun(models.Model):
     is_sundays = models.BooleanField(default=False)
     
     def __unicode__(self):
-        return u'%s %s - %s.' % (
-            u'Söndagssidor' if self.is_sundays else 'Dagstrip',
-            filterdate(self.fromdate, 'j F Y'),
-            filterdate(self.todate, 'j F Y'))
+        if self.fromdate != self.todate:
+            return u'%s %s - %s.' % (
+                u'Söndagssidor' if self.is_sundays else 'Dagstrip',
+                filterdate(self.fromdate, 'j F Y'),
+                filterdate(self.todate, 'j F Y'))
+        else:
+            return u'%s %s.' % (
+                u'Söndagssida' if self.is_sundays else 'Dagstrip',
+                filterdate(self.fromdate, 'j F Y'))
 
 class ForeignName(models.Model):
     """A title (probably the original title) in another language."""

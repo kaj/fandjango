@@ -54,6 +54,7 @@ ALIASES = dict(
     aliases(u'Lennart Allen', u'L. Allen') + 
     aliases(u'Lennart Hartler', u'L. Hartler') +
     aliases(u'Lennart Moberg', u'L. Moberg', u'Moberg') +
+    aliases(u'Marie Zackariasson', u'M. Zackariasson') +
     aliases(u'Marian J. Dern', u'Marian Dern', u'M. Dern', u'Dern') +  
     aliases(u'Mats Jönsson', u'M. Jönsson') +
     aliases(u'Mats Jönsson', u'Mats Jonsson', u'M. Jonsson') +

@@ -165,9 +165,11 @@ def creator(request, slug):
         articles = key.article_set.all()
     else:
         articles = None
+    wa = Article.objects.filter(creators=creator)
     return render_to_response('creator.html', ctx(creator=creator,
                                                   episodes=episodes,
                                                   articles=articles,
+                                                  writtenarticles=wa,
                                                   pagetitle=unicode(creator)))
 
 def creators(request):

@@ -33,6 +33,7 @@
   </div>
   {% endif %}
 
+  {% if episodes %}
   <div class="main">
     <h2>Episoder</h2>
     
@@ -60,4 +61,24 @@
     </div>
   {% endfor %}
   </div>
+  {% endif %}
+
+  {% if writtenarticles %}
+  <div class="main">
+    <h2>Artiklar av {{pagetitle}}</h2>
+    {% for article in writtenarticles %}
+    <div class="article">
+      <h3>{{article}}</h3>
+      {%with article.creators.all as by%}{%if by%}
+        <p class="i">Av
+          {%for c in by%}{%if not forloop.first%}{%if forloop.last%} &amp; {%else%}, {%endif%}{%endif%}<a href="{{c.get_absolute_url}}">{{c}}</a>{%endfor%}.</p>
+      {%endif%}{%endwith%}
+      <p class="i">Publicerad i
+	{% for i in article.publication_set.all %}
+	<a href="/{{i.issue.year}}#i{{i.issue.number}}">{{i.issue}}</a>{% endfor %}.</p>
+      {%if article.note%}<p class="i note">{{article.note}}</p>{%endif%}
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
 {% endblock %}
