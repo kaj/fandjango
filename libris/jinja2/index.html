@@ -1,24 +1,30 @@
 {% extends "base.html" %}
 
-{% block headextra %}
+{% block headextra -%}
   <p>Här listas innehållet i {{n_issues}} av de drygt 1500 svenska
   Fantomentidningar som kommit ut.
   Du kan välja att titta på en årgång, någon företeelse i
   Fantomenserien, eller någon serieskapare i listorna nedan.</p>
-{% endblock %}
+{%- endblock %}
 
 {% block maincontent %}
   <div class="wrapyyfa">
   <div class="main yy">
     <h2>Årgångar</h2>
-    <div class="article">{%for y in years%}
-      <a href="{{y}}">{{y}}</a>{%if forloop.last%}.{%else%},{%endif%}{%endfor%}
+    <div class="article">
+      {%- for y in years -%}
+        <a href="{{y}}">{{y}}</a>
+        {%- if loop.last %}.{% else %}, {% endif -%}
+      {%- endfor -%}
     </div>
   </div>
   <div class="main fa">
     <h2>Fantomenätten</h2>
-    <div class="article">{%for p in phantoms%}
-    <a href="{{p.get_absolute_url}}">{{p.shortFa}}</a>{%if forloop.last%}.{%else%},{%endif%}{%endfor%}
+    <div class="article">
+      {%- for p in phantoms -%}
+        <a href="{{p.get_absolute_url()}}">{{p.shortFa()}}</a>
+        {%- if loop.last %}.{% else %}, {% endif -%}
+      {%- endfor -%}
     </div>
   </div>
   <div class="main links">
@@ -42,30 +48,32 @@
     <h2>Återkommande serier</h2>
     <p class="fulllist">(<a href="titles">alla förekommande serier</a>)</p>
     <div class="article cloud">
-      <p>{% for title in titles %}
-      <a class="c{{title.cnt}} w{{title.weight}}"
-         href="{{title.slug}}">{{title}}</a>,
-      {% endfor %}</p>
+      {%- for title in titles -%}
+        <a class="c{{title.cnt}} w{{title.weight}}" href="{{title.slug}}">{{
+          title}}</a>
+        {%- if loop.last %}.{% else %}, {% endif -%}
+      {%- endfor -%}
     </div>
   </div>
   <div class="main">
     <h2>Personer och företeelser i Fantomens värld</h2>
     <p class="fulllist">(<a href="what/">alla taggar</a>)</p>
     <div class="article cloud">
-      {% for ref in refs %}
-      <a class="c{{ref.cnt}} w{{ref.weight}}"
-	 href="what/{{ref.slug}}">{{ref}}</a>,
-      {% endfor %}
+      {%- for ref in refs -%}
+        <a class="c{{ref.cnt}} w{{ref.weight}}" href="what/{{ref.slug}}">{{
+          ref}}</a>
+        {%- if loop.last %}.{% else %}, {% endif -%}
+      {%- endfor -%}
     </div>
   </div>
   <div class="main">
     <h2>Serieskapare</h2>
     <p class="fulllist">(<a href="who/">alla serieskapare</a>)</p>
     <div class="article cloud">
-      {% for p in people %}
-      <a class="c{{p.cnt}} w{{p.weight}}"
-	 href="who/{{p.slug}}">{{p}}</a>,
-      {% endfor %}
+      {%- for p in people -%}
+        <a class="c{{p.cnt}} w{{p.weight}}" href="who/{{p.slug}}">{{p}}</a>
+        {%- if loop.last %}.{% else %}, {% endif -%}
+      {%- endfor -%}
     </div>
   </div>
 {% endblock %}

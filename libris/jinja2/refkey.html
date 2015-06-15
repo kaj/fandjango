@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block bodyattrs %} class="{{refkey.kind}}_{{refkey.slug}}"{% endblock %}
+
+{%- block headextra -%}
+  {%- if phantoms -%}
+  <p>Fantomenätten:{{' '}}
+    {%- for p in phantoms -%}
+    {%- if p == refkey -%}
+      <strong>{{p.shortFa()}}</strong>
+    {%- else -%}
+      <a href="{{p.get_absolute_url()}}">{{p.shortFa()}}</a>
+    {%- endif -%}
+    {%- if not loop.last %}, {% endif -%}
+  {%- endfor -%}
+  .</p>
+  {%- endif -%}
+{%- endblock -%}
+
+{%- block maincontent -%}
+  {%- if articles -%}
+  <div class="main readmore">
+    <h2>Läs mer</h2>
+    {%- for article in articles %}
+    <div class="article"><h3>{{article}}</h3>
+      {%- set by = article.creators.all() -%}
+      {%- if by -%}
+        <p class="i">Av{{' '}}
+          {%- for c in by -%}
+          {%- if not loop.first -%}
+          {%- if loop.last %} &amp; {% else %}, {% endif -%}
+          {%- endif -%}
+          <a href="{{c.get_absolute_url()}}">{{c}}</a>
+          {%- endfor -%}
+          .</p>
+      {%- endif %}
+      <p class="i">Publicerad i {{publist(article.publication_set.all())}}.</p>
+      {%- if article.note%}
+      <p class="i note">{{article.note}}</p>
+      {%- endif -%}
+    </div>
+    {%- endfor -%}
+  </div>
+  {% endif -%}
+
+  <div class="main">
+    <h2>Relaterade episoder</h2>
+    
+    {%- for ep in episodes %}
+    <div class="episode">
+      <h3><strong><a href="/{{ep.title.slug}}">{{ep.title}}</a>
+          {%- if ep.episode %}: {{ep.episode}}{% endif -%}
+        </strong>
+        {%- if ep.part_no %} del {{ep.part_no}}{% endif -%}
+        {%- if ep.part_name%}: {{ep.part_name}}{% endif -%}
+      </h3>
+      {%- if ep.teaser %}
+      <p class="teaser">{{ep.teaser}}</p>
+      {%- endif -%}
+      {%- if ep.note %}
+      <p class="i note">{{ ep.note }}</p>
+      {%- endif -%}
+      {%- set keys = ep.ref_keys.all() -%}
+      {%- if keys %}
+      <p class="i">Referenser: {{linklist(keys)}}.</p>
+      {%- endif -%}
+      {%- set by = ep.by() -%}
+      {%- if by %}
+      <p class="i">
+        {%- for r, ccs in by -%}
+          {{r}}{{' '}}
+          {%- for slug, name in ccs -%}
+            {%- if not loop.first %}
+              {%- if loop.last %} &amp; {% else %}, {% endif -%}
+            {%- endif -%}
+            <a href="/who/{{slug}}">{{name}}</a>
+          {%- endfor -%}
+          {%- if not loop.last %}, {% endif -%}
+        {%- endfor -%}
+        .</p>
+      {%- endif -%}
+      {{origtitle(ep.orig_name)}}
+      {%- if ep.daystrip %}
+        <p class="i strip">{{ep.daystrip}}</p>
+      {%- endif -%}
+      {%- set pub = ep.publication_set.all() -%}
+      {%- if pub %}
+        <p class="i pub">Publicerad i {{publist(pub)}}.</p>
+      {%- endif -%}
+      {%- if ep.copyright %}
+        <p class="i copyright">Copyright {{ep.copyright}}</p>
+      {%- endif -%}
+    </div>
+    {%- endfor -%}
+  </div>
+{%- endblock -%}
