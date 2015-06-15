@@ -1,4 +1,29 @@
 <!DOCTYPE html>
+
+{%- macro origtitle(ot) -%}
+  {%- if ot %}
+    <p class="i orig">Originaltitel: <q lang="{{ot.language}}">{{ot.title}}</q>.</p>
+  {%- endif -%}
+{%- endmacro %}
+
+{%- macro linklist(links) -%}
+  {%- for link in links -%}
+    <a href="{{link.get_absolute_url()}}">{{link}}</a>
+    {%- if not loop.last %}, {% endif -%}
+  {%- endfor -%}
+{%- endmacro -%}
+
+{%- macro publist(publications) -%}
+  {%- for pub in publications -%}
+    <a href="{{pub.get_absolute_url()}}">{{pub}}</a>
+    {%- if pub.part_no %} (del {{pub.part_no}}
+      {%- if pub.part_name %}: {{pub.part_name}}{% endif %})
+    {%- elif pub.part_name %} ({{pub.part_name}})
+    {%- endif -%}
+    {%- if not loop.last %}, {% endif -%}
+  {%- endfor -%}
+{%- endmacro -%}
+
 <html lang="sv">
   <head>
     <title>{% block title %}{{pagetitle}}{% if not frontpage %} -
@@ -11,14 +36,14 @@
   
   <body{% block bodyattrs %}{% endblock %}>
     <div class="main head">
-      {% if not frontpage %}
+      {%- if not frontpage -%}
         <p class="topnav"><a href="/">Rasmus Fantomenindex</a>:</p>
-      {% endif %}
+      {%- endif %}
       <h1>{%block pagetitle%}{{pagetitle}}{%endblock%}</h1>
       {% block headextra %}{% endblock %}
     </div>
     {% block maincontent %}
-    {% endblock %}
+    {% endblock -%}
 
     <div class="main footer">
       <hr/>
