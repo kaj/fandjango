@@ -3,3 +3,7 @@
 
 Django >= 1.7
 django-autoslug
+
+# Use gunicorn in production
+gunicorn
+setproctitle
