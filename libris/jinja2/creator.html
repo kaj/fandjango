@@ -21,7 +21,7 @@
       {%- set by = article.creators.all() -%}
       {%- if by %}
       <p class="i">Av
-          {%for c in by%}{%if not loop.first%}{%if loop.last%} &amp; {%else%}, {%endif%}{%endif%}<a href="{{c.get_absolute_url}}">{{c}}</a>{%endfor%}.</p>
+          {%for c in by%}{%if not loop.first%}{%if loop.last%} &amp; {%else%}, {%endif%}{%endif%}<a href="{{c.get_absolute_url()}}">{{c}}</a>{%endfor%}.</p>
       {%endif%}
       <p class="i">Publicerad i
 	{%- for i in article.publication_set.all() %}
@@ -87,7 +87,7 @@
       {%- set by = article.creators.all() -%}
       {%- if by %}
         <p class="i">Av
-          {%for c in by%}{%if not loop.first%}{%if loop.last%} &amp; {%else%}, {%endif%}{%endif%}<a href="{{c.get_absolute_url}}">{{c}}</a>{%endfor%}.</p>
+          {%for c in by%}{%if not loop.first%}{%if loop.last%} &amp; {%else%}, {%endif%}{%endif%}<a href="{{c.get_absolute_url()}}">{{c}}</a>{%endfor%}.</p>
       {%endif%}
       <p class="i">Publicerad i
 	{% for i in article.publication_set.all() %}
