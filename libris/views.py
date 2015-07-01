@@ -193,8 +193,6 @@ def redirectold(request):
         path = path[:-10]
     elif path.endswith('.html'):
         path = path[:-5]
-    if path in ['/who/', '/what/']:
-        path = '/'
     path = re.sub('^/fa-', '/fa/', path)
     path = re.sub('__+', '_', path).replace('-', '')
     path = settings.FORWARDS.get(path, path)
@@ -206,6 +204,12 @@ def redirectold(request):
                 match = name_alias(n)
                 path = Creator.objects.get(name=match[0]).get_absolute_url()
     urlconf = getattr(request, 'urlconf', None)
+    if (path != request.path_info and
+        urlresolvers.is_valid_path(path, urlconf)):
+        return HttpResponsePermanentRedirect("%s://%s%s" % (
+            'https' if request.is_secure() else 'http',
+            request.get_host(), path))
+    path = path + '/'
     if (path != request.path_info and
         urlresolvers.is_valid_path(path, urlconf)):
         return HttpResponsePermanentRedirect("%s://%s%s" % (

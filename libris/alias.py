@@ -62,11 +62,13 @@ ALIASES = dict(
     aliases(u'Mel Keefer', u'M. Keefer', u'Keefer') +
     aliases(u'Michael Jaatinen', u'Mikael Jaatinen', u'M. Jaatinen') +
     aliases(u'Michael Tierres', u'M. Tierres', u'Tierres') +
+    aliases(u'Mikael Sol', u'Micke') +
     aliases(u'Mèziéres', u'Mézières') +
     aliases(u'Nils Schröder', u'Schröder') +
     aliases(u'Norman Worker', u'N. Worker', u'Worker', u'John Bull', u'J. Bull') +
-    aliases(u'Ola Westerberg', u'O. Westerberg') +  
+    aliases(u'Ola Westerberg', u'O. Westerberg') +
     aliases(u'Patrik Norrman', u'Patrik Norman') +
+    aliases(u'Pierre Christin', u'Christin') +
     aliases(u'PeO Carlsten', u'Peo Carlsten') +
     aliases(u'Peter Sparring', u'P. Sparring') +
     aliases(u'Robert Kanigher', u'Bob Kanigher', u'R. Kanigher') +
