@@ -6,5 +6,5 @@ services:
  - mysql
 install: "pip install -r requirements.txt"
 before_script:
- - echo "ALLOWED_HOSTS = ['*']" > settings/defaults.py
+ - echo "ALLOWED_HOSTS = ['*']" > settings/local.py
 script: "./manage.py test"
