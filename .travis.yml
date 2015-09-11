@@ -7,5 +7,5 @@ services:
 install: "pip install -r requirements.txt"
 before_script:
  - echo "SECRET_KEY='abcdefghijklmnopqrstuvwxyz123456789'" > settings/local.py
- - echo "DB_PASSWORD=''" > settings/local.py
+ - echo "DB_PASSWORD=''" >> settings/local.py
 script: "./manage.py test"
