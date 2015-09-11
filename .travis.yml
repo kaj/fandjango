@@ -5,4 +5,6 @@ services:
  - memcached
  - mysql
 install: "pip install -r requirements.txt"
+before_script:
+ - echo "ALLOWED_HOSTS = ['*']" > settings/defaults.py
 script: "./manage.py test"
