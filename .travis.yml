@@ -8,5 +8,7 @@ install: "pip install -r requirements.txt"
 before_script:
  - echo "SECRET_KEY='abcdefghijklmnopqrstuvwxyz123456789'" > settings/local.py
  - echo "DB_PASSWORD=''" >> settings/local.py
+ - echo "from .defaults import DATABASES" >> settings/local.py
+ - echo "DATABASES['default']['USER'] =  'travis'" >> settings/local.py
  - mysql -e 'create database fandjango;'
 script: "./manage.py test"
