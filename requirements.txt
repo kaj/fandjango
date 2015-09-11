@@ -4,6 +4,7 @@
 Django >= 1.8
 django-autoslug
 Jinja2
+MySQL-python
 
 # Use gunicorn in production
 gunicorn
