@@ -32,7 +32,7 @@ class Issue(models.Model):
     pages = models.PositiveSmallIntegerField(null=True, blank=True)
     price = models.DecimalField(max_digits=5, decimal_places=2,
                                 null=True, blank=True)
-    cover_by = models.ManyToManyField(Creator, null=True, blank=True)
+    cover_by = models.ManyToManyField(Creator, blank=True)
     cover_best = models.PositiveSmallIntegerField(
         blank=True, default=0,
         help_text='Position of this cover in yearly competition.')
