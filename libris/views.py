@@ -49,7 +49,8 @@ def index(request):
     return render_to_response('index.html', {
         'frontpage': True,
         'pagetitle': 'Rasmus Fantomenindex',
-        'n_issues': Issue.objects.filter(publication__ordno__lt=4711).distinct().count(),
+        'n_issues': Publication.objects.filter(ordno__lt=4711) \
+                               .distinct().values_list('issue_id').count(),
         'years': years,
         'phantoms': allPhantoms(),
         'titles': weighted(titles, 'episode', 7),
