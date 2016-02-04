@@ -1,7 +1,7 @@
 # -*- encoding: utf-8; -*-
 from django.core import urlresolvers
 from django.conf import settings
-from django.db.models import Count, Min, Max, Avg
+from django.db.models import Count, F, Func, Min, Max
 from django.http import HttpResponse, HttpResponsePermanentRedirect
 from django.shortcuts import render_to_response, get_object_or_404, get_list_or_404
 from django.views.defaults import page_not_found
@@ -26,8 +26,10 @@ def orderEpisodeQuery(query):
                 .order_by('sortno')
 
 def allPhantoms():
-    # The Avg annotation is a hack to get 1,2,..,9,10 rather than 1,10,11,..,2
-    return RefKey.objects.order_by('slug') \
+    # The slug for a phantom is 1, 2, .. 9, 10, .. 17, 17.1, 18 etc
+    # Order them numerically!
+    return RefKey.objects.order_by(Func(F('slug'),
+                                        template='%(expressions)s::numeric')) \
                  .filter(kind='F').annotate(Count('episode')).all()
 
 def index(request):
