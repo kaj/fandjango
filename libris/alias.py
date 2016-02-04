@@ -13,7 +13,8 @@ ALIASES = dict(
     aliases(u'Ann Schwenke', u'A. Schwenke') +
     aliases(u'Anniqa Tjernlund', u'A. Tjernlund') +
     aliases(u'Bengt Sahlberg', u'B. Sahlberg') +
-    aliases(u'Bertil Wilhelmsson', u'B. Wilhelmsson', u'Wilhelmsson') +
+    aliases(u'Bertil Wilhelmsson', u'B. Wilhelmsson', u'Wilhelmsson',
+            u'Bertil W-son') +
     aliases(u'Birgit Lundborg', u'Biggan Lundborg', u'B. Lundborg') +
     aliases(u'Björn Ihrstedt', u'B. Ihrstedt', u'B Ihrstedt') +
     aliases(u'Carlos Cruz', u'Carloz Cruz', u'C. Cruz', u'Cruz') +

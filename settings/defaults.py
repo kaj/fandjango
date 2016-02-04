@@ -2,6 +2,7 @@
 
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
+DEBUG_TOOLBAR = False
 
 ADMINS = (
     ('Rasmus Kaj', 'kaj@kth.se'),
@@ -11,7 +12,7 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'fandjango',
         'USER': 'fandjango',
         'PASSWORD': '',
@@ -115,5 +116,5 @@ FORWARDS = {
     '/who/arthur_conan_doyle': '/who/sir_arthur_conan_doyle',
     '/who/mikael_frenneson':   '/who/mikael_frennesson',
     '/who/sir_a_conan_doyle':  '/who/sir_arthur_conan_doyle',
-    '/who/yves_sente':         '/who/yves_sente',
+    '/who/y_sente':            '/who/yves_sente',
 }

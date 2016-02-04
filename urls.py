@@ -1,31 +1,32 @@
 from django.conf import settings
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
+from libris import views
 
 admin.autodiscover()
 
-urlpatterns = patterns('',
+urlpatterns = [
     # Example:
     # (r'^fandjango/', include('fandjango.foo.urls')),
 
-    (r'^admin/doc/', include('django.contrib.admindocs.urls')),
-    (r'^admin/', include(admin.site.urls)),
+    url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
+    url(r'^admin/', include(admin.site.urls)),
 
-    (r'^fa/(?P<slug>[0-9.]+)$', 'libris.views.refKey'),
-    (r'^what/(?P<slug>[a-z0-9_]+)$', 'libris.views.refKey'),
-    (r'^what/$', 'libris.views.refKeys'),
-    (r'^who/(?P<slug>[a-z0-9_]+)$', 'libris.views.creator'),
-    (r'^who/$', 'libris.views.creators'),
-    (r'^titles$', 'libris.views.titles'),
-    (r'^(?P<year>[0-9]{4})$', 'libris.views.year'),
-    (r'^(?P<slug>[a-z0-9_]+)$', 'libris.views.title'),
-    (r'^$', 'libris.views.index'),
+    url(r'^fa/(?P<slug>[0-9.]+)$', views.refKey),
+    url(r'^what/(?P<slug>[a-z0-9_]+)$', views.refKey),
+    url(r'^what/$', views.refKeys),
+    url(r'^who/(?P<slug>[a-z0-9_]+)$', views.creator),
+    url(r'^who/$', views.creators),
+    url(r'^titles$', views.titles),
+    url(r'^(?P<year>[0-9]{4})$', views.year),
+    url(r'^(?P<slug>[a-z0-9_]+)$', views.title),
+    url(r'^$', views.index),
 
-    url(r'^robots\.txt$', 'libris.views.robots'),
-)
+    url(r'^robots\.txt$', views.robots),
+]
 
 from libris.views import redirectold
 handler404 = redirectold
 
 if settings.DEBUG:
-    urlpatterns += patterns('', url('\+404', handler404))
+    urlpatterns += [url('\+404', handler404)]

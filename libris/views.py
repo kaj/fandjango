@@ -1,7 +1,7 @@
 # -*- encoding: utf-8; -*-
 from django.core import urlresolvers
 from django.conf import settings
-from django.db.models import Count, Min, Max, Avg
+from django.db.models import Count, F, Func, Min, Max
 from django.http import HttpResponse, HttpResponsePermanentRedirect
 from django.shortcuts import render_to_response, get_object_or_404, get_list_or_404
 from django.views.defaults import page_not_found
@@ -26,8 +26,10 @@ def orderEpisodeQuery(query):
                 .order_by('sortno')
 
 def allPhantoms():
-    # The Avg annotation is a hack to get 1,2,..,9,10 rather than 1,10,11,..,2
-    return RefKey.objects.annotate(n=Avg('slug')).order_by('n') \
+    # The slug for a phantom is 1, 2, .. 9, 10, .. 17, 17.1, 18 etc
+    # Order them numerically!
+    return RefKey.objects.order_by(Func(F('slug'),
+                                        template='%(expressions)s::numeric')) \
                  .filter(kind='F').annotate(Count('episode')).all()
 
 def index(request):
@@ -47,7 +49,8 @@ def index(request):
     return render_to_response('index.html', {
         'frontpage': True,
         'pagetitle': 'Rasmus Fantomenindex',
-        'n_issues': Issue.objects.filter(publication__ordno__lt=4711).distinct().count(),
+        'n_issues': Publication.objects.filter(ordno__lt=4711) \
+                               .distinct().values_list('issue_id').count(),
         'years': years,
         'phantoms': allPhantoms(),
         'titles': weighted(titles, 'episode', 7),
@@ -187,7 +190,7 @@ def creators(request):
 def robots(request):
     return HttpResponse('', content_type='text/plain')
 
-def redirectold(request):
+def redirectold(request, exception):
     path = request.path_info.lower()
     if path.endswith('index.html'):
         path = path[:-10]
@@ -215,7 +218,7 @@ def redirectold(request):
         return HttpResponsePermanentRedirect("%s://%s%s" % (
             'https' if request.is_secure() else 'http',
             request.get_host(), path))
-    return page_not_found(request)
+    return page_not_found(request, exception)
 
 SERIESAMOMSLAG = {
     # Based on list I got in mail from Thomas E/seriesam <thom@seriesam.com>
