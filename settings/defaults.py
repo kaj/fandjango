@@ -101,7 +101,11 @@ INSTALLED_APPS = (
     'libris',
 )
 
+import os
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
