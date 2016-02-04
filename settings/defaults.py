@@ -115,5 +115,5 @@ FORWARDS = {
     '/who/arthur_conan_doyle': '/who/sir_arthur_conan_doyle',
     '/who/mikael_frenneson':   '/who/mikael_frennesson',
     '/who/sir_a_conan_doyle':  '/who/sir_arthur_conan_doyle',
-    '/who/yves_sente':         '/who/yves_sente',
+    '/who/y_sente':            '/who/yves_sente',
 }
