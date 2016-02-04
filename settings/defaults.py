@@ -2,6 +2,7 @@
 
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
+DEBUG_TOOLBAR = False
 
 ADMINS = (
     ('Rasmus Kaj', 'kaj@kth.se'),
