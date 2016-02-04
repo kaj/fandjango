@@ -187,7 +187,7 @@ def creators(request):
 def robots(request):
     return HttpResponse('', content_type='text/plain')
 
-def redirectold(request):
+def redirectold(request, exception):
     path = request.path_info.lower()
     if path.endswith('index.html'):
         path = path[:-10]
@@ -215,7 +215,7 @@ def redirectold(request):
         return HttpResponsePermanentRedirect("%s://%s%s" % (
             'https' if request.is_secure() else 'http',
             request.get_host(), path))
-    return page_not_found(request)
+    return page_not_found(request, exception)
 
 SERIESAMOMSLAG = {
     # Based on list I got in mail from Thomas E/seriesam <thom@seriesam.com>

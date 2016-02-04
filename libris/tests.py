@@ -18,3 +18,7 @@ class PageTest(TestCase):
     def test_creators_page(self):
         self.assertContains(Client().get('/who/'),
                             'Serieskapare i Fantomentidningen')
+
+    def test_notfound(self):
+        self.assertContains(Client().get('/whatever'),
+                            'Du hittar inte Fantomen', status_code=404)
