@@ -4,6 +4,7 @@
 Django >= 1.9
 django-autoslug
 Jinja2
+psycopg2
 
 # Use gunicorn in production
 gunicorn
