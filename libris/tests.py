@@ -1,15 +1,20 @@
+# -*- encoding: utf-8 -*-
 """
-This file demonstrates two different styles of tests (one doctest and one
-unittest). These will both pass when you run "manage.py test".
-
-Replace these with more appropriate tests for your application.
+Tests for fandjango.
 """
 
-from django.test import TestCase
+from django.test import TestCase, Client
 
-class SimpleTest(TestCase):
-    def test_basic_addition(self):
-        """
-        Tests that 1 + 1 always equals 2.
-        """
-        self.failUnlessEqual(1 + 1, 2)
+class PageTest(TestCase):
+    def test_front_page(self):
+        self.assertContains(Client().get('/'), 'Fantomenindex')
+
+    def test_titles_page(self):
+        self.assertContains(Client().get('/titles'),
+                            'Serier i Fantomentidningen')
+    def test_key_page(self):
+        self.assertContains(Client().get('/what/'), 'Fantomens värld')
+
+    def test_creators_page(self):
+        self.assertContains(Client().get('/who/'),
+                            'Serieskapare i Fantomentidningen')

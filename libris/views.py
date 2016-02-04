@@ -27,7 +27,7 @@ def orderEpisodeQuery(query):
 
 def allPhantoms():
     # The Avg annotation is a hack to get 1,2,..,9,10 rather than 1,10,11,..,2
-    return RefKey.objects.annotate(n=Avg('slug')).order_by('n') \
+    return RefKey.objects.order_by('slug') \
                  .filter(kind='F').annotate(Count('episode')).all()
 
 def index(request):
