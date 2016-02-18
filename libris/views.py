@@ -126,7 +126,7 @@ def title(request, slug, pagesize=200):
                                                 pages=pages))
 
 def refKey(request, slug):
-    refkey = get_object_or_404(RefKey, slug=slug)
+    refkey = get_object_or_404(RefKey, slug=slug, kind__in=['F', 'X'])
     episodes = orderEpisodeQuery(refkey.episode_set) \
         .select_related('title') \
         .select_related('orig_name') \

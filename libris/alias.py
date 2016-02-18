@@ -74,6 +74,7 @@ ALIASES = dict(
     aliases(u'Peter Sparring', u'P. Sparring') +
     aliases(u'Robert Kanigher', u'Bob Kanigher', u'R. Kanigher') +
     aliases(u'Romano Felmang', u'R. Felmang', u'Felmang', u'Roy Mann', u'Mangiarano') +
+    aliases(u'Rolf Gohs', u'Gohs') +
     aliases(u'Scott Goodall', u'S. Goodall', u'Goodall', u'Scott Godall') +
     aliases(u'Sir Arthur Conan Doyle', u'Arthur Conan Doyle', u'A. Conan Doyle', u'Sir A. Conan Doyle') +
     aliases(u'Stefan Nagy', u'S. Nagy') +
