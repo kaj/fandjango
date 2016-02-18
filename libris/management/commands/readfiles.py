@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.conf import settings
 from django.core.management.base import BaseCommand
 from libris.models import *
@@ -16,7 +17,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         dir = options.get('dir') or '../fantomen'
-        years = args or range(1950, 2016)
+        years = args or range(1950, datetime.now().year+1)
         for year in years:
             file = path.join(dir, '%s.data' % year)
             if path.exists(file):
