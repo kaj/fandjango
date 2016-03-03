@@ -97,4 +97,20 @@
     {% endfor %}
   </div>
   {%- endif -%}
+
+  {%- if xcred %}
+  <div class="main">
+    <h2>Medverkat som {{xroles}} i</h2>
+    {%- for title in xcred %}
+    <div class="episode">
+      <h3><strong><a href="/{{title.slug}}">{{title}}</a></strong></h3>
+      <ul>
+      {%- for e in xcred[title] %}
+      <li>{{e.episode}}, <small>{{publist(e.publication_set.all())}}</small>
+      {%- endfor -%}
+      </ul>
+    </div>
+    {%- endfor -%}
+  </div>
+  {%- endif -%}
 {%- endblock -%}

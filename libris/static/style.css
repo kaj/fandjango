@@ -286,6 +286,17 @@ table.sortable th.sorttable_sorted_reverse {
 .issue p.cover.withimg .best3 {
     padding-right: 0;
 }
+ul {
+    -moz-column-width: 25em;
+    -moz-column-gap: 2em;
+    column-width: 25em;
+    column-gap: 2em;
+    margin: .5em 0;
+}
+li {
+    column-break-inside: avoid;
+    page-break-inside: avoid;
+}
 @media (min-width: 70rem) {
 .main.head .thisyear {
     position: fixed;
