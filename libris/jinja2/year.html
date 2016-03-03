@@ -93,18 +93,16 @@
 	{%- endif -%}
       </div>
       {% endif %}
-      {%- if x.article %}
+      {%- set art = x.article %}{% if art %}
       <div class="article">
-	<h3>{{x.article.title}}
-          {%- if x.article.subtitle %}: {{x.article.subtitle}}{% endif -%}
+	<h3>{{art.title}}
+          {%- if art.subtitle %}: {{art.subtitle}}{% endif -%}
         </h3>
-	{%- if x.article.note %}
-          <p class="i note">{{x.article.note}}</p>
-        {%- endif -%}
-	{%- if x.article.ref_keys.all() %}
-	  <p class="i">Referenser: {{linklist(x.article.ref_keys.all())}}.</p>
+	{%- if art.note %}<p class="i note">{{art.note}}</p>{%- endif -%}
+	{%- if art.ref_keys.all() %}
+	  <p class="i">Referenser: {{linklist(art.ref_keys.all())}}.</p>
 	{%- endif -%}
-	{%- set by = x.article.creators.all() -%}
+	{%- set by = art.creators.all() -%}
         {%- if by %}
 	  <p class="i">Av{{' '}}
 	    {%- for c in by -%}
