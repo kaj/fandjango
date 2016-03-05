@@ -3,7 +3,7 @@
 {% block bodyattrs %} class="who_{{creator.slug}}"{% endblock %}
 
 {% block headextra %}
-  <p>Här listas de serier <strong>{{creator}}</strong>
+  <p>Här listas vad <strong>{{creator}}</strong>
     (<a href="http://seriewikin.serieframjandet.se/index.php/Special:Search?search={{creator}}&amp;go=go"
 	title="Sök &quot;{{creator}}&quot; i Seriewikin">Seriewikin</a>,
     <a href="http://sv.wikipedia.org/wiki/Special:Search?search={{creator}}&amp;go=go"
@@ -37,7 +37,7 @@
 
   {%- if episodes %}
   <div class="main">
-    <h2>Episoder</h2>
+    <h2>Serier av {{creator}}</h2>
     
   {%- for ep in episodes %}
     <div class="episode">
@@ -113,7 +113,7 @@
 
   {%- if writtenarticles %}
   <div class="main">
-    <h2>Artiklar av {{pagetitle}}</h2>
+    <h2>Artiklar av {{creator}}</h2>
     {% for article in writtenarticles %}
     <div class="article">
       <h3>{{article}}</h3>
@@ -133,7 +133,7 @@
 
   {%- if xcred %}
   <div class="main">
-    <h2>Medverkat som {{xroles}} i</h2>
+    <h2>Medverkat som {{xroles}}</h2>
     {%- for title in xcred %}
     <div class="episode">
       <h3><strong><a href="/{{title.slug}}">{{title}}</a></strong></h3>
