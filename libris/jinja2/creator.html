@@ -3,7 +3,7 @@
 {% block bodyattrs %} class="who_{{creator.slug}}"{% endblock %}
 
 {% block headextra %}
-  <p>Här listas de serier <strong>{{creator}}</strong>
+  <p>Här listas vad <strong>{{creator}}</strong>
     (<a href="http://seriewikin.serieframjandet.se/index.php/Special:Search?search={{creator}}&amp;go=go"
 	title="Sök &quot;{{creator}}&quot; i Seriewikin">Seriewikin</a>,
     <a href="http://sv.wikipedia.org/wiki/Special:Search?search={{creator}}&amp;go=go"
@@ -37,7 +37,7 @@
 
   {%- if episodes %}
   <div class="main">
-    <h2>Episoder</h2>
+    <h2>Serier av {{creator}}</h2>
     
   {%- for ep in episodes %}
     <div class="episode">
@@ -78,9 +78,42 @@
   </div>
   {%- endif -%}
 
+  {%- if covers %}
+  <div class="main covers">
+    <h2>Omslagsbilder</h2>
+    {%- if allcovers -%}
+    <p>{{creator}} har skapat minst {{allcovers.__len__()}} omslag till
+      Fantomentidningen.
+      Här visas några av de bästa, en så komplett lista som indexet förmår
+      följer nedan.</p>
+    {%- endif -%}
+    {% for cover in covers %}
+    <div class="cover">
+      <p><a href="/{{cover.year}}#i{{cover.number}}">{{cover}}<br>
+	{%- if cover.omslagurl -%}
+        <img src="{{cover.omslagurl}}" alt=""/>
+	{%- endif -%}
+      </a></p>
+      {%- if cover.cover_best %}
+      <p class="best{{cover.cover_best}} plac">(Nr {{cover.cover_best}} i bästa omslag)</p>
+      {%- endif -%}
+    </div>
+    {%- endfor -%}
+    {%- if allcovers -%}
+    <ul class="allcovers">
+      {% for cover in allcovers %}
+      <li><a href="/{{cover.year}}#i{{cover.number}}">{{cover}}</a>
+        {%- if cover.cover_best %} (Nr {{cover.cover_best}} i bästa omslag)
+        {%- endif -%}
+      {%- endfor -%}
+    </ul>
+    {%- endif -%}
+  </div>
+  {%- endif -%}
+
   {%- if writtenarticles %}
   <div class="main">
-    <h2>Artiklar av {{pagetitle}}</h2>
+    <h2>Artiklar av {{creator}}</h2>
     {% for article in writtenarticles %}
     <div class="article">
       <h3>{{article}}</h3>
@@ -95,6 +128,22 @@
       {%if article.note%}<p class="i note">{{article.note}}</p>{%endif%}
     </div>
     {% endfor %}
+  </div>
+  {%- endif -%}
+
+  {%- if xcred %}
+  <div class="main">
+    <h2>Medverkat som {{xroles}}</h2>
+    {%- for title in xcred %}
+    <div class="episode">
+      <h3><strong><a href="/{{title.slug}}">{{title}}</a></strong></h3>
+      <ul>
+      {%- for e in xcred[title] %}
+      <li>{{e.episode}}, <small>{{publist(e.publication_set.all())}}</small>
+      {%- endfor -%}
+      </ul>
+    </div>
+    {%- endfor -%}
   </div>
   {%- endif -%}
 {%- endblock -%}
