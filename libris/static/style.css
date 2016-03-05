@@ -168,7 +168,7 @@ h3 { font-weight: normal; }
 .issue p.cover span {
     display: inline-block;
 }
-.issue .episode, .titleMain .episode, .main .episode, .issue .article, .main .article {
+.issue .episode, .titleMain .episode, .main .episode, .issue .article, .main .article, .covers .cover {
     background: rgba(255,255,255,.7);
     margin: 0 .5rem .5rem .5rem;
     padding: .2em .5em;
@@ -197,6 +197,33 @@ h3 { font-weight: normal; }
 .episode:nth-child(-n+5) p.i.orig, .episode:nth-child(-n+5) p.i.strip,
 .episode:nth-child(-n+5) p.i.pub, .episode:nth-child(-n+5) p.i.copyright {
     max-width: calc(100% - 160px);
+}
+
+.covers {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.covers h2,
+.covers > p,
+.covers ul.allcovers {
+    width: 100%;
+    width: -moz-available;
+    width: available;
+    padding: 0;
+    margin: .1rem .5rem .5rem .5rem;
+}
+.covers .cover {
+    text-align: center;
+    flex-grow: 0.1;
+}
+.covers .cover p { margin: 0; }
+.covers .cover p.plac { font-size: 70%; }
+.covers ul.allcovers {
+    -webkit-column-width: 17em;
+    -moz-column-width: 17em;
+    column-width: 17em;
+    padding-left: 1.5em;
 }
 
 .cloud { text-align: justify; word-spacing: 1ex; }

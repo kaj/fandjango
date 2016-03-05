@@ -175,6 +175,19 @@ def creator(request, slug):
                            (creativepart__in=q.exclude(role__in=main))).all() \
         .select_related('title')
 
+    covers = creator.issue_set.all()
+    allcovers = None
+    if len(covers) > 30:
+        allcovers = covers
+        # TODO The filter is because seriesam lacks recent covers.
+        # Remove when I use covers from the phantom wiki instead!
+        covers = creator.issue_set.filter(year__lt=2009) \
+                 .order_by((F('cover_best')+99) % 100, 'year')[:20]
+    for issue in covers:
+        ssnum = int('%d%d' % (issue.year, issue.number))
+        if (ssnum in SERIESAMOMSLAG):
+            issue.omslagurl = 'http://www.seriesam.com/pc/fantomen%d.jpg' % ssnum
+
     xcred = {t: [ee for ee in xe if ee.title==t] for t in {e.title for e in xe}}
     ROLE = {
         'color': u'färgläggare',
@@ -185,6 +198,8 @@ def creator(request, slug):
     xroles = ', '.join(ROLE[r] for r in {p.role for p in q if p.role not in main})
     return render_to_response('creator.html', ctx(creator=creator,
                                                   episodes=episodes,
+                                                  covers=covers,
+                                                  allcovers=allcovers,
                                                   xcred=xcred,
                                                   xroles=xroles,
                                                   articles=articles,

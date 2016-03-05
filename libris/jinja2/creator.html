@@ -78,6 +78,39 @@
   </div>
   {%- endif -%}
 
+  {%- if covers %}
+  <div class="main covers">
+    <h2>Omslagsbilder</h2>
+    {%- if allcovers -%}
+    <p>{{creator}} har skapat minst {{allcovers.__len__()}} omslag till
+      Fantomentidningen.
+      Här visas några av de bästa, en så komplett lista som indexet förmår
+      följer nedan.</p>
+    {%- endif -%}
+    {% for cover in covers %}
+    <div class="cover">
+      <p><a href="/{{cover.year}}#i{{cover.number}}">{{cover}}<br>
+	{%- if cover.omslagurl -%}
+        <img src="{{cover.omslagurl}}" alt=""/>
+	{%- endif -%}
+      </a></p>
+      {%- if cover.cover_best %}
+      <p class="best{{cover.cover_best}} plac">(Nr {{cover.cover_best}} i bästa omslag)</p>
+      {%- endif -%}
+    </div>
+    {%- endfor -%}
+    {%- if allcovers -%}
+    <ul class="allcovers">
+      {% for cover in allcovers %}
+      <li><a href="/{{cover.year}}#i{{cover.number}}">{{cover}}</a>
+        {%- if cover.cover_best %} (Nr {{cover.cover_best}} i bästa omslag)
+        {%- endif -%}
+      {%- endfor -%}
+    </ul>
+    {%- endif -%}
+  </div>
+  {%- endif -%}
+
   {%- if writtenarticles %}
   <div class="main">
     <h2>Artiklar av {{pagetitle}}</h2>
