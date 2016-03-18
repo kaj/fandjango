@@ -19,6 +19,7 @@ urlpatterns = [
     url(r'^who/$', views.creators),
     url(r'^titles$', views.titles),
     url(r'^(?P<year>[0-9]{4})$', views.year),
+    url(r'^(?P<strips>(sun|week))days-(?P<slug>[a-z0-9_]+)$', views.title),
     url(r'^(?P<slug>[a-z0-9_]+)$', views.title),
     url(r'^$', views.index),
 

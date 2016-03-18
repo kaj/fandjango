@@ -9,6 +9,18 @@
     <a href="http://sv.wikipedia.org/wiki/Special:Search?search={{title}}&amp;go=go"
        title="Sök &quot;{{title}}&quot; i Svenska Wikipedia">wikipedia</a>)
     förekommer i mina indexerade fantomentidningar.</p>
+
+  {%- if havestrips or havesundays -%}
+  <p>Du kan lista serierna efter
+    <a href="/{{title.slug}}">publikation i Fantomentidningen</a>
+    {%- if havestrips %} eller efter originalpublicerig som
+    <a href="/weekdays-{{title.slug}}">dagstripp</a>
+    {%- endif -%}
+    {%- if havesundays %} eller
+    <a href="/sundays-{{title.slug}}">söndagssidor</a>
+    {%- endif %}
+    (så långt iformation om ursprungspublicering finns med i indexet).</p>
+  {%- endif -%}
 {%- endblock -%}
 
 {%- block maincontent -%}
