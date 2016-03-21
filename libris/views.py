@@ -99,15 +99,28 @@ def year(request, year):
                                                navyears=getNavYears(year),
                                                pagetitle='Fantomen %s' %(year)))
 
-def title(request, slug, pagesize=200):
+DAYSTRIPS = {'fantomen', 'mandrake', 'rick_oshay', 'king_vid_granspolisen',
+             'blixt_gordon', 'johnny_hazard'}
+SUNDAYCOMICS = {'fantomen', 'mandrake', 'johnny_hazard'}
+
+def title(request, slug, pagesize=200, strips=None):
     title = get_object_or_404(Title, slug=slug)
-    count = title.episode_set.count()
-    episodes = orderEpisodeQuery(title.episode_set) \
+    episodes = title.episode_set
+    if strips:
+        episodes = episodes.filter(daystrip__is_sundays=(strips=='sun')) \
+                           .order_by('daystrip__fromdate')
+        pagetitle = u'%s %s' % (
+            title, u'söndagssidor' if strips=='sun' else 'dagstrip')
+    else:
+        episodes = orderEpisodeQuery(episodes)
+        pagetitle = unicode(title)
+    episodes = episodes \
         .select_related('orig_name') \
         .prefetch_related('creativepart_set__creator') \
         .prefetch_related('publication_set__issue') \
         .prefetch_related('ref_keys') \
         .all()
+    count = episodes.count()
     key = RefKey.objects.filter(kind='T', slug=slug).first()
     if key:
         articles = key.article_set.all()
@@ -120,10 +133,13 @@ def title(request, slug, pagesize=200):
     else:
         pages = None
 
-    return render_to_response('title.html', ctx(title=title, episodes=episodes,
-                                                articles=articles,
-                                                pagetitle=unicode(title),
-                                                pages=pages))
+    return render_to_response('title.html', ctx(
+        title=title, episodes=episodes,
+        havestrips=title.slug in DAYSTRIPS,
+        havesundays=title.slug in SUNDAYCOMICS,
+        articles=articles,
+        pagetitle=pagetitle,
+        pages=pages))
 
 def refKey(request, slug):
     refkey = get_object_or_404(RefKey, slug=slug, kind__in=['F', 'X'])
