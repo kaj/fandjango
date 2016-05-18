@@ -2,7 +2,7 @@
 from django.core import urlresolvers
 from django.conf import settings
 from django.db.models import Count, F, Func, Min, Max
-from django.http import HttpResponse, HttpResponsePermanentRedirect
+from django.http import Http404, HttpResponse, HttpResponsePermanentRedirect
 from django.shortcuts import render_to_response, get_object_or_404, get_list_or_404
 from django.views.defaults import page_not_found
 from libris.models import *
@@ -128,7 +128,7 @@ def title(request, slug, pagesize=200, strips=None):
         articles = None
     if count >= 2*pagesize:
         pages = range(1 + count / pagesize)
-        page = int(request.GET.get('page', 0))
+        page = int_or_404(request.GET.get('page', 0))
         episodes = episodes[page*pagesize:(page+1)*pagesize]
     else:
         pages = None
@@ -140,6 +140,13 @@ def title(request, slug, pagesize=200, strips=None):
         articles=articles,
         pagetitle=pagetitle,
         pages=pages))
+
+def int_or_404(n):
+    try:
+        return int(n)
+    except:
+        raise Http404('Not an integer: %r' % n)
+
 
 def refKey(request, slug):
     refkey = get_object_or_404(RefKey, slug=slug, kind__in=['F', 'X'])
