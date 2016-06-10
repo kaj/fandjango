@@ -100,7 +100,7 @@ def year(request, year):
                                                pagetitle='Fantomen %s' %(year)))
 
 DAYSTRIPS = {'fantomen', 'mandrake', 'rick_oshay', 'king_vid_granspolisen',
-             'blixt_gordon', 'johnny_hazard'}
+             'blixt_gordon', 'johnny_hazard', 'latigo'}
 SUNDAYCOMICS = {'fantomen', 'mandrake', 'johnny_hazard'}
 
 def title(request, slug, pagesize=200, strips=None):
