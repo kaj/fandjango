@@ -84,6 +84,7 @@ TEMPLATES = [
 ]
 
 MIDDLEWARE_CLASSES = (
+    'ssladmin.middleware.SSLAdmin',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
