@@ -100,7 +100,7 @@ def year(request, year):
                                                pagetitle='Fantomen %s' %(year)))
 
 DAYSTRIPS = {'fantomen', 'mandrake', 'rick_oshay', 'king_vid_granspolisen',
-             'blixt_gordon', 'johnny_hazard'}
+             'blixt_gordon', 'johnny_hazard', 'latigo'}
 SUNDAYCOMICS = {'fantomen', 'mandrake', 'johnny_hazard'}
 
 def title(request, slug, pagesize=200, strips=None):
@@ -113,7 +113,7 @@ def title(request, slug, pagesize=200, strips=None):
             title, u'söndagssidor' if strips=='sun' else 'dagstrip')
     else:
         episodes = orderEpisodeQuery(episodes)
-        pagetitle = unicode(title)
+        pagetitle = str(title)
     episodes = episodes \
         .select_related('orig_name') \
         .prefetch_related('creativepart_set__creator') \
@@ -127,7 +127,7 @@ def title(request, slug, pagesize=200, strips=None):
     else:
         articles = None
     if count >= 2*pagesize:
-        pages = range(1 + count / pagesize)
+        pages = range(1 + count // pagesize)
         page = int_or_404(request.GET.get('page', 0))
         episodes = episodes[page*pagesize:(page+1)*pagesize]
     else:
@@ -164,7 +164,7 @@ def refKey(request, slug):
     return render_to_response('refkey.html', ctx(
         refkey=refkey, episodes=episodes, articles=articles,
         phantoms=allPhantoms() if refkey.kind=='F' else None,
-        pagetitle=unicode(refkey)))
+        pagetitle=str(refkey)))
 
 def refKeys(request):
     refkeys = RefKey.objects.filter(kind='X').order_by('title') \
@@ -227,7 +227,7 @@ def creator(request, slug):
                                                   xroles=xroles,
                                                   articles=articles,
                                                   writtenarticles=wa,
-                                                  pagetitle=unicode(creator)))
+                                                  pagetitle=str(creator)))
 
 def creators(request):
     # The filter should be removed when cover images are better handled.

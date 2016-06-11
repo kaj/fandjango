@@ -5,6 +5,7 @@ Django >= 1.9
 django-autoslug
 Jinja2
 psycopg2
+django-ssl-admin
 
 # Use gunicorn in production
 gunicorn

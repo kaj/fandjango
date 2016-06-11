@@ -19,8 +19,8 @@ class Creator(models.Model):
         '''Get a hyperlink to page for this creator.'''
         return u'/who/%s' % (self.slug)
 
-    def __unicode__(self):
-        return unicode(self.name)
+    def __str__(self):
+        return str(self.name)
     
 class Issue(models.Model):
     '''A single issue'''
@@ -47,7 +47,7 @@ class Issue(models.Model):
             self.ordering = int(self.year) * 100 + int(self.number)
         models.Model.save(self, kwargs)
 
-    def __unicode__(self):
+    def __str__(self):
         return u'Fa %s %s' % (self.numberStr, self.year)
 
 class Title(models.Model):
@@ -60,7 +60,7 @@ class Title(models.Model):
             self.slug = makeslug(self.title)
         models.Model.save(self, kwargs)
 
-    def __unicode__(self):
+    def __str__(self):
         return u'%s' % (self.title)
 
     class Meta:
@@ -99,7 +99,7 @@ class RefKey(models.Model):
         else:
             return u'/what/%s' % (self.slug)
     
-    def __unicode__(self):
+    def __str__(self):
         return u'%s' % (self.title)
 
     def shortFa(self):
@@ -107,11 +107,11 @@ class RefKey(models.Model):
            self.slug not in ['0', '17.1', '22.1','22.2', '22']:
             return self.slug
         else:
-            return self.__unicode__()
+            return self.__str__()
 
     @classmethod
     def FA(cls, n):
-        n = unicode(n)
+        n = str(n)
         special = {'0': 'Kapten Walker',
                    '17.1': 'Julie',
                    '22': 'Kit & Heloise',
@@ -153,7 +153,7 @@ class DaystripRun(models.Model):
     todate = models.DateField()
     is_sundays = models.BooleanField(default=False)
     
-    def __unicode__(self):
+    def __str__(self):
         if self.fromdate != self.todate:
             return u'%s %s - %s.' % (
                 u'Söndagssidor' if self.is_sundays else 'Dagstrip',
@@ -176,7 +176,7 @@ class OtherMag(models.Model):
     i_of = models.PositiveSmallIntegerField(blank=True, null=True)
     year = models.PositiveSmallIntegerField(blank=True, null=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return u''.join([self.title or '',
                          self.issue and ' %d' % self.issue or '',
                          self.i_of and ' of %d' % self.i_of or '',
@@ -220,7 +220,7 @@ class Episode(models.Model):
         
         return [(self.ROLE[r], result[r]) for r in self.ROLES if r in result]
     
-    def __unicode__(self):
+    def __str__(self):
         if self.episode:
             return u'%s: %s' % (self.title, self.episode)
         else:
@@ -235,7 +235,7 @@ class CreativePart(models.Model):
     def name(self):
         return self.alias or self.creator.name
     
-    def __unicode__(self):
+    def __str__(self):
         return self.name()
     
     def _get_slug(self):
@@ -263,11 +263,11 @@ class Article(models.Model):
     creators = models.ManyToManyField(Creator)
     note = models.TextField(blank=True)
     
-    def __unicode__(self):
+    def __str__(self):
         if self.subtitle:
-            return u'%s: %s' % (self.title, self.subtitle)
+            return '%s: %s' % (self.title, self.subtitle)
         else:
-            return unicode(self.title)
+            return str(self.title)
 
     
 class Publication(models.Model):
@@ -294,7 +294,7 @@ class Publication(models.Model):
     def begins(self):
         return self.part_no is None or self.part_no == 1
 
-    def __unicode__(self):
+    def __str__(self):
         return u'%s' % self.issue
 
     def __repr__(self):
