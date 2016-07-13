@@ -38,6 +38,10 @@ SITE_ID = 1
 # to load the internationalization machinery.
 USE_I18N = True
 
+CSRF_COOKIE_HTTPONLY = True
+CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_PATH = '/admin/'
+
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
 MEDIA_ROOT = ''
