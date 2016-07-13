@@ -146,12 +146,15 @@ def read_data_file(filename):
                             label=text(item.find('label')) or '',
                             part_no=part_no, part_name=part_name,
                             best_plac=getBestPlac(item)).save()
-                prevFaElem = item.findall("prevpub[fa!='']")
+                prevFaElem = item.findall("prevpub[fa]")
                 for e in prevFaElem:
-                    fa, fastr = issueNrStr(getText(evaluate(e, "/fa")[0]))
-                    y = getText(evaluate(e, "/year")[0])
+                    print("Found prevpub:", e)
+                    fa, fastr = issueNrStr(e.find('fa').text)
+                    y = e.find('year').text
+                    print("Found prevpub:", fa, fastr, y)
                     i = Issue.objects.get_or_create(year=y, number=fa,
                                                     numberStr=fastr)[0]
+                    print("Found prevpub:", i)
                     Publication.objects.get_or_create(episode=episode, issue=i)
                 
                 #print("Serie", episode)
