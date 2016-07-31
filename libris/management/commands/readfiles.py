@@ -1,18 +1,16 @@
 from datetime import datetime
-from django.conf import settings
 from django.core.management.base import BaseCommand
 from libris.models import *
 import xml.etree.ElementTree as ET
 from os import path
-from optparse import make_option
 
 class Command(BaseCommand):
     help = 'Find and read data files'
+    args = '<year> ...'
 
-    option_list = BaseCommand.option_list + (
-        make_option('--dir', help='Directory to read data from',
-                    dest='dir'),
-        )
+    def add_arguments(self, parser):
+        parser.add_argument('--dir', dest='dir',
+                            help='Directory to read data from')
 
     def handle(self, *args, **options):
         dir = options.get('dir') or '../fantomen'
@@ -20,10 +18,10 @@ class Command(BaseCommand):
         for year in years:
             file = path.join(dir, '%s.data' % year)
             if path.exists(file):
-                print("Should read from %s" % file)
+                self.stdout.write("Should read from %s" % file)
                 read_data_file(file)
             else:
-                print("No such file: %s" % file)
+                self.stdout.write("No such file: %s" % file)
         # Clean up stray data
         Article.objects.filter(publication=None).delete()
         Episode.objects.filter(publication=None).delete()
