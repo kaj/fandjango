@@ -87,7 +87,6 @@ def year(request, year):
         .prefetch_related('cover_by'),
         year=year)
     for issue in issues:
-        issue.omslagurl = "/static/c%s/s%s.jpg" % (issue.year, issue.numberStr)
         issue.contents = issue.publication_set.all()
         for p in issue.contents:
             if p.episode:
@@ -200,9 +199,8 @@ def creator(request, slug):
     allcovers = None
     if len(covers) > 30:
         allcovers = covers
+        # The strange arithmetic here is to put 0 (unknown) last rather than first.
         covers = creator.issue_set.order_by((F('cover_best')+99) % 100, 'year')[:20]
-    for issue in covers:
-        issue.omslagurl = "/static/c%s/s%s.jpg" % (issue.year, issue.numberStr)
 
     xcred = {t: [ee for ee in xe if ee.title==t] for t in {e.title for e in xe}}
     ROLE = {

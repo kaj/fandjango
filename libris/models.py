@@ -2,6 +2,7 @@
 from autoslug.fields import AutoSlugField
 from django.db import models
 from django.template.defaultfilters import date as filterdate
+from django.conf import settings
 from libris.alias import name_alias
 from libris.util import makeslug
 
@@ -46,6 +47,10 @@ class Issue(models.Model):
         if not self.ordering:
             self.ordering = int(self.year) * 100 + int(self.number)
         models.Model.save(self, kwargs)
+
+    def coverurl(self):
+        return "%sc%s/s%s.jpg" % (settings.STATIC_URL, self.year,
+                                  self.numberStr)
 
     def __str__(self):
         return u'Fa %s %s' % (self.numberStr, self.year)
