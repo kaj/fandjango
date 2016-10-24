@@ -10,3 +10,7 @@ django-ssl-admin
 # Use gunicorn in production
 gunicorn
 setproctitle
+
+# Fetch covers
+beautifulsoup4
+Pillow
