@@ -26,10 +26,8 @@
       {%- if issue.price %}
       <p class="pages">pris {{issue.price}}</p>
       {%- endif %}
-      <p class="cover{%if issue.omslagurl%} withimg{%endif%}">
-      {%- if issue.omslagurl -%}
-        <img src="{{issue.omslagurl}}" alt=""/>
-      {%- endif -%}
+      <p class="cover withimg">
+        <img src="{{issue.coverurl()}}" alt="[omslagsbild]"/>
       {%- set by = issue.cover_by.all() %}{%if by -%}
         <span class="by">Omslag av {{linklist(by)}}.</span>
       {%- endif -%}

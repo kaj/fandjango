@@ -90,9 +90,7 @@
     {% for cover in covers %}
     <div class="cover">
       <p><a href="/{{cover.year}}#i{{cover.number}}">{{cover}}<br>
-	{%- if cover.omslagurl -%}
-        <img src="{{cover.omslagurl}}" alt=""/>
-	{%- endif -%}
+        <img src="{{cover.coverurl()}}" alt=""/>
       </a></p>
       {%- if cover.cover_best %}
       <p class="best{{cover.cover_best}} plac">(Nr {{cover.cover_best}} i bästa omslag)</p>
