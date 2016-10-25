@@ -5,16 +5,17 @@ import xml.etree.ElementTree as ET
 from os import path
 
 class Command(BaseCommand):
-    help = 'Find and read data files'
-    args = '<year> ...'
+    help = 'Find and read data files.'
 
     def add_arguments(self, parser):
         parser.add_argument('--dir', dest='dir',
                             help='Directory to read data from')
+        parser.add_argument(dest='year', nargs='*',
+                            help='The year(s) to read from (or all)')
 
     def handle(self, *args, **options):
         dir = options.get('dir') or '../fantomen'
-        years = args or range(1950, datetime.now().year+1)
+        years = options.get('year') or range(1950, datetime.now().year+1)
         for year in years:
             file = path.join(dir, '%s.data' % year)
             if path.exists(file):
