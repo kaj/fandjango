@@ -11,7 +11,24 @@ body {
     flex-flow: column;
     justify-content: space-between;
 }
-
+:link {
+    color: #0000ee;
+    text-decoration: underline;
+    text-decoration-color: #aaaaee;
+    -webkit-text-decoration-color: #aaaaee;
+    -webkit-text-decoration-skip: ink;
+    -moz-text-decoration-skip: ink;
+    text-decoration-skip: ink;
+}
+:visited {
+    color: #6600cc;
+    text-decoration: underline;
+    text-decoration-color: #cc99ff;
+    -webkit-text-decoration-color: #cc99ff;
+    -webkit-text-decoration-skip: ink;
+    -moz-text-decoration-skip: ink;
+    text-decoration-skip: ink;
+}
 body > .issue, body > .wrapyyfa,
 .main, .titleMain {
     flex-grow: 0;
