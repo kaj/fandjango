@@ -33,14 +33,11 @@ hr.prefooter {
 h2, h3 { font-family: sans-serif; margin: 1em 0 0 0; }
 h3 { font-weight: normal; }
 .main, .issue, .titleMain {
-    border: solid 1px black;
     background-color: white;
     background-color: rgba(255,255,255,.5);
     margin: .6rem auto;
     padding: 0;
-    width: 95%;
     max-width: 60rem;
-    border-radius: .6em;
     box-shadow: .2em .4em .8em rgba(0,0,0,.2);
     overflow: auto;
 }
@@ -51,6 +48,11 @@ h3 { font-weight: normal; }
     margin: 0 .5rem .8rem;
 }
 @media (min-width: 480px) {
+.main, .issue, .titleMain {
+    border: solid 1px black;
+    width: 95%;
+    border-radius: .6em;
+}
 .main.head {
     min-height: 130px;
     background-image: url(fa-lindahl-9915.png);
@@ -155,15 +157,21 @@ h3 { font-weight: normal; }
     position: relative;
 }
 .issue p.cover.withimg {
-    background: #e7e0f2;
+    background: #b8a1d6;
     border-radius: .3rem;
     float: right;
-    margin: .5rem;
+    margin: 0 0 .5rem .5rem;
     padding: .3rem;
     position: relative;
-    width: 139px;
+    width: 144px;
     width: -moz-min-content;
+    width: min-content;
+    max-width: 40%;
     z-index: 10;
+}
+p.cover img {
+    max-width: -moz-available;
+    max-width: available;
 }
 .issue p.cover span {
     display: inline-block;
@@ -347,6 +355,7 @@ li {
     padding: .6rem;
     width: 5em;
     width: -moz-min-content;
+    width: min-content;
     border: solid 1px black;
     background-color: white;
     background-color: rgba(255,255,255,.5);
