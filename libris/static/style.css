@@ -14,20 +14,28 @@ body {
 :link {
     color: #0000ee;
     text-decoration: underline;
-    text-decoration-color: #aaaaee;
     -webkit-text-decoration-color: #aaaaee;
+    text-decoration-color: #aaaaee;
     -webkit-text-decoration-skip: ink;
     -moz-text-decoration-skip: ink;
     text-decoration-skip: ink;
 }
+:link:hover, :link:focus {
+    -webkit-text-decoration-color: #0000ee;
+    text-decoration-color: #0000ee;
+}
 :visited {
     color: #6600cc;
     text-decoration: underline;
-    text-decoration-color: #cc99ff;
     -webkit-text-decoration-color: #cc99ff;
+    text-decoration-color: #cc99ff;
     -webkit-text-decoration-skip: ink;
     -moz-text-decoration-skip: ink;
     text-decoration-skip: ink;
+}
+:visited:hover, :visited:focus {
+    -webkit-text-decoration-color: #6600cc;
+    text-decoration-color: #6600cc;
 }
 body > .issue, body > .wrapyyfa,
 .main, .titleMain {
