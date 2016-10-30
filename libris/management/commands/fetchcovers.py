@@ -50,7 +50,7 @@ class Command(BaseCommand):
             print(fmt % args)
 
     def open_soup(self, url):
-        return BeautifulSoup(urlopen(self.wikiurl(url)), "lxml")
+        return BeautifulSoup(urlopen(self.wikiurl(url)), "html.parser")
 
     def wikiurl(self, url):
         return urljoin(self.wikibase, url)

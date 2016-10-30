@@ -1,5 +1,5 @@
 # fandjango
-The Django implementation of http://fantomenindex.krats.se/
+The Django implementation of https://fantomenindex.krats.se/
 
 [![Build Status](https://travis-ci.org/kaj/fandjango.svg)]
 (https://travis-ci.org/kaj/fandjango)
