@@ -100,7 +100,7 @@ h3 { font-weight: normal; }
 }
 .year1987 .main.head:after, .year2002 .main.head:after, .who_donne_avenell .main.head:after {
   content: "Vinjettbild: Heiner Bade, ur Sp\00f6kpiraten, Fa 19, 1987.";
-  right: 140px;
+  right: 145px;
 }
 .who_stan_lynde .main.head, .t_rick_oshay .main.head, .year1973 .main.head {
    min-height: 165px;
