@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block bodyattrs %} class="search"{% endblock %}
+
+{%- block headextra -%}
+    <form id="search" action="/search">
+      <div class="q">
+	<input type="search" name="q" value="{{query}}"
+	       autocomplete="off" tabindex="1">
+	<input type="submit" value="Sök" tabindex="1">
+      </div>
+      <div class="refs">
+	{%- for t in titles -%}
+	<lable tabindex="1" class="t">{{t.title}}<input type="hidden" name="t" value="{{t.slug}}"></lable>
+	{% endfor -%}
+	{%- for k in phantoms -%}
+	<lable tabindex="1" class="f">{{k.title}}<input type="hidden" name="f" value="{{k.slug}}"></lable>
+	{% endfor -%}
+	{%- for k in refkeys -%}
+	<lable tabindex="1" class="x">{{k.title}}<input type="hidden" name="x" value="{{k.slug}}"></lable>
+	{% endfor -%}
+	{%- for k in people -%}
+	<lable tabindex="1" class="p">{{k.name}}<input type="hidden" name="p" value="{{k.slug}}"></lable>
+	{% endfor -%}
+      </div>
+    </form>
+    <script src="/static/search.js"></script>
+{%- endblock -%}
+
+{%- block maincontent -%}
+  <div class="main">
+    <h2>Visar {% if maxhits %}{{maxhits}} av{% endif %} {{nhits}} sökträffar</h2>
+    
+    {%- for ep in episodes %}
+    <div class="episode">
+      <h3><strong><a href="/{{ep.title.slug}}">{{ep.title}}</a>
+          {%- if ep.episode %}: {{ep.episode}}{% endif -%}
+        </strong>
+        {%- if ep.part_no %} del {{ep.part_no}}{% endif -%}
+        {%- if ep.part_name%}: {{ep.part_name}}{% endif -%}
+      </h3>
+      {%- if ep.teaser %}
+      <p class="teaser">{{ep.teaser}}</p>
+      {%- endif -%}
+      {%- if ep.note %}
+      <p class="i note">{{ ep.note }}</p>
+      {%- endif -%}
+      {%- set keys = ep.ref_keys.all() -%}
+      {%- if keys %}
+      <p class="i">Referenser: {{linklist(keys)}}.</p>
+      {%- endif -%}
+      {%- set by = ep.by() -%}
+      {%- if by %}
+      <p class="i">
+        {%- for r, ccs in by -%}
+          {{r}}{{' '}}
+          {%- for slug, name in ccs -%}
+            {%- if not loop.first %}
+              {%- if loop.last %} &amp; {% else %}, {% endif -%}
+            {%- endif -%}
+            <a href="/who/{{slug}}">{{name}}</a>
+          {%- endfor -%}
+          {%- if not loop.last %}, {% endif -%}
+        {%- endfor -%}
+        .</p>
+      {%- endif -%}
+      {{origtitle(ep.orig_name)}}
+      {%- if ep.daystrip %}
+        <p class="i strip">{{ep.daystrip}}</p>
+      {%- endif -%}
+      {%- set pub = ep.publication_set.all() -%}
+      {%- if pub %}
+        <p class="i pub">Publicerad i {{publist(pub)}}.</p>
+      {%- endif -%}
+      {%- if ep.copyright %}
+        <p class="i copyright">Copyright {{ep.copyright}}</p>
+      {%- endif -%}
+    </div>
+    {%- endfor -%}
+  </div>
+{%- endblock -%}
