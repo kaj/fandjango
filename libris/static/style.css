@@ -52,7 +52,7 @@ hr.prefooter {
     font-size: 90%;
 }
 .main.head h1 {
-    margin: .5rem .5rem 1rem;
+    margin: .5rem 0 1rem;
     padding: 0;
 }
 h2, h3 { font-family: sans-serif; margin: 1em 0 0 0; }
@@ -67,10 +67,11 @@ h3 { font-weight: normal; }
     overflow: auto;
 }
 .main.head {
+    padding-left: .5em;
     text-shadow: .2rem .1rem .3rem white;
 }
 .main.head p {
-    margin: 0 .5rem .8rem;
+    margin: 0 0 .8rem;
 }
 @media (min-width: 480px) {
 .main, .issue, .titleMain {
@@ -83,6 +84,8 @@ h3 { font-weight: normal; }
     background-image: url(fa-lindahl-9915.png);
     background-position: 100% 100%;
     background-repeat: no-repeat;
+    padding: 0 198px .8em .5em;
+    box-sizing: border-box;
     position: relative;
 }
 .main.head:after {
@@ -90,13 +93,11 @@ h3 { font-weight: normal; }
     content: "Vinjettbild: Hans Lindahl, ur Guldmakaren, Fa 15, 1999.";
     display: block; position: absolute; bottom: 2px; right: 174px;
 }
-.main.head h1, .main.head p {
-    margin-right: 210px;
-}
 .year1987 .main.head, .year2002 .main.head, .who_donne_avenell .main.head {
   min-height: 160px;
   background-image: url(fa-bade-8719.png);
   background-position: 100% 90%;
+  padding-right: 110px;
 }
 .year1987 .main.head:after, .year2002 .main.head:after, .who_donne_avenell .main.head:after {
   content: "Vinjettbild: Heiner Bade, ur Sp\00f6kpiraten, Fa 19, 1987.";
@@ -105,6 +106,7 @@ h3 { font-weight: normal; }
 .who_stan_lynde .main.head, .t_rick_oshay .main.head, .year1973 .main.head {
    min-height: 165px;
    background-image: url(rick_lilly.png);
+   padding-right: 180px;
 }
 .who_stan_lynde .main.head:after, .t_rick_oshay .main.head:after, .year1973 .main.head:after {
   content: "Vinjettbild: Rick O'Shay och Lily the Kid av Stan Lynde";
@@ -113,6 +115,7 @@ h3 { font-weight: normal; }
 .who_heiner_bade .main.head, .who_david_bishop .main.head {
   background-image: url(fa-bade-rodskagg-0720.png);
   background-position: 100% 100%;
+  padding-right: 180px;
 }
 .X_rodskagg .main.head:after, .X_djungelpatrullen .main.head:after,
 .year2007 .main.head:after,
@@ -122,6 +125,7 @@ h3 { font-weight: normal; }
 }
 .t_spirit .main.head, .who_will_eisner .main.head, .year1982 .main.head {
   background-image: url(pgell.png);
+  padding-right: 200px;
 }
 .t_spirit .main.head:after, .who_will_eisner .main.head:after,
 .year1982 .main.head:after {
