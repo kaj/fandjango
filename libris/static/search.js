@@ -32,7 +32,7 @@ function addTag(title, kind, url) {
     let s = document.createElement('lable');
     s.innerHTML = title + '<input type="hidden" name="' + kind +
 	'" value="' + tag + '">';
-    s.tabindex = "1";
+    s.tabIndex = 4;
     s.className = kind;
     s.addEventListener('click', removeTag);
     tags.appendChild(s);
@@ -54,7 +54,7 @@ input.addEventListener('keyup', function(e) {
 		a.innerHTML = x.t + ' <small>(' + kindname[x.k] + ')</small>';
 		a.className='hit ' + x.k;
 		a.href = x.u;
-		a.tabindex = "1";
+		a.tabIndex = 2;
 		a.onclick = function() { return addTag(x.t, x.k, x.u) }
 		list.appendChild(a)
 	    })
