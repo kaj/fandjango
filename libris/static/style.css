@@ -60,11 +60,10 @@ h3 { font-weight: normal; }
 .main, .issue, .titleMain {
     background-color: white;
     background-color: rgba(255,255,255,.5);
-    margin: .6rem auto;
-    padding: 0;
-    max-width: 60rem;
     box-shadow: .2em .4em .8em rgba(0,0,0,.2);
-    overflow: auto;
+    margin: .6rem auto;
+    max-width: 60rem;
+    padding: 0;
 }
 .main.head {
     padding-left: .5em;
