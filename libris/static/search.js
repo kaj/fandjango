@@ -1,3 +1,4 @@
+var form = document.querySelector('form#search');
 var list = document.createElement('div');
 list.className = 'list';
 var tags = document.querySelector('#search div.refs');
@@ -65,3 +66,22 @@ input.addEventListener('keyup', function(e) {
 	list.innerHTML = '';
     }
 })
+form.addEventListener('keypress', e => {
+    let t = e.target;
+    switch(e.code) {
+    case 'ArrowUp':
+	(t.parentNode == list && t.previousSibling || list.querySelector('a:last-child')).focus();
+	break;
+    case 'ArrowDown':
+	(t.parentNode == list && t.nextSibling || list.querySelector('a:first-child')).focus();
+	break;
+    case 'Escape':
+	input.focus();
+	break;
+    default:
+	return true;
+    };
+    e.preventDefault();
+    e.stopPropagation();
+    return false;
+});
