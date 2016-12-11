@@ -1,17 +1,17 @@
-var form = document.querySelector('form#search');
-var list = document.createElement('div');
+let form = document.querySelector('form#search');
+let list = document.createElement('div');
 list.className = 'list';
-var tags = document.querySelector('#search div.refs');
+let tags = form.querySelector('div.refs');
 if (!tags) {
     tags = document.createElement('div');
     tags.className='refs';
-    document.querySelector('form#search').appendChild(tags);
+    form.appendChild(tags);
 }
 let kindname = { 't': 'serie', 'p': 'upphovsperson',
                  'x': 'i serien', 'f': 'Fantomen' }
 
-document.querySelector('form#search').appendChild(list);
-let input = document.querySelector('form#search input');
+form.appendChild(list);
+let input = form.querySelector('input');
 function placeList() {
     list.style.left = input.getBoundingClientRect().left + 'px';
     list.style.top = input.getBoundingClientRect().bottom + 'px';
@@ -21,10 +21,8 @@ window.addEventListener('load', placeList);
 window.addEventListener('resize', placeList);
 window.addEventListener('fullscreenchange', placeList);
 placeList();
-function removeTag(t) {
-    let l = t.target;
-    console.log("Clicked", l);
-    l.remove()
+function removeTag(e) {
+    e.target.remove();
     return false;
 }
 tags.querySelectorAll('lable').forEach(e => e.addEventListener('click', removeTag));
@@ -39,11 +37,10 @@ function addTag(title, kind, url) {
     tags.appendChild(s);
     list.innerHTML = '';
     input.value = '';
-    console.log(s.innerHTML);
     input.focus();
     return false;
 }
-input.addEventListener('keyup', function(e) {
+input.addEventListener('keyup', e => {
     let v = e.target.value;
     if (v.length > 1) {
 	let r = new XMLHttpRequest();
