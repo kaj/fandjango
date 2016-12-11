@@ -8,7 +8,7 @@ if (!tags) {
     form.appendChild(tags);
 }
 let kindname = { 't': 'serie', 'p': 'upphovsperson',
-                 'x': 'i serien', 'f': 'Fantomen' }
+                 'x': 'i serien', 'f': 'Fantomenätten' }
 
 form.appendChild(list);
 let input = form.querySelector('input');
