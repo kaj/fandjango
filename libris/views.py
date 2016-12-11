@@ -37,18 +37,17 @@ def allPhantoms():
 def autocomplete(request):
     q = request.GET.get('q')
     limit = 10
-    hits = [{'t': hit.title, 'u': hit.get_absolute_url(), 'k': hit.kind.lower()}
-            for hit in RefKey.objects.filter(title__icontains=q)[:limit]]
-    if len(hits) < 10:
-        skip = [h['t'] for h in hits if h['k'] == 't']
-        hits += [{'t': hit.title, 'u': '/%s' % hit.slug, 'k': 't'}
-                 for hit in Title.objects.filter(title__icontains=q)
-                                 .exclude(title__in=skip)[:(limit - len(hits))]]
-    if len(hits) < 10:
-        skip = [h['t'] for h in hits if h['k'] == 'p']
-        hits += [{'t': hit.name, 'u': hit.get_absolute_url(), 'k': 'p'}
-                 for hit in Creator.objects.filter(name__icontains=q)
-                                   .exclude(name__in=skip)[:(limit - len(hits))]]
+    hits = [{'t': h.title, 'u': '/%s' % h.slug, 'k': 't'}
+            for h in Title.objects.filter(title__icontains=q)[:limit]]
+    limit -= len(hits)
+    if limit > 0:
+        hits += [{'t': h.title, 'u': h.get_absolute_url(), 'k': h.kind.lower()}
+                 for h in RefKey.objects.filter(title__icontains=q)
+                                .exclude(kind__in=['T' ,'P'])[:limit]]
+    limit -= len(hits)
+    if limit > 0:
+        hits += [{'t': h.name, 'u': h.get_absolute_url(), 'k': 'p'}
+                 for h in Creator.objects.filter(name__icontains=q)[:limit]]
     return json_response(hits)
 
 def json_response(data):
