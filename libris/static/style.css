@@ -173,6 +173,7 @@ body {
 .main.links {
     width: auto;
     margin: 0;
+    overflow: auto;
 }
 
 .issue h2, .titleMain h2, .main h2 {
