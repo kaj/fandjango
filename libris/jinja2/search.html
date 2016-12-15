@@ -3,28 +3,7 @@
 {% block bodyattrs %} class="search"{% endblock %}
 
 {%- block headextra -%}
-    <form id="search" action="/search">
-      <div class="q">
-	<input type="search" name="q" value="{{query}}"
-	       autocomplete="off" tabindex="1">
-	<input type="submit" value="Sök" tabindex="3">
-      </div>
-      <div class="refs">
-	{%- for t in titles -%}
-	<lable tabindex="4" class="t">{{t.title}}<input type="hidden" name="t" value="{{t.slug}}"></lable>
-	{% endfor -%}
-	{%- for k in phantoms -%}
-	<lable tabindex="4" class="f">{{k.title}}<input type="hidden" name="f" value="{{k.slug}}"></lable>
-	{% endfor -%}
-	{%- for k in refkeys -%}
-	<lable tabindex="4" class="x">{{k.title}}<input type="hidden" name="x" value="{{k.slug}}"></lable>
-	{% endfor -%}
-	{%- for k in people -%}
-	<lable tabindex="4" class="p">{{k.name}}<input type="hidden" name="p" value="{{k.slug}}"></lable>
-	{% endfor -%}
-      </div>
-    </form>
-    <script src="/static/search.js"></script>
+  {% include "searchform.html" %}
 {%- endblock -%}
 
 {%- block maincontent -%}

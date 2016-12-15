@@ -465,3 +465,7 @@ li {
 #search .p {
     background-image: url("creator.svg") !important;
 }
+#search .help {
+    font-size: 80%;
+    margin: 1ex 0;
+}

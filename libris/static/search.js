@@ -82,3 +82,4 @@ form.addEventListener('keypress', e => {
     e.stopPropagation();
     return false;
 });
+form.querySelector('.help').innerHTML = 'Du kan fritextsöka i de texter som beskriver serierna, och begränsa din sökning till de taggar som föreslås.';
