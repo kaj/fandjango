@@ -1,4 +1,4 @@
-let form = document.querySelector('form#search');
+(function(form) {
 let list = document.createElement('div');
 list.className = 'list';
 let tags = form.querySelector('div.refs');
@@ -83,3 +83,4 @@ form.addEventListener('keypress', e => {
     return false;
 });
 form.querySelector('.help').innerHTML = 'Du kan fritextsöka i de texter som beskriver serierna, och begränsa din sökning till de taggar som föreslås. För närvarande går det bara att söka efter serier, inte artiklar, noveller, etc.';
+})(document.querySelector('form#search'));
