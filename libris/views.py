@@ -98,7 +98,7 @@ def search(request):
         maxhits=maxhits,
         episodes=episodes,
         titles=Title.objects.filter(slug__in=titles),
-        refkeys=RefKey.objects.filter(slug__in=refkeys),
+        refkeys=RefKey.objects.filter(slug__in=refkeys, kind='X'),
         people=Creator.objects.filter(slug__in=people),
         phantoms=RefKey.objects.filter(slug__in=phantoms),
         pagetitle='Sök'))
