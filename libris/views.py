@@ -4,6 +4,7 @@ from django.conf import settings
 from django.db.models import Count, F, Func, Min, Max
 from django.http import Http404, HttpResponse, HttpResponsePermanentRedirect
 from django.shortcuts import render_to_response, get_object_or_404, get_list_or_404
+from django.views.decorators.cache import cache_page
 from django.views.defaults import page_not_found
 from libris.models import *
 from libris.alias import *
@@ -31,6 +32,76 @@ def allPhantoms():
     return RefKey.objects.order_by(Func(F('slug'),
                                         template='%(expressions)s::numeric')) \
                  .filter(kind='F').annotate(Count('episode')).all()
+
+@cache_page(60 * 15)
+def autocomplete(request):
+    q = request.GET.get('q')
+    limit = 10
+    hits = [{'t': h.title, 'u': '/%s' % h.slug, 'k': 't'}
+            for h in Title.objects.filter(title__icontains=q)[:limit]]
+    limit -= len(hits)
+    if limit > 0:
+        hits += [{'t': h.title, 'u': h.get_absolute_url(), 'k': h.kind.lower()}
+                 for h in RefKey.objects.filter(title__icontains=q)
+                                .exclude(kind__in=['T' ,'P'])[:limit]]
+    limit -= len(hits)
+    if limit > 0:
+        hits += [{'t': h.name, 'u': h.get_absolute_url(), 'k': 'p'}
+                 for h in Creator.objects.filter(name__icontains=q)[:limit]]
+    return json_response(hits)
+
+def json_response(data):
+    import json
+    return HttpResponse(json.dumps(data), content_type='application/json')
+
+def search(request):
+    query = request.GET.get('q', '')
+    maxhits = 20
+    from functools import reduce
+    from operator import or_
+    qs = Episode.objects
+    titles = request.GET.getlist('t')
+    for t in titles:
+        qs = qs.filter(title__slug=t)
+    phantoms = request.GET.getlist('f')
+    for f in phantoms:
+        qs = qs.filter(ref_keys__slug=f)
+    refkeys = request.GET.getlist('x')
+    for x in refkeys:
+        qs = qs.filter(ref_keys__slug=x)
+    people = request.GET.getlist('p')
+    for p in people:
+        qs = qs.filter(creativepart__creator__slug=p)
+    lookups = ['episode', 'title__title', 'teaser', 'orig_name__title',
+               'note', 'ref_keys__title', 'copyright']
+    lookups = ["%s__icontains" % field for field in lookups]
+    for bit in query.split():
+        print("Filtering query for", bit)
+        qs = qs.filter(reduce(or_,
+                              [models.Q(**{lookup: bit})
+                               for lookup in lookups]))
+    episodes = orderEpisodeQuery(qs) \
+        .select_related('title') \
+        .select_related('orig_name') \
+        .prefetch_related('creativepart_set__creator') \
+        .prefetch_related('publication_set__issue') \
+        .prefetch_related('ref_keys')
+    c = episodes.count()
+    if c > maxhits:
+        episodes = episodes[:maxhits]
+    else:
+        episodes = episodes.all()
+        maxhits = None
+    return render_to_response('search.html', ctx(
+        query=query,
+        nhits=c,
+        maxhits=maxhits,
+        episodes=episodes,
+        titles=Title.objects.filter(slug__in=titles),
+        refkeys=RefKey.objects.filter(slug__in=refkeys, kind='X'),
+        people=Creator.objects.filter(slug__in=people),
+        phantoms=RefKey.objects.filter(slug__in=phantoms),
+        pagetitle='Sök'))
 
 def index(request):
     years = Issue.objects.order_by('year').distinct().values_list('year', flat=True)

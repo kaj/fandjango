@@ -57,12 +57,14 @@ hr.prefooter {
 }
 h2, h3 { font-family: sans-serif; margin: 1em 0 0 0; }
 h3 { font-weight: normal; }
+.main, .issue, .titleMain, .wrapyyfa {
+    margin: .6rem auto;
+    max-width: 60rem;
+}
 .main, .issue, .titleMain {
     background-color: white;
     background-color: rgba(255,255,255,.5);
     box-shadow: .2em .4em .8em rgba(0,0,0,.2);
-    margin: .6rem auto;
-    max-width: 60rem;
     padding: 0;
     width: 100%;
     width: -moz-available;
@@ -153,29 +155,22 @@ body {
     margin: .8rem .5rem .8rem .5rem;
     max-width: 50em;
 }
-.wrapyyfa {
-    width: 95%;
-    max-width: 60em;
-    margin: 0 auto;
-    overflow: hidden;
-}
-.main.yy, .main.fa {
-    width: auto;
-}
 @media (min-width: 45em) {
-    .main.yy, .main.fa {
-        width: 60%;
-        margin: 0 1rem 0 0;
-        float: left;
+    .wrapyyfa {
+	align-items: flex-start;
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: space-between;
+	margin: 0 auto;
+    }
+    .wrapyyfa .main {
+	flex-grow: 1;
+	width: 25em;
+    }
+    .wrapyyfa .main.search, .wrapyyfa .yy {
+	margin-right: 1em;
     }
 }
-.main.yy { margin-bottom: 1rem; }
-.main.links {
-    width: auto;
-    margin: 0;
-    overflow: auto;
-}
-
 .issue h2, .titleMain h2, .main h2 {
     margin: 0;
     padding: .2rem .5rem;
@@ -400,4 +395,74 @@ li {
 .main.head .thisyear span {
     display: block;
 }
+}
+
+#search {
+    margin: .4rem .5rem;
+}
+#search div.q {
+    display: flex;
+    flex-flow: row nowrap;
+}
+#search div.q input[name=q] {
+    border-radius: .4em 0 0 .4em;
+    border-width: 1px;
+    flex-grow: 2;
+    padding: .2rem .5rem;
+    z-index: 18;
+}
+#search div.q input[type=submit] {
+    border-radius: 0 .4em .4em 0;
+    border-width: 1px;
+    padding: .2rem .5rem;
+}
+
+#search div.list {
+    border-bottom: solid 1px #888;
+    box-shadow: .2em .1em .5em rgba(0, 0, 0, .7);
+    display: block;
+    margin-left: .5em;
+    position: absolute;
+    z-index: 17;
+}
+#search div.list :link,
+#search div.list :visited {
+    background: rgba(255,255,255,0.95) no-repeat scroll 0.3em 50% / contain;
+    border-color: #888;
+    border-style: solid;
+    border-width: 1px 1px 0;
+    display: block;
+    padding: .2em .5em .2em 2.2em;
+    color: black;
+    text-decoration: none;
+}
+#search div.list a:focus {
+    background-color: #aaaaff;
+}
+#search div.refs {
+    display: flex;
+    flex-flow: row wrap;
+}
+#search div.refs lable {
+    background: rgba(255,255,255,0.7) no-repeat scroll 0.3em 50% / contain;
+    border-radius: .3em;
+    border: solid 1px rgba(0,0,0,0.3);
+    box-shadow: .2em .4em .8em rgba(0,0,0,.2);
+    cursor: pointer;
+    margin: .2em .3em .2em 0;
+    padding: .1em .3em .1em 1.9em;
+}
+#search .f,
+#search .x {
+    background-image: url("goda.svg") !important;
+}
+#search .t {
+    background-image: url("prat.svg") !important;
+}
+#search .p {
+    background-image: url("creator.svg") !important;
+}
+#search .help {
+    font-size: 80%;
+    margin: .3em 0;
 }

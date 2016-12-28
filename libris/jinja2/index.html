@@ -9,20 +9,23 @@
 
 {% block maincontent %}
   <div class="wrapyyfa">
-  <div class="main yy">
-    <h2>Årgångar</h2>
-    <div class="article">
-      {%- for y in years -%}
-        <a href="{{y}}">{{y}}</a>
-        {%- if loop.last %}.{% else %}, {% endif -%}
-      {%- endfor -%}
-    </div>
+  <div class="main search">
+    {% include "searchform.html" without context %}
   </div>
   <div class="main fa">
     <h2>Fantomenätten</h2>
     <div class="article">
       {%- for p in phantoms -%}
         <a href="{{p.get_absolute_url()}}">{{p.shortFa()}}</a>
+        {%- if loop.last %}.{% else %}, {% endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+  <div class="main yy">
+    <h2>Årgångar</h2>
+    <div class="article">
+      {%- for y in years -%}
+        <a href="{{y}}">{{y}}</a>
         {%- if loop.last %}.{% else %}, {% endif -%}
       {%- endfor -%}
     </div>
