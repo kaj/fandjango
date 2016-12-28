@@ -10,17 +10,8 @@ if (!tags) {
 let kindname = { 't': 'serie', 'p': 'upphovsperson',
                  'x': 'i serien', 'f': 'Fantomenätten' }
 
-form.appendChild(list);
+form.insertBefore(list, tags);
 let input = form.querySelector('input');
-function placeList() {
-    list.style.left = input.getBoundingClientRect().left + 'px';
-    list.style.top = input.getBoundingClientRect().bottom + 'px';
-};
-window.addEventListener('scroll', placeList);
-window.addEventListener('load', placeList);
-window.addEventListener('resize', placeList);
-window.addEventListener('fullscreenchange', placeList);
-placeList();
 function removeTag(e) {
     e.target.remove();
     return false;

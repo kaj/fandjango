@@ -9,14 +9,8 @@
 
 {% block maincontent %}
   <div class="wrapyyfa">
-  <div class="main yy">
-    <h2>Årgångar</h2>
-    <div class="article">
-      {%- for y in years -%}
-        <a href="{{y}}">{{y}}</a>
-        {%- if loop.last %}.{% else %}, {% endif -%}
-      {%- endfor -%}
-    </div>
+  <div class="main search">
+    {% include "searchform.html" without context %}
   </div>
   <div class="main fa">
     <h2>Fantomenätten</h2>
@@ -27,8 +21,16 @@
       {%- endfor -%}
     </div>
   </div>
+  <div class="main yy">
+    <h2>Årgångar</h2>
+    <div class="article">
+      {%- for y in years -%}
+        <a href="{{y}}">{{y}}</a>
+        {%- if loop.last %}.{% else %}, {% endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
   <div class="main links">
-    {% include "searchform.html" without context %}
     <h2>Se även</h2>
     <div class="article">
       <ul>
