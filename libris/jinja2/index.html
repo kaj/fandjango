@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block headextra -%}
-  <p>Här listas innehållet i {{n_issues}} av de snart 1600 svenska
+  <p>Här listas innehållet i {{n_issues}} av de drygt 1600 svenska
   Fantomentidningar som kommit ut.
   Du kan välja att titta på en årgång, någon företeelse i
   Fantomenserien, eller någon serieskapare i listorna nedan.</p>
@@ -9,20 +9,23 @@
 
 {% block maincontent %}
   <div class="wrapyyfa">
-  <div class="main yy">
-    <h2>Årgångar</h2>
-    <div class="article">
-      {%- for y in years -%}
-        <a href="{{y}}">{{y}}</a>
-        {%- if loop.last %}.{% else %}, {% endif -%}
-      {%- endfor -%}
-    </div>
+  <div class="main search">
+    {% include "searchform.html" without context %}
   </div>
   <div class="main fa">
     <h2>Fantomenätten</h2>
     <div class="article">
       {%- for p in phantoms -%}
         <a href="{{p.get_absolute_url()}}">{{p.shortFa()}}</a>
+        {%- if loop.last %}.{% else %}, {% endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+  <div class="main yy">
+    <h2>Årgångar</h2>
+    <div class="article">
+      {%- for y in years -%}
+        <a href="{{y}}">{{y}}</a>
         {%- if loop.last %}.{% else %}, {% endif -%}
       {%- endfor -%}
     </div>
