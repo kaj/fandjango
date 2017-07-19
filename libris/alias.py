@@ -3,9 +3,11 @@ def aliases(name, *alias):
     return [(a,name) for a in alias]
 
 ALIASES = dict(
+    aliases(u'Abel Romero', u'A. Romero') +
     aliases(u'Alan Gordon', u'Al Gordon', u'Gordon') +
     aliases(u'Alex Saviuk', u'Saviuk') +
     aliases(u'Alf Woxnerud', u'Wox') +
+    aliases(u'Alfredo P. Alcala', u'Alfred P. Alcala', u'Red Alcala') +
     aliases(u'Alfredo Castelli', u'Castelli') +
     aliases(u'Anders Eklund', u'A. Eklund') +
     aliases(u'André Franquin', u'Franquin') +  
@@ -45,6 +47,7 @@ ALIASES = dict(
     aliases(u'Jean Van Hamme', u'J. Van Hamme', u'J Van Hamme', u'Van Hamme') +
     aliases(u'Jean-Michel Charlier', u'J-M. Charlier', u'J-M Charlier', u'Charlier') +
     aliases(u'Jean-Yves Mitton', u'J-Y Mitton', u'Mitton') +
+    aliases(u'Karl-Aage Schwartzkopf', u'K.-A. Schwartzkopf', u'K-A Schwartzkopf') +
     aliases(u'Kari Leppänen', u'Kari T. Leppänen', u'Kari T Leppänen', u'Kari Leppänän', u'Kari Läppänen', u'Kari Läppenen', u'K. Leppänen', u'Leppänen') +  
     aliases(u'Karin Bergh', u'K. Bergh') +
     aliases(u'Knut Westad', u'K. Westad', u'Westad') +
