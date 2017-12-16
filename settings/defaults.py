@@ -81,18 +81,18 @@ TEMPLATES = [
     },
 ]
 
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
-)
+]
 
 ROOT_URLCONF = 'urls'
 
-INSTALLED_APPS = (
+INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sites',
     'django.contrib.staticfiles',
     'libris',
-)
+]
 
 import os
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))

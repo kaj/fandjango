@@ -8,6 +8,5 @@ from .local import *
 DATABASES['default']['PASSWORD'] = DB_PASSWORD
 
 if DEBUG_TOOLBAR:
-    INSTALLED_APPS = INSTALLED_APPS + ('debug_toolbar',)
-    MIDDLEWARE_CLASSES = ('debug_toolbar.middleware.DebugToolbarMiddleware',) + \
-                         MIDDLEWARE_CLASSES
+    INSTALLED_APPS.append('debug_toolbar')
+    MIDDLEWARE.insert(0, 'debug_toolbar.middleware.DebugToolbarMiddleware')
