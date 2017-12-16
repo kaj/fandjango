@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from autoslug.fields import AutoSlugField
 from django.db import models
 from django.template.defaultfilters import date as filterdate
 from django.conf import settings
@@ -191,13 +190,15 @@ class Episode(models.Model):
     '''An episode such as it occurs in an Issue.  This might mean an
     episode of a reoccuring title, a part of such an episode, a
     one-shot or a part of a one-shot.'''
-    title = models.ForeignKey(Title)
+    title = models.ForeignKey(Title, on_delete=models.PROTECT)
     episode = models.CharField(max_length=200)
-    orig_name = models.ForeignKey(ForeignName, blank=True, null=True)
+    orig_name = models.ForeignKey(ForeignName, blank=True, null=True,
+                                  on_delete=models.SET_NULL)
     teaser = models.TextField(blank=True)
     note = models.TextField(blank=True)
     ref_keys = models.ManyToManyField(RefKey, blank=True)
-    daystrip = models.ForeignKey(DaystripRun, blank=True, null=True)
+    daystrip = models.ForeignKey(DaystripRun, blank=True, null=True,
+                                 on_delete=models.SET_NULL)
     firstpub = models.DateField(blank=True, null=True)
     prevpub = models.ManyToManyField(OtherMag, blank=True)
     copyright = models.CharField(max_length=200, blank=True)
@@ -232,8 +233,8 @@ class Episode(models.Model):
             return u'%s' % self.title
 
 class CreativePart(models.Model):
-    episode = models.ForeignKey(Episode)
-    creator = models.ForeignKey(Creator)
+    episode = models.ForeignKey(Episode, on_delete=models.CASCADE)
+    creator = models.ForeignKey(Creator, on_delete=models.CASCADE)
     alias = models.CharField(max_length=200, blank=True)
     role = models.CharField(max_length=10, blank=True)
     
@@ -276,18 +277,20 @@ class Article(models.Model):
 
     
 class Publication(models.Model):
-    issue = models.ForeignKey(Issue)
+    issue = models.ForeignKey(Issue, on_delete=models.PROTECT)
     ordno = models.PositiveSmallIntegerField(default=4711)
     label = models.CharField(max_length=200, blank=True)
 
-    episode = models.ForeignKey(Episode, null=True, blank=True)
+    episode = models.ForeignKey(Episode, null=True, blank=True,
+                                on_delete=models.CASCADE)
     best_plac = models.PositiveSmallIntegerField(
         blank=True, default=0,
         help_text='Position of this episode in yearly competition.')
     part_no = models.PositiveSmallIntegerField(blank=True, null=True)
     part_name = models.CharField(max_length=200, blank=True)
     
-    article = models.ForeignKey(Article, null=True, blank=True)
+    article = models.ForeignKey(Article, null=True, blank=True,
+                                on_delete=models.CASCADE)
     
     def get_absolute_url(self):
         '''Get a hyperlink to the issue containing this publication, anchor on year page.'''

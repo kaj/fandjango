@@ -23,7 +23,7 @@ cd $PROJROOT
 # Checking out "master", but to a directory named $VERSION
 git clone -b master $REPO $VERSION
 cd $VERSION
-pyvenv-3.4 --system-site-packages ve
+python3 -m venv --system-site-packages ve
 . ve/bin/activate
 pip install -r requirements.txt
 cp /usr/web/$PROJECT/settings/local.py settings/
