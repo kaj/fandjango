@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from autoslug.fields import AutoSlugField
 from django.db import models
 from django.template.defaultfilters import date as filterdate
 from django.conf import settings

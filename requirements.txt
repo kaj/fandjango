@@ -2,7 +2,6 @@
 # Can be installed py "pip install -r requirements.txt"
 
 Django >= 1.9, < 2.0
-django-autoslug
 Jinja2
 psycopg2
 
