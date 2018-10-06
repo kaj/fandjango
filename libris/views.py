@@ -1,9 +1,9 @@
 # -*- encoding: utf-8; -*-
-from django.core import urlresolvers
 from django.conf import settings
 from django.db.models import Count, F, Func, Min, Max
 from django.http import Http404, HttpResponse, HttpResponsePermanentRedirect
 from django.shortcuts import render_to_response, get_object_or_404, get_list_or_404
+from django.urls import is_valid_path
 from django.views.decorators.cache import cache_page
 from django.views.defaults import page_not_found
 from libris.models import *
@@ -323,14 +323,12 @@ def redirectold(request, exception):
                 match = name_alias(n)
                 path = Creator.objects.get(name=match[0]).get_absolute_url()
     urlconf = getattr(request, 'urlconf', None)
-    if (path != request.path_info and
-        urlresolvers.is_valid_path(path, urlconf)):
+    if (path != request.path_info and is_valid_path(path, urlconf)):
         return HttpResponsePermanentRedirect("%s://%s%s" % (
             'https' if request.is_secure() else 'http',
             request.get_host(), path))
     path = path + '/'
-    if (path != request.path_info and
-        urlresolvers.is_valid_path(path, urlconf)):
+    if (path != request.path_info and is_valid_path(path, urlconf)):
         return HttpResponsePermanentRedirect("%s://%s%s" % (
             'https' if request.is_secure() else 'http',
             request.get_host(), path))

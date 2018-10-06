@@ -1,9 +1,9 @@
 # Required python packages for fandjango
 # Can be installed py "pip install -r requirements.txt"
 
-Django >= 1.9, < 2.0
+Django >= 2.0.9, < 2.1
 Jinja2
-psycopg2
+psycopg2-binary
 
 # Use gunicorn in production
 gunicorn

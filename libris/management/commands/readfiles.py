@@ -30,7 +30,7 @@ class Command(BaseCommand):
         k = RefKey.FA('22.1')
         h = RefKey.FA('22.2')
         for e in kh.episode_set.all():
-            e.ref_keys = set.union({k, h}, e.ref_keys.all())
+            e.ref_keys.set(set.union({k, h}, e.ref_keys.all()))
         kh.delete()
 
 def getBestPlac(elem):
@@ -69,10 +69,11 @@ def read_data_file(filename):
             if item.tag == 'omslag':
                 cbe = item.find('by')
                 if cbe != None:
-                    issue.cover_by = [Creator.objects.get_or_create(name=name)[0]
-                                      for name, alias
-                                      in [name_alias(who) for who
-                                          in getByWho(cbe)]]
+                    issue.cover_by.set(
+                        [Creator.objects.get_or_create(name=name)[0]
+                         for name, alias
+                         in [name_alias(who) for who in getByWho(cbe)]]
+                    )
                 
             elif item.tag == 'serie':
                 title, title_is_new = Title.objects.get_or_create(
@@ -117,8 +118,8 @@ def read_data_file(filename):
                     else:
                         print("Unknown kind of daystrip: %s" % stripElem)
                 
-                episode.ref_keys = set.union(getRefKeys(item),
-                                             episode.ref_keys.all())
+                episode.ref_keys.set(set.union(getRefKeys(item),
+                                               episode.ref_keys.all()))
                 
                 for byElem in item.findall('by'):
                     role = byElem.get('role') or ''
@@ -164,16 +165,18 @@ def read_data_file(filename):
                     note = text(item.find('note')) or '')
                 keys = getRefKeys(item)
                 if keys:
-                    article.ref_keys = keys
+                    article.ref_keys.set(keys)
                 creators = item.findall('by')
                 if creators:
                     from itertools import chain
-                    article.creators = [Creator.objects.get_or_create(name=name)[0]
-                                        for name, alias
-                                        in [name_alias(who) for who
-                                            in chain.from_iterable(
-                                                getByWho(creator)
-                                                for creator in creators)]]
+                    article.creators.set(
+                        [Creator.objects.get_or_create(name=name)[0]
+                         for name, alias
+                         in [name_alias(who) for who
+                             in chain.from_iterable(
+                                 getByWho(creator)
+                                 for creator in creators)]]
+                    )
                 if keys or creators:
                     article.save()
                 Publication(issue=issue, article=article, ordno=ordno).save()
