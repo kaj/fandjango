@@ -1,8 +1,7 @@
 # fandjango
 The Django implementation of https://fantomenindex.krats.se/
 
-[![Build Status](https://travis-ci.org/kaj/fandjango.svg)]
-(https://travis-ci.org/kaj/fandjango)
+[![Build Status](https://travis-ci.org/kaj/fandjango.svg)](https://travis-ci.org/kaj/fandjango)
 
 The admin isn't really used, instead a `readfiles` maintenance command
 is used to read the full dataset from the xml files i keep my actual
