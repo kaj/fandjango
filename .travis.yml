@@ -1,14 +1,27 @@
 language: python
+sudo: true
 python:
   - "3.6"
 services:
  - memcached
  - postgresql
+addons:
+  postgresql: 10
+  apt:
+    packages:
+    - postgresql-10
+    - postgresql-client-10
 install: "pip install -r requirements.txt"
 before_script:
+ # Use default port
+ - sudo sed -i 's/port = 5433/port = 5432/' /etc/postgresql/10/main/postgresql.conf
+ # Use 9.6 auth config:
+ - sudo cp /etc/postgresql/{9.6,10}/main/pg_hba.conf
+ - sudo service postgresql restart
  - echo "SECRET_KEY='abcdefghijklmnopqrstuvwxyz123456789'" > settings/local.py
  - echo "DB_PASSWORD=''" >> settings/local.py
  - echo "from .defaults import DATABASES" >> settings/local.py
- - echo "DATABASES['default']['USER'] =  'postgres'" >> settings/local.py
- - psql -c 'create database fandjango;' -U postgres
+ - echo "DATABASES['default']['USER'] = 'postgres'" >> settings/local.py
+ - echo "DATABASES['default']['HOST'] = 'localhost'" >> settings/local.py
+ - psql -c 'create database fandjango;'
 script: "./manage.py test"
